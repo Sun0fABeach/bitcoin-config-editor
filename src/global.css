@@ -4,4 +4,7 @@
 	--color-text-light: #00ff41;
 
 	--color-background: #0d0208;
+
+	background-color: var(--color-background, 'black');
+	color: var(--color-text-light, 'green');
 }
