@@ -1,13 +1,20 @@
 <script lang="ts">
-	const { children, ...attrs } = $props()
+	import type { HTMLButtonAttributes } from 'svelte/elements'
+	import { Button } from 'bits-ui'
+
+	const attrs: HTMLButtonAttributes = $props()
 </script>
 
-<button {...attrs}>
-	{@render children()}
-</button>
+<!-- need to wrap in a container for scoped targeting of bitsui button using CSS selectors-->
+<span>
+	<Button.Root {...attrs} />
+</span>
 
 <style lang="postcss">
-	button {
+	span {
+		display: contents;
+	}
+	span > :global([data-button-root]) {
 		--border-color-dark: hsl(from green h s l / 0.5);
 		--border-color-light: hsl(from green h s l / 0.8);
 
@@ -19,12 +26,12 @@
 		background-color: var(--color-background);
 		color: var(--color-text-light);
 		cursor: pointer;
+	}
 
-		&:active {
-			transform: translate(1px, 1px);
-			border-color: var(--border-color-dark);
-			border-bottom-color: var(--border-color-light);
-			border-right-color: var(--border-color-light);
-		}
+	span > :global([data-button-root]):active {
+		transform: translate(1px, 1px);
+		border-color: var(--border-color-dark);
+		border-bottom-color: var(--border-color-light);
+		border-right-color: var(--border-color-light);
 	}
 </style>

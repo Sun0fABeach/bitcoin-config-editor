@@ -39,6 +39,7 @@
 		"*.{js,ts,svelte,css,md}": "prettier --write"
 	},
 	"dependencies": {
+		"bits-ui": "^1.3.13",
 		"modern-normalize": "^3.0.1"
 	}
 }

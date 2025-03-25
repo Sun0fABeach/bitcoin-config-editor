@@ -1,29 +1,28 @@
 <script lang="ts">
-	import { innerWidth } from 'svelte/reactivity/window'
+	import { getContext } from 'svelte'
+	import type { MediaQuery } from 'svelte/reactivity'
 	import { scale } from 'svelte/transition'
 	import usePreviewStore from '@/stores/preview.svelte'
 	import Button from '@/components/button.svelte'
-	import { breakpoint } from '@/globals'
 
 	const previewStore = usePreviewStore()
 
-	const alwaysVisible = $derived(
-		innerWidth.current !== undefined && innerWidth.current >= breakpoint,
-	)
+	const onDesktop: MediaQuery = getContext('onDesktop')
 
-	const maybeScale = (node: Element) => (alwaysVisible ? scale(node, { duration: 0 }) : scale(node))
+	const scaleOnMobile = (node: Element) =>
+		onDesktop.current ? scale(node, { duration: 0 }) : scale(node)
 
-	let prevInnerWidth = $state(innerWidth.current)
+	let prevOnDesktop = $state(onDesktop.current)
 	$effect(() => {
-		if (innerWidth.current! >= breakpoint && prevInnerWidth! < breakpoint) {
+		if (prevOnDesktop && !onDesktop.current) {
 			previewStore.closePreview()
 		}
-		prevInnerWidth = innerWidth.current
+		prevOnDesktop = onDesktop.current
 	})
 </script>
 
-{#if previewStore.showPreview || alwaysVisible}
-	<aside in:maybeScale>
+{#if previewStore.showPreview || onDesktop.current}
+	<aside in:scaleOnMobile>
 		<menu>
 			<li>
 				<Button onclick={previewStore.closePreview}>X</Button>
