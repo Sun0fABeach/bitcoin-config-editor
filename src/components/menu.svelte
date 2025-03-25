@@ -1,32 +1,25 @@
 <script lang="ts">
+	import { getContext } from 'svelte'
+	import type { MediaQuery } from 'svelte/reactivity'
 	import usePreviewStore from '@/stores/preview.svelte'
+	import Button from '@/components/button.svelte'
+
+	const onDesktop: MediaQuery = getContext('onDesktop')
 
 	const { openPreview } = usePreviewStore()
 </script>
 
 <menu>
-	<button class="preview-button" onclick={openPreview}>preview</button>
+	{#if !onDesktop.current}
+		<Button onclick={openPreview}>Preview</Button>
+	{/if}
 </menu>
 
-<style>
+<style lang="postcss">
 	menu {
 		grid-area: menu;
 		margin: 0;
 		padding: 0.5rem;
-		border: 1px solid var(--color-text-dark, 'green');
-	}
-
-	button {
-		padding: 0.25rem 0.625rem;
-		border: 2px solid var(--color-text-dark, 'green');
-		border-radius: 5px;
-		background-color: var(--color-background, 'black');
-		color: 1px solid var(--color-text-light, 'green');
-	}
-
-	@media (min-width: 1024px) {
-		.preview-button {
-			display: none;
-		}
+		border: 1px solid var(--color-text-dark);
 	}
 </style>

@@ -6,7 +6,7 @@
 	</ul>
 </main>
 
-<style>
+<style lang="postcss">
 	main {
 		grid-area: editor;
 		padding: 0.5rem;

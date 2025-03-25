@@ -1,10 +1,10 @@
 :root {
-	--color-text-dark: #003b00;
-	--color-text-medium: #008f11;
-	--color-text-light: #00ff41;
+	--color-text-dark: hsl(120, 100%, 11.57%);
+	--color-text-medium: hsl(127.13, 100%, 28.04%);
+	--color-text-light: hsl(135.29, 100%, 50%);
 
-	--color-background: #0d0208;
+	--color-background: hsl(327.27, 73.33%, 2.94%);
 
-	background-color: var(--color-background, 'black');
-	color: var(--color-text-light, 'green');
+	background-color: var(--color-background);
+	color: var(--color-text-light);
 }

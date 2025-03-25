@@ -2,6 +2,7 @@
 	import { innerWidth } from 'svelte/reactivity/window'
 	import { scale } from 'svelte/transition'
 	import usePreviewStore from '@/stores/preview.svelte'
+	import Button from '@/components/button.svelte'
 	import { breakpoint } from '@/globals'
 
 	const previewStore = usePreviewStore()
@@ -25,7 +26,7 @@
 	<aside in:maybeScale>
 		<menu>
 			<li>
-				<button onclick={previewStore.closePreview}>X</button>
+				<Button onclick={previewStore.closePreview}>X</Button>
 			</li>
 			<li>Copy</li>
 		</menu>
@@ -39,7 +40,7 @@
 	</aside>
 {/if}
 
-<style>
+<style lang="postcss">
 	aside {
 		display: flex;
 		flex-direction: column;
@@ -48,26 +49,19 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background-color: var(--color-background, 'black');
+		background-color: var(--color-background);
 	}
 
 	menu {
 		display: flex;
+		align-items: center;
 		margin: 0;
 		padding: 0.5rem 1rem;
-		border-bottom: 1px solid var(--color-text-dark, 'green');
+		border-bottom: 1px solid var(--color-text-dark);
 		list-style: none;
 
-		> li {
-			&:nth-child(2) {
-				margin-left: auto;
-			}
-			> button {
-				cursor: pointer;
-				border: 1px solid var(--color-text-dark, 'green');
-				background-color: var(--color-background, 'black');
-				color: 1px solid var(--color-text-light, 'green');
-			}
+		> li:nth-child(2) {
+			margin-left: auto;
 		}
 	}
 
@@ -77,8 +71,8 @@
 		padding: 0.5rem;
 		resize: none;
 		border: none;
-		background-color: var(--color-background, 'black');
-		color: var(--color-text-medium, 'green');
+		background-color: var(--color-background);
+		color: var(--color-text-medium);
 
 		&:focus {
 			outline: none;
@@ -89,7 +83,7 @@
 		aside {
 			position: relative;
 			grid-area: preview;
-			border: 1px solid var(--color-text-dark, 'green');
+			border: 1px solid var(--color-text-dark);
 		}
 
 		menu {

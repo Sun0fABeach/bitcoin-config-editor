@@ -1,6 +1,6 @@
 <header>header</header>
 
-<style>
+<style lang="postcss">
 	header {
 		grid-area: header;
 		padding: 0.5rem;
