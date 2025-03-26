@@ -2,6 +2,7 @@
 	import { getContext } from 'svelte'
 	import type { MediaQuery } from 'svelte/reactivity'
 	import { scale } from 'svelte/transition'
+	import { building } from '$app/environment'
 	import usePreviewStore from '@/stores/preview.svelte'
 	import Toolbar from '@/components/preview-menu/toolbar.svelte'
 	import { sampleConfigText } from '@/globals'
@@ -24,7 +25,7 @@
 	const configText = $state(sampleConfigText)
 </script>
 
-{#if previewStore.showPreview || onDesktop.current}
+{#if previewStore.showPreview || onDesktop.current || building}
 	<aside transition:scaleOnMobile>
 		<Toolbar />
 		<textarea readonly value={configText}></textarea>
