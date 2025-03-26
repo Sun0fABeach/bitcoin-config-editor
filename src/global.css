@@ -8,3 +8,7 @@
 	background-color: var(--color-background);
 	color: var(--color-text-light);
 }
+
+a {
+	color: var(--color-text-light);
+}
