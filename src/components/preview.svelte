@@ -23,7 +23,7 @@
 </script>
 
 {#if previewStore.showPreview || onDesktop.current}
-	<aside in:scaleOnMobile>
+	<aside transition:scaleOnMobile>
 		<menu>
 			<li>
 				<Button icon title="close preview" onclick={previewStore.closePreview}>
