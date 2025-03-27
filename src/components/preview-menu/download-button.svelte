@@ -2,10 +2,12 @@
 	import { DownloadSimple } from 'phosphor-svelte'
 	import Button from '@/components/button.svelte'
 	import { downloadFile } from '@/lib/file'
-	import { sampleConfigText } from '@/globals'
+	import usePreviewStore from '@/stores/preview.svelte'
+
+	const previewStore = usePreviewStore()
 
 	function download() {
-		downloadFile(sampleConfigText)
+		downloadFile(previewStore.textContent)
 	}
 </script>
 

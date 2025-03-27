@@ -1,3 +1,6 @@
+import { sampleConfigText } from '@/globals'
+
+let textContent = $state(sampleConfigText)
 let showPreview = $state(false)
 
 export default function () {
@@ -13,6 +16,13 @@ export default function () {
 		},
 		openPreview() {
 			showPreview = true
+		},
+
+		get textContent() {
+			return textContent
+		},
+		set textContent(newContent) {
+			textContent = newContent
 		},
 	}
 }

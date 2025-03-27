@@ -5,7 +5,6 @@
 	import { building } from '$app/environment'
 	import usePreviewStore from '@/stores/preview.svelte'
 	import Toolbar from '@/components/preview-menu/toolbar.svelte'
-	import { sampleConfigText } from '@/globals'
 
 	const previewStore = usePreviewStore()
 
@@ -22,7 +21,7 @@
 		prevOnDesktop = onDesktop.current
 	})
 
-	const configText = $state(sampleConfigText)
+	const configText = $derived(previewStore.textContent)
 </script>
 
 {#if previewStore.showPreview || onDesktop.current || building}

@@ -3,7 +3,9 @@
 	import { CopySimple } from 'phosphor-svelte'
 	import { Popover } from 'bits-ui'
 	import Button from '@/components/button.svelte'
-	import { sampleConfigText } from '@/globals'
+	import usePreviewStore from '@/stores/preview.svelte'
+
+	const previewStore = usePreviewStore()
 
 	let confirmOpen = $state(false)
 	let timeoutId: ReturnType<typeof setTimeout> | undefined
@@ -18,7 +20,7 @@
 		timeoutId = setTimeout(() => (confirmOpen = false), 2000)
 	}
 
-	const copyToClipBoard = () => navigator.clipboard.writeText(sampleConfigText)
+	const copyToClipBoard = () => navigator.clipboard.writeText(previewStore.textContent)
 </script>
 
 <!-- need to wrap in a container for scoped targeting of bitsui button using CSS selectors-->
