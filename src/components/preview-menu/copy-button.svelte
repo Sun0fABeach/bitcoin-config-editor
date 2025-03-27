@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { slide, fade } from 'svelte/transition'
 	import { CopySimple } from 'phosphor-svelte'
 	import { Popover } from 'bits-ui'
 	import Button from '@/components/button.svelte'
@@ -29,13 +30,22 @@
 			</Button>
 		</Popover.Trigger>
 		<Popover.Content
+			forceMount
 			trapFocus={false}
 			escapeKeydownBehavior="ignore"
 			interactOutsideBehavior="ignore"
 			sideOffset={-1}
 		>
-			<span class="confirm-text">Config copied!</span>
-			<Popover.Arrow />
+			{#snippet child({ wrapperProps, props, open })}
+				{#if open}
+					<div {...wrapperProps}>
+						<div {...props} class="popover-text" out:slide>Config copied!</div>
+						<div out:fade>
+							<Popover.Arrow />
+						</div>
+					</div>
+				{/if}
+			{/snippet}
 		</Popover.Content>
 	</Popover.Root>
 </span>
@@ -49,10 +59,11 @@
 			border: none;
 			background-color: var(--color-background);
 		}
-		:global([data-popover-content] > .confirm-text) {
+		:global(.popover-text) {
 			padding: 0.5rem;
 			border-radius: 0.375rem;
 			background-color: var(--color-text-dark);
+			transform: translateY(-10px);
 		}
 	}
 </style>
