@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { X, UploadSimple, DownloadSimple, Broom } from 'phosphor-svelte'
+	import { X, UploadSimple, Broom } from 'phosphor-svelte'
 	import usePreviewStore from '@/stores/preview.svelte'
 	import Button from '@/components/button.svelte'
 	import CopyButton from '@/components/preview-menu/copy-button.svelte'
+	import DownloadButton from '@/components/preview-menu/download-button.svelte'
 
 	const previewStore = usePreviewStore()
 </script>
@@ -24,9 +25,7 @@
 		</Button>
 	</li>
 	<li>
-		<Button icon title="download">
-			<DownloadSimple size={20} weight="regular" />
-		</Button>
+		<DownloadButton />
 	</li>
 	<li>
 		<CopyButton />
