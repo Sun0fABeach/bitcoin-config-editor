@@ -1,10 +1,11 @@
 <script lang="ts">
-	import { X, Broom } from 'phosphor-svelte'
+	import { X } from 'phosphor-svelte'
 	import usePreviewStore from '@/stores/preview.svelte'
 	import Button from '@/components/button.svelte'
-	import CopyButton from '@/components/preview-menu/copy-button.svelte'
-	import DownloadButton from '@/components/preview-menu/download-button.svelte'
+	import ClearButton from '@/components/preview-menu/clear-button.svelte'
 	import UploadButton from '@/components/preview-menu/upload-button.svelte'
+	import DownloadButton from '@/components/preview-menu/download-button.svelte'
+	import CopyButton from '@/components/preview-menu/copy-button.svelte'
 
 	const previewStore = usePreviewStore()
 </script>
@@ -16,9 +17,7 @@
 		</Button>
 	</li>
 	<li>
-		<Button icon title="clear">
-			<Broom size={20} weight="regular" />
-		</Button>
+		<ClearButton />
 	</li>
 	<li>
 		<UploadButton />

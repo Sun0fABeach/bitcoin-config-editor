@@ -20,52 +20,45 @@
 		timeoutId = setTimeout(() => (confirmOpen = false), 2000)
 	}
 
-	const copyToClipBoard = () => navigator.clipboard.writeText(previewStore.textContent)
+	const copyToClipBoard = () => {
+		navigator.clipboard.writeText(previewStore.textContent)
+		setConfirmOpen(true)
+	}
 </script>
 
-<!-- need to wrap in a container for scoped targeting of bitsui button using CSS selectors-->
-<span class="popover-container">
-	<Popover.Root bind:open={getConfirmOpen, setConfirmOpen}>
-		<Popover.Trigger>
-			<Button icon title="copy" onclick={copyToClipBoard}>
+<Popover.Root bind:open={getConfirmOpen, setConfirmOpen}>
+	<Popover.Trigger>
+		{#snippet child({ props })}
+			<Button {...props} icon title="copy" onclick={copyToClipBoard}>
 				<CopySimple size={20} weight="regular" />
 			</Button>
-		</Popover.Trigger>
-		<Popover.Content
-			forceMount
-			trapFocus={false}
-			escapeKeydownBehavior="ignore"
-			interactOutsideBehavior="ignore"
-			sideOffset={-1}
-		>
-			{#snippet child({ wrapperProps, props, open })}
-				{#if open}
-					<div {...wrapperProps}>
-						<div {...props} class="popover-text" out:slide>Config copied!</div>
-						<div out:fade>
-							<Popover.Arrow />
-						</div>
+		{/snippet}
+	</Popover.Trigger>
+	<Popover.Content
+		forceMount
+		trapFocus={false}
+		escapeKeydownBehavior="ignore"
+		interactOutsideBehavior="ignore"
+		sideOffset={-1}
+	>
+		{#snippet child({ wrapperProps, props, open })}
+			{#if open}
+				<div {...wrapperProps}>
+					<div {...props} class="popover-text" out:slide>Config copied!</div>
+					<div out:fade>
+						<Popover.Arrow />
 					</div>
-				{/if}
-			{/snippet}
-		</Popover.Content>
-	</Popover.Root>
-</span>
+				</div>
+			{/if}
+		{/snippet}
+	</Popover.Content>
+</Popover.Root>
 
 <style lang="postcss">
-	.popover-container {
-		display: contents;
-
-		:global([data-popover-trigger]) {
-			padding: 0;
-			border: none;
-			background-color: var(--color-background);
-		}
-		:global(.popover-text) {
-			padding: 0.5rem;
-			border-radius: 0.375rem;
-			background-color: var(--color-text-dark);
-			transform: translateY(-10px);
-		}
+	.popover-text {
+		padding: 0.5rem;
+		border-radius: 0.375rem;
+		background-color: var(--color-text-dark);
+		transform: translateY(-10px);
 	}
 </style>

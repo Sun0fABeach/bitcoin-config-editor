@@ -4,14 +4,17 @@
 
 	type ButtonProps = HTMLButtonAttributes & {
 		icon?: boolean
+		noBorder?: boolean
 	}
 
-	const { icon, ...attrs }: ButtonProps = $props()
+	const { icon, noBorder, ...attrs }: ButtonProps = $props()
+
+	const classes = [{ 'icon-button': icon }, { 'no-border': noBorder }]
 </script>
 
 <!-- need to wrap in a container for scoped targeting of bitsui button using CSS selectors-->
 <span>
-	<Button.Root class={icon ? 'icon-button' : null} {...attrs} />
+	<Button.Root class={classes} {...attrs} />
 </span>
 
 <style lang="postcss">
@@ -31,6 +34,9 @@
 			background-color: var(--color-background);
 			color: var(--color-text-light);
 			cursor: pointer;
+		}
+		> :global([data-button-root].no-border) {
+			border: 0;
 		}
 		> :global([data-button-root].icon-button) {
 			padding: 0.25rem 0.375rem;
