@@ -11,7 +11,7 @@
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"format": "prettier --write .",
-		"lint": "prettier --check . && eslint ."
+		"lint": "eslint ."
 	},
 	"devDependencies": {
 		"@eslint/compat": "^1.2.5",
@@ -41,6 +41,6 @@
 		"phosphor-svelte": "^3.0.1"
 	},
 	"lint-staged": {
-		"*.{js,ts,svelte,css,md}": "prettier --write"
+		"*.{js,ts,svelte,css,md}": ["prettier --write", "eslint"]
 	}
 }
