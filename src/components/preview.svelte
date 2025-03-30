@@ -27,7 +27,9 @@
 {#if previewStore.showPreview || onDesktop.current || building}
 	<aside transition:scaleOnMobile>
 		<Toolbar />
-		<textarea readonly value={configText}></textarea>
+		<code>
+			<textarea readonly value={configText}></textarea>
+		</code>
 	</aside>
 {/if}
 
@@ -51,17 +53,21 @@
 		}
 	}
 
-	textarea {
+	code {
 		flex-grow: 1;
-		width: 100%;
-		padding: 1rem;
-		resize: none;
-		border: none;
-		background-color: var(--color-background);
-		color: var(--color-text-medium);
+		display: flex;
 
-		&:focus {
-			outline: none;
+		> textarea {
+			flex-grow: 1;
+			padding: 1rem;
+			resize: none;
+			border: 0;
+			background-color: var(--color-background);
+			color: var(--color-text-medium);
+
+			&:focus {
+				outline: none;
+			}
 		}
 	}
 </style>
