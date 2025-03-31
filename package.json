@@ -41,6 +41,9 @@
 		"phosphor-svelte": "^3.0.1"
 	},
 	"lint-staged": {
-		"*.{js,ts,svelte,css,md}": ["prettier --write", "eslint"]
+		"*.{js,ts,svelte,css,md}": [
+			"prettier --write",
+			"eslint"
+		]
 	}
 }
