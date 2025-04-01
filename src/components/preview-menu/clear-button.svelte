@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { fade, slide } from 'svelte/transition'
+	import { pushState } from '$app/navigation'
+	import { page } from '$app/state'
 	import { Broom } from 'phosphor-svelte'
 	import { Dialog } from 'bits-ui'
 	import usePreviewStore from '@/stores/preview.svelte'
@@ -7,15 +9,18 @@
 
 	const previewStore = usePreviewStore()
 
-	let dialogOpen = $state(false)
+	const getDialogOpen = () => !!page.state.dialogOpen
+	const setDialogOpen = (newOpen: boolean) => {
+		pushState('', { dialogOpen: newOpen })
+	}
 
 	const confirmClear = () => {
 		previewStore.textContent = ''
-		dialogOpen = false
+		setDialogOpen(false)
 	}
 </script>
 
-<Dialog.Root bind:open={dialogOpen}>
+<Dialog.Root bind:open={getDialogOpen, setDialogOpen}>
 	<Dialog.Trigger>
 		{#snippet child({ props })}
 			<Button icon title="clear" {...props}>
