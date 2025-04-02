@@ -34,7 +34,6 @@
 		display: flex;
 		align-items: center;
 		column-gap: 0.375rem;
-		cursor: pointer;
 	}
 
 	.node-type-switch-root {

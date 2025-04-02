@@ -1,27 +1,26 @@
 <script lang="ts">
-	import type { HTMLButtonAttributes } from 'svelte/elements'
-	import { Button } from 'bits-ui'
+	import { Button, type ButtonRootProps } from 'bits-ui'
 
-	type ButtonProps = HTMLButtonAttributes & {
+	type ButtonProps = ButtonRootProps & {
 		icon?: boolean
 		noBorder?: boolean
 	}
 
-	const { icon, noBorder, ...attrs }: ButtonProps = $props()
+	const { icon, noBorder, class: passedClasses, ...attrs }: ButtonProps = $props()
 
-	const classes = [{ 'icon-button': icon }, { 'no-border': noBorder }]
+	const classes = [
+		passedClasses,
+		'bce-button',
+		{ 'bce-button--icon': icon },
+		{ 'bce-button--no-border': noBorder },
+	]
 </script>
 
-<!-- need to wrap in a container for scoped targeting of bitsui button using CSS selectors-->
-<span>
-	<Button.Root class={classes} {...attrs} />
-</span>
+<Button.Root {...attrs} class={classes} />
 
 <style lang="postcss">
-	span {
-		display: contents;
-
-		> :global([data-button-root]) {
+	:global {
+		.bce-button {
 			--border-color-dark: hsl(from green h s l / 0.5);
 			--border-color-light: hsl(from green h s l / 0.8);
 
@@ -35,13 +34,13 @@
 			color: var(--color-text-light);
 			cursor: pointer;
 		}
-		> :global([data-button-root].no-border) {
+		.bce-button--no-border {
 			border: 0;
 		}
-		> :global([data-button-root].icon-button) {
+		.bce-button--icon {
 			padding: 0.25rem 0.375rem;
 		}
-		> :global([data-button-root]:active) {
+		.bce-button:active {
 			transform: translate(1px, 1px);
 			border-color: var(--border-color-dark);
 			border-bottom-color: var(--border-color-light);
