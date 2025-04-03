@@ -16,6 +16,11 @@
 </script>
 
 <svelte:head>
+	<title>Bitcoin Config Editor</title>
+	<meta
+		name="description"
+		content="Create and edit configuration files for bitcoin full nodes. Supports both Core and Knots."
+	/>
 	<link rel="icon" href={favicon} />
 </svelte:head>
 
