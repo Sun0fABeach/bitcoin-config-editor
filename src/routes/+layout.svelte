@@ -1,8 +1,6 @@
 <script lang="ts">
-	import { setContext } from 'svelte'
-	import { MediaQuery } from 'svelte/reactivity'
 	import Button from '@/components/button.svelte'
-	import { breakpoint } from '@/globals'
+	import { setOnDesktopContext } from '@/context/onDesktop'
 
 	import favicon from '@/assets/favicon.png'
 	import 'modern-normalize'
@@ -11,8 +9,7 @@
 
 	const { children } = $props()
 
-	const onDesktop = new MediaQuery(`min-width: ${breakpoint}px`)
-	setContext('onDesktop', onDesktop)
+	setOnDesktopContext()
 </script>
 
 <svelte:head>

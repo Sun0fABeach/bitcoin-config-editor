@@ -1,14 +1,13 @@
 <script lang="ts">
-	import { getContext } from 'svelte'
-	import type { MediaQuery } from 'svelte/reactivity'
 	import { scale } from 'svelte/transition'
 	import { building } from '$app/environment'
+	import { getOnDesktopContext } from '@/context/onDesktop'
 	import usePreviewStore from '@/stores/preview.svelte'
 	import Toolbar from '@/components/preview-menu/toolbar.svelte'
 
 	const previewStore = usePreviewStore()
 
-	const onDesktop: MediaQuery = getContext('onDesktop')
+	const onDesktop = getOnDesktopContext()
 
 	const scaleOnMobile = (node: Element) =>
 		onDesktop.current ? scale(node, { duration: 0 }) : scale(node)
