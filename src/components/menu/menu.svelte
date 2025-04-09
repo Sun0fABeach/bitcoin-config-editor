@@ -1,7 +1,8 @@
 <script lang="ts">
 	import usePreviewStore from '@/stores/preview.svelte'
 	import Button from '@/components/button.svelte'
-	import NodeTypeSwitch from '@/components/node-type-switch.svelte'
+	import Options from '@/components/menu/options.svelte'
+	import NodeTypeSwitch from '@/components/menu/node-type-switch.svelte'
 
 	const { openPreview } = usePreviewStore()
 </script>
@@ -9,7 +10,7 @@
 <menu>
 	<NodeTypeSwitch />
 	<Button class="preview-button" onclick={openPreview}>Preview</Button>
-	<Button class="options-button">Options</Button>
+	<Options />
 </menu>
 
 <style lang="postcss">

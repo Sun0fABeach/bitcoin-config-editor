@@ -87,7 +87,7 @@
 		padding: 1rem;
 		border: 2px solid var(--color-text-medium);
 		border-radius: 0.375rem;
-		background-color: var(--color-text-dark);
+		background-color: var(--color-popover-background);
 
 		> .dialog-description {
 			margin-top: 0.375rem;

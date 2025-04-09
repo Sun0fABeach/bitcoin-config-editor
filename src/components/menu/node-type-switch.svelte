@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { Switch, Label, useId } from 'bits-ui'
+	import { Switch, Label } from 'bits-ui'
 	import KnotsLogo from '@/assets/knots-logo.png'
 
-	const id = useId()
+	const id = 'node-type-switch'
+
 	let checked = $state(true)
 	const label = $derived(checked ? 'Knots' : 'Core')
 </script>

@@ -4,6 +4,7 @@
 	--color-text-light: hsl(135.29, 100%, 50%);
 
 	--color-background: hsl(327.27, 73.33%, 2.94%);
+	--color-popover-background: var(--color-text-dark);
 
 	background-color: var(--color-background);
 	color: var(--color-text-light);

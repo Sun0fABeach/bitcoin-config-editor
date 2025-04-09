@@ -58,7 +58,7 @@
 	.popover-text {
 		padding: 0.5rem;
 		border-radius: 0.375rem;
-		background-color: var(--color-text-dark);
+		background-color: var(--color-popover-background);
 		transform: translateY(-10px);
 	}
 </style>
