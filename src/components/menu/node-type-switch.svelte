@@ -35,6 +35,10 @@
 		display: flex;
 		align-items: center;
 		column-gap: 0.375rem;
+
+		&:hover .node-type-switch-root {
+			background: var(--color-button-highlight-gradient);
+		}
 	}
 
 	.node-type-switch-root {

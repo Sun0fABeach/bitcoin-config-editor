@@ -6,6 +6,12 @@
 	--color-background: hsl(327.27, 73.33%, 2.94%);
 	--color-popover-background: var(--color-text-dark);
 
+	--color-button-highlight-gradient: linear-gradient(
+		to top left,
+		var(--color-background) 33%,
+		var(--color-popover-background)
+	);
+
 	background-color: var(--color-background);
 	color: var(--color-text-light);
 }

@@ -34,8 +34,14 @@
 			color: var(--color-text-light);
 			cursor: pointer;
 		}
+		.bce-button:hover {
+			background: var(--color-button-highlight-gradient);
+		}
 		.bce-button--no-border {
-			border: 0;
+			border-color: var(--color-background);
+		}
+		.bce-button--no-border:hover {
+			border-color: var(--border-color-dark);
 		}
 		.bce-button--icon {
 			padding: 0.25rem 0.375rem;
