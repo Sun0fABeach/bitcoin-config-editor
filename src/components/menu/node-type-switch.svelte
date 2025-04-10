@@ -33,8 +33,6 @@
 <style lang="postcss">
 	.node-type-switch-container {
 		display: flex;
-		align-items: center;
-		column-gap: 0.375rem;
 
 		&:hover .node-type-switch-root {
 			background: var(--color-button-highlight-gradient);
@@ -77,7 +75,10 @@
 	}
 
 	.node-type-switch-label {
-		width: 3.125rem; /* keep text width stable when switching between "Core" and "Knots" */
+		display: inline-flex;
+		align-items: center;
+		width: 3.5rem; /* keep text width stable when switching between "Core" and "Knots" */
+		padding: 0 0.375rem;
 		font-weight: 500;
 		cursor: pointer;
 	}
