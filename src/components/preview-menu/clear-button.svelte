@@ -3,7 +3,7 @@
 	import { pushState } from '$app/navigation'
 	import { page } from '$app/state'
 	import { Broom } from 'phosphor-svelte'
-	import { Dialog } from 'bits-ui'
+	import { AlertDialog } from 'bits-ui'
 	import usePreviewStore from '@/stores/preview.svelte'
 	import Button from '@/components/button.svelte'
 
@@ -11,7 +11,11 @@
 
 	const getDialogOpen = () => !!page.state.dialogOpen
 	const setDialogOpen = (newOpen: boolean) => {
-		pushState('', { dialogOpen: newOpen })
+		if (newOpen) {
+			pushState('', { dialogOpen: newOpen })
+		} else {
+			history.back()
+		}
 	}
 
 	const confirmClear = () => {
@@ -20,51 +24,55 @@
 	}
 </script>
 
-<Dialog.Root bind:open={getDialogOpen, setDialogOpen}>
-	<Dialog.Trigger>
+<AlertDialog.Root bind:open={getDialogOpen, setDialogOpen}>
+	<AlertDialog.Trigger>
 		{#snippet child({ props })}
 			<Button icon title="clear" {...props}>
 				<Broom size={20} weight="regular" />
 			</Button>
 		{/snippet}
-	</Dialog.Trigger>
+	</AlertDialog.Trigger>
 
-	<Dialog.Portal>
-		<Dialog.Overlay forceMount>
+	<AlertDialog.Portal>
+		<AlertDialog.Overlay forceMount>
 			{#snippet child({ props, open })}
 				{#if open}
 					<div {...props} class="dialog-overlay" transition:fade></div>
 				{/if}
 			{/snippet}
-		</Dialog.Overlay>
+		</AlertDialog.Overlay>
 
-		<Dialog.Content forceMount>
+		<AlertDialog.Content forceMount interactOutsideBehavior="close">
 			{#snippet child({ props, open })}
 				{#if open}
 					<div {...props} class="dialog-content" transition:slide>
-						<Dialog.Title>Do you really want to clear your config?</Dialog.Title>
-						<Dialog.Description>
+						<AlertDialog.Title>Do you really want to clear your config?</AlertDialog.Title>
+						<AlertDialog.Description>
 							{#snippet child()}
 								<span class="dialog-description">
 									-&gt; This will reset all options to default values.
 								</span>
 							{/snippet}
-						</Dialog.Description>
+						</AlertDialog.Description>
 
 						<div class="dialog-buttons">
-							<Dialog.Close>
+							<AlertDialog.Cancel>
 								{#snippet child({ props })}
 									<Button {...props} noBorder>Cancel</Button>
 								{/snippet}
-							</Dialog.Close>
-							<Button noBorder onclick={confirmClear}>Clear</Button>
+							</AlertDialog.Cancel>
+							<AlertDialog.Action>
+								{#snippet child({ props })}
+									<Button {...props} noBorder onclick={confirmClear}>Clear</Button>
+								{/snippet}
+							</AlertDialog.Action>
 						</div>
 					</div>
 				{/if}
 			{/snippet}
-		</Dialog.Content>
-	</Dialog.Portal>
-</Dialog.Root>
+		</AlertDialog.Content>
+	</AlertDialog.Portal>
+</AlertDialog.Root>
 
 <style lang="postcss">
 	.dialog-overlay {
