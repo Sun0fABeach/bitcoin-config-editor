@@ -9,8 +9,8 @@
 
 <menu>
 	<NodeTypeSwitch />
-	<Button class="preview-button" onclick={openPreview}>Preview</Button>
 	<Options />
+	<Button class="preview-button" onclick={openPreview}>Preview</Button>
 </menu>
 
 <style lang="postcss">

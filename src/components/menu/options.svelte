@@ -38,7 +38,13 @@
 	</DropdownMenu.Trigger>
 
 	<DropdownMenu.Portal>
-		<DropdownMenu.Content sideOffset={1} align="start" alignOffset={-15} forceMount>
+		<DropdownMenu.Content
+			align="start"
+			alignOffset={-15}
+			sideOffset={1}
+			collisionPadding={10}
+			forceMount
+		>
 			{#snippet child({ wrapperProps, props, open })}
 				{#if open}
 					<div {...wrapperProps}>
@@ -71,8 +77,8 @@
 							{/snippet}
 
 							{@render item('searchDescriptions', 'Include descriptions in search')}
-							{@render item('inlineDescriptors', 'Write inline descriptors')}
-							{@render item('explicitDefaults', 'Write explicit defaults')}
+							{@render item('inlineDescriptors', 'Write inline descriptions')}
+							{@render item('explicitDefaults', 'Write default values')}
 						</div>
 					</div>
 				{/if}
@@ -97,10 +103,14 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		column-gap: 2rem;
+		column-gap: 1rem;
 		padding: 0.25rem 0.5rem;
 		border-radius: 0.25rem;
 		cursor: pointer;
+
+		@media (min-width: 400px) {
+			column-gap: 2rem;
+		}
 
 		&:hover {
 			background-color: hsl(from green h s l / 0.3);
