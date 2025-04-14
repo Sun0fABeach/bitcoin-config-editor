@@ -25,11 +25,12 @@
 			--border-color-light: hsl(from green h s l / 0.8);
 
 			display: inline-flex;
+			justify-content: center;
 			padding: 0.375rem 0.875rem;
 			border: 1px solid var(--border-color-dark);
 			border-top-color: var(--border-color-light);
 			border-left-color: var(--border-color-light);
-			border-radius: 4px;
+			border-radius: 0.25rem;
 			background-color: var(--color-background);
 			color: var(--color-text-light);
 			cursor: pointer;
