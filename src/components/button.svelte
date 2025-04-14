@@ -19,6 +19,7 @@
 <Button.Root {...attrs} class={classes} />
 
 <style lang="postcss">
+	/* employing 'bce'-prefixed BEM-style classes here because all styles are global */
 	:global {
 		.bce-button {
 			--border-color-dark: hsl(from green h s l / 0.5);

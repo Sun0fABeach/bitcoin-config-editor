@@ -8,13 +8,13 @@
 	const label = $derived(checked ? 'Knots' : 'Core')
 </script>
 
-<div class="node-type-switch-container">
+<div class="container" title="Select whether you run a Core or Knots node">
 	<Switch.Root bind:checked {id}>
 		{#snippet child({ props })}
-			<button {...props} class="node-type-switch-root">
+			<button {...props}>
 				<Switch.Thumb>
 					{#snippet child({ props })}
-						<span {...props} class="node-type-switch-thumb">
+						<span {...props} class="knob">
 							<img src={KnotsLogo} alt="Knots logo" />
 						</span>
 					{/snippet}
@@ -25,21 +25,21 @@
 
 	<Label.Root for={id}>
 		{#snippet child({ props })}
-			<label {...props} class="node-type-switch-label">{label}</label>
+			<label {...props}>{label}</label>
 		{/snippet}
 	</Label.Root>
 </div>
 
 <style lang="postcss">
-	.node-type-switch-container {
+	.container {
 		display: flex;
 
-		&:hover .node-type-switch-root {
+		&:hover button {
 			background: var(--color-button-highlight-gradient);
 		}
 	}
 
-	.node-type-switch-root {
+	button {
 		display: inline-flex;
 		justify-content: center;
 		align-items: center;
@@ -51,7 +51,7 @@
 		cursor: pointer;
 	}
 
-	.node-type-switch-thumb {
+	.knob {
 		display: inline-flex;
 		width: 1.75rem;
 		height: 1.75rem;
@@ -74,7 +74,7 @@
 		}
 	}
 
-	.node-type-switch-label {
+	label {
 		display: inline-flex;
 		align-items: center;
 		width: 3.5rem; /* keep text width stable when switching between "Core" and "Knots" */
