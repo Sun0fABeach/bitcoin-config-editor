@@ -3,7 +3,7 @@
 	import { building } from '$app/environment'
 	import { getOnDesktopContext } from '@/context/onDesktop'
 	import usePreviewStore from '@/stores/preview.svelte'
-	import Toolbar from '@/components/preview-menu/toolbar.svelte'
+	import Panel from '@/components/preview-menu/panel.svelte'
 
 	const previewStore = usePreviewStore()
 
@@ -25,7 +25,7 @@
 
 {#if previewStore.showPreview || onDesktop.current || building}
 	<aside transition:scaleOnMobile>
-		<Toolbar />
+		<Panel />
 		<code>
 			<textarea readonly value={configText}></textarea>
 		</code>
@@ -42,30 +42,32 @@
 		width: 100%;
 		height: 100%;
 		background-color: var(--color-background);
-	}
 
-	@media (min-width: 1024px) {
-		aside {
+		code {
+			flex-grow: 1;
+			display: flex;
+
+			> textarea {
+				flex-grow: 1;
+				padding: 1rem;
+				resize: none;
+				border: 0;
+				background-color: var(--color-background);
+				color: var(--color-text-medium);
+				font-size: 0.875em;
+
+				&:focus {
+					outline: none;
+				}
+			}
+		}
+
+		@media (min-width: 1024px) {
 			position: relative;
 			grid-area: preview;
-			border: 1px solid var(--color-text-dark);
-		}
-	}
 
-	code {
-		flex-grow: 1;
-		display: flex;
-
-		> textarea {
-			flex-grow: 1;
-			padding: 1rem;
-			resize: none;
-			border: 0;
-			background-color: var(--color-background);
-			color: var(--color-text-medium);
-
-			&:focus {
-				outline: none;
+			> code {
+				border-left: 1px dashed var(--color-layout-border);
 			}
 		}
 	}

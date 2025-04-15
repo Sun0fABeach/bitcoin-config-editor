@@ -1,10 +1,12 @@
 :root {
-	--color-text-dark: hsl(120, 100%, 11.57%);
 	--color-text-medium: hsl(127.13, 100%, 28.04%);
 	--color-text-light: hsl(135.29, 100%, 50%);
 
 	--color-background: hsl(327.27, 73.33%, 2.94%);
-	--color-popover-background: var(--color-text-dark);
+	--color-popover-background: hsl(120, 100%, 11.57%);
+
+	--color-layout-border: var(--color-popover-background);
+	--color-element-border: var(--color-text-medium);
 
 	--color-button-highlight-gradient: linear-gradient(
 		to top left,
@@ -12,14 +14,20 @@
 		var(--color-popover-background)
 	);
 
+	--menu-height-desktop: 50px;
+}
+
+body {
 	background-color: var(--color-background);
 	color: var(--color-text-light);
-
-	*:focus-visible {
-		outline: 1px solid var(--color-text-medium);
-	}
+	font-family: Inconsolata, monospace;
+	font-size: 1.125rem;
 }
 
 a {
 	color: var(--color-text-light);
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-element-border);
 }

@@ -37,16 +37,19 @@
 		column-gap: 0.25rem;
 		margin: 0;
 		padding: 0.5rem 0.75rem;
-		border-bottom: 1px solid var(--color-text-dark);
+		border-bottom: 1px solid var(--color-layout-border);
 		list-style: none;
 
 		> li:nth-child(2) {
 			margin-left: auto;
 		}
-	}
 
-	@media (min-width: 1024px) {
-		menu {
+		@media (min-width: 1024px) {
+			height: var(--menu-height-desktop);
+			padding-top: 0;
+			padding-bottom: 0;
+			align-items: center;
+
 			> li:first-child {
 				display: none;
 			}

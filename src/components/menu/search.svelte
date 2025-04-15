@@ -16,14 +16,14 @@
 		column-gap: 0.5rem;
 		height: 2rem;
 		padding-right: 0.5rem;
-		border: 1px solid var(--color-text-medium);
+		border: 1px solid var(--color-element-border);
 		border-radius: 0.5rem;
 
 		&:hover {
 			background: var(--color-button-highlight-gradient);
 		}
 		&:focus-within {
-			outline: 1px solid var(--color-text-medium);
+			outline: 1px solid var(--color-element-border);
 		}
 
 		> label {

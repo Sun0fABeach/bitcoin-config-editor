@@ -56,7 +56,7 @@
 
 <style lang="postcss">
 	.popover-text {
-		padding: 0.5rem;
+		padding: 0.5rem 0.75rem;
 		border-radius: 0.375rem;
 		background-color: var(--color-popover-background);
 		transform: translateY(-10px);

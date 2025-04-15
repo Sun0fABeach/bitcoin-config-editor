@@ -50,7 +50,7 @@
 						<AlertDialog.Description>
 							{#snippet child()}
 								<span class="dialog-description">
-									-&gt; This will reset all options to default values.
+									&gt; This will reset all options to default values.
 								</span>
 							{/snippet}
 						</AlertDialog.Description>
@@ -93,13 +93,13 @@
 		display: flex;
 		flex-direction: column;
 		padding: 1rem;
-		border: 2px solid var(--color-text-medium);
+		border: 2px solid var(--color-element-border);
 		border-radius: 0.375rem;
 		background-color: var(--color-popover-background);
 
 		> .dialog-description {
-			margin-top: 0.375rem;
-			font-size: 0.875rem;
+			margin-top: 0.5rem;
+			font-size: 0.875em;
 		}
 
 		> .dialog-buttons {

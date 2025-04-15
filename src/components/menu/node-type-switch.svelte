@@ -45,7 +45,7 @@
 		align-items: center;
 		width: 4rem;
 		height: 2rem;
-		border: 2px solid var(--color-text-medium);
+		border: 2px solid var(--color-element-border);
 		border-radius: 1rem;
 		background-color: var(--color-background);
 		cursor: pointer;

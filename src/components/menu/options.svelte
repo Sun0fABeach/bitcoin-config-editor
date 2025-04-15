@@ -93,7 +93,7 @@
 		flex-direction: column;
 		padding: 0.5rem;
 		background-color: var(--color-popover-background);
-		border: 1px solid var(--color-text-medium);
+		border: 1px solid var(--color-element-border);
 		border-radius: 0.375rem;
 		box-shadow: 1px 1px 10px var(--color-popover-background);
 		transform: translateY(-10px);
@@ -103,13 +103,14 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		column-gap: 1rem;
-		padding: 0.25rem 0.5rem;
+		column-gap: 0.875rem;
+		padding: 0.25rem 0.125rem;
 		border-radius: 0.25rem;
 		cursor: pointer;
 
-		@media (min-width: 400px) {
+		@media (min-width: 380px) {
 			column-gap: 2rem;
+			padding: 0.25rem 0.5rem;
 		}
 
 		&:hover {

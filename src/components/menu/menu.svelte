@@ -12,7 +12,7 @@
 	<NodeTypeSwitch />
 	<Search />
 	<Options />
-	<Button class="preview-button" onclick={openPreview}>Preview</Button>
+	<Button class="generate-button" onclick={openPreview}>Generate Config</Button>
 </menu>
 
 <style lang="postcss">
@@ -23,18 +23,23 @@
 		column-gap: 0.75rem;
 		row-gap: 0.75rem;
 		margin: 0;
-		padding: 0.75rem;
-		border: 1px solid var(--color-text-dark);
+		padding: 0.5rem 0.75rem;
+		border-bottom: 1px solid var(--color-layout-border);
 
 		> :global(*) {
 			flex-grow: 1;
-			@media (min-width: 550px) {
+			@media (min-width: 620px) {
 				flex-grow: 0;
 			}
 		}
 
 		@media (min-width: 1024px) {
-			> :global(.preview-button) {
+			height: var(--menu-height-desktop);
+			padding-top: 0;
+			padding-bottom: 0;
+			align-items: center;
+
+			> :global(.generate-button) {
 				display: none;
 			}
 		}
