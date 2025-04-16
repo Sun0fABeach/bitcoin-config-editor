@@ -96,6 +96,7 @@
 		border: 2px solid var(--color-element-border);
 		border-radius: 0.375rem;
 		background-color: var(--color-popover-background);
+		line-height: 1.25;
 
 		> .dialog-description {
 			margin-top: 0.5rem;

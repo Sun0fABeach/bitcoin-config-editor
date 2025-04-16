@@ -1,14 +1,24 @@
 <script lang="ts">
 	import { slide, fade } from 'svelte/transition'
+	import { MediaQuery } from 'svelte/reactivity'
 	import { DropdownMenu, Checkbox, Label } from 'bits-ui'
 	import { Check } from 'phosphor-svelte'
 	import Button from '@/components/button.svelte'
 
+	const dropDownPaddingMQ = new MediaQuery('min-width: 400px')
+
 	let searchDescriptions = $state(true)
+	let highlightKnotsExclusives = $state(true)
 	let explicitDefaults = $state(false)
 	let inlineDescriptors = $state(false)
 
 	const options = {
+		get highlightKnotsExclusives() {
+			return highlightKnotsExclusives
+		},
+		set highlightKnotsExclusives(value) {
+			highlightKnotsExclusives = value
+		},
 		get searchDescriptions() {
 			return searchDescriptions
 		},
@@ -42,12 +52,13 @@
 			align="start"
 			alignOffset={-15}
 			sideOffset={1}
-			collisionPadding={10}
+			collisionPadding={dropDownPaddingMQ.current ? 10 : 0}
+			preventScroll={false}
 			forceMount
 		>
 			{#snippet child({ wrapperProps, props, open })}
 				{#if open}
-					<div {...wrapperProps}>
+					<div {...wrapperProps} class="dropdown-wrapper">
 						<div transition:fade>
 							<DropdownMenu.Arrow />
 						</div>
@@ -76,9 +87,24 @@
 								</DropdownMenu.CheckboxItem>
 							{/snippet}
 
-							{@render item('searchDescriptions', 'Include descriptions in search')}
-							{@render item('inlineDescriptors', 'Write inline descriptions')}
-							{@render item('explicitDefaults', 'Write default values')}
+							<DropdownMenu.Group>
+								<DropdownMenu.GroupHeading>
+									{#snippet child({ props })}
+										<div {...props} class="group-heading">Editor</div>
+									{/snippet}
+								</DropdownMenu.GroupHeading>
+								{@render item('searchDescriptions', 'Include descriptions in search')}
+								{@render item('highlightKnotsExclusives', 'Highlight Knots exclusives')}
+							</DropdownMenu.Group>
+							<DropdownMenu.Group>
+								<DropdownMenu.GroupHeading>
+									{#snippet child({ props })}
+										<div {...props} class="group-heading">Config Generation</div>
+									{/snippet}
+								</DropdownMenu.GroupHeading>
+								{@render item('inlineDescriptors', 'Write inline descriptions')}
+								{@render item('explicitDefaults', 'Write default values')}
+							</DropdownMenu.Group>
 						</div>
 					</div>
 				{/if}
@@ -88,10 +114,22 @@
 </DropdownMenu.Root>
 
 <style lang="postcss">
+	.dropdown-wrapper {
+		width: 100vw;
+		min-width: initial !important; /* override bitsui style to allow text-wrap */
+		font-size: 0.875em;
+
+		@media (min-width: 400px) {
+			width: initial;
+			font-size: 1em;
+		}
+	}
+
 	.content {
 		display: flex;
 		flex-direction: column;
-		padding: 0.5rem;
+		row-gap: 0.75rem;
+		padding: 0.75rem 0.375rem 0.5rem 0.875rem;
 		background-color: var(--color-popover-background);
 		border: 1px solid var(--color-element-border);
 		border-radius: 0.375rem;
@@ -99,18 +137,23 @@
 		transform: translateY(-10px);
 	}
 
+	.group-heading {
+		margin-bottom: 0.25rem;
+		font-weight: bold;
+	}
+
 	.item {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		column-gap: 0.875rem;
-		padding: 0.25rem 0.125rem;
+		column-gap: 1rem;
+		padding: 0.25rem 0;
 		border-radius: 0.25rem;
 		cursor: pointer;
 
-		@media (min-width: 380px) {
-			column-gap: 2rem;
-			padding: 0.25rem 0.5rem;
+		@media (min-width: 400px) {
+			column-gap: 1.75rem;
+			padding: 0.25rem 0.5rem 0.25rem 1.375rem;
 		}
 
 		&:hover {
