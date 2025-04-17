@@ -172,7 +172,6 @@
 			border: 1px solid hsl(from green h s l / 0.8);
 			border-radius: 0.25rem;
 			background-color: var(--color-background);
-			cursor: pointer;
 
 			&[data-state='unchecked'] > :global(:first-child) {
 				visibility: hidden;

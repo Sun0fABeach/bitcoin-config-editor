@@ -48,7 +48,6 @@
 		border: 2px solid var(--color-element-border);
 		border-radius: 1rem;
 		background-color: var(--color-background);
-		cursor: pointer;
 	}
 
 	.knob {

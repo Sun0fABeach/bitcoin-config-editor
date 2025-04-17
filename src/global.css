@@ -28,6 +28,18 @@ a {
 	color: var(--color-text-light);
 }
 
+input {
+	border: none;
+	background-color: transparent;
+	color: var(--color-text-light);
+}
+
+button {
+	border: none;
+	color: var(--color-text-light);
+	cursor: pointer;
+}
+
 :focus-visible {
 	outline: 2px solid var(--color-element-border);
 }

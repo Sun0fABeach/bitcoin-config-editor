@@ -33,8 +33,6 @@
 			border-left-color: var(--border-color-light);
 			border-radius: 0.25rem;
 			background-color: var(--color-background);
-			color: var(--color-text-light);
-			cursor: pointer;
 		}
 		.bce-button:hover {
 			background: var(--color-button-highlight-gradient);
