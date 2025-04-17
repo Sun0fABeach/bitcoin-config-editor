@@ -53,9 +53,6 @@
 			width: 0; /* reset browser defined width */
 			flex-grow: 1;
 			margin-left: 0.5rem;
-			border: 0;
-			background-color: transparent;
-			color: var(--color-text-light);
 
 			&:focus {
 				outline: none;
@@ -74,9 +71,6 @@
 			margin-left: auto;
 			padding: 0.375rem;
 			background-color: transparent;
-			border: none;
-			color: var(--color-text-light);
-			cursor: pointer;
 		}
 	}
 </style>

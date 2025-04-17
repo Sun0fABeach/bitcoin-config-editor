@@ -25,7 +25,27 @@ body {
 }
 
 a {
-	color: var(--color-text-light);
+	color: inherit;
+}
+
+input {
+	border: none;
+	background-color: inherit;
+	color: inherit;
+}
+
+/* Adjust autocomplete styles in Chrome */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+	-webkit-text-fill-color: var(--color-text-light);
+	transition: background-color 5000s ease-in-out 0s;
+}
+
+button {
+	border: none;
+	color: inherit;
+	cursor: pointer;
 }
 
 :focus-visible {
