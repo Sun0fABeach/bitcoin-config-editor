@@ -19,6 +19,7 @@
 	menu {
 		grid-area: menu;
 		display: flex;
+		align-items: center;
 		flex-wrap: wrap;
 		column-gap: 0.75rem;
 		row-gap: 0.75rem;
@@ -26,9 +27,9 @@
 		padding: 0.5rem 0.75rem;
 		border-bottom: 1px solid var(--color-layout-border);
 
-		> :global(*) {
+		> :global(:not(:first-child)) {
 			flex-grow: 1;
-			@media (min-width: 620px) {
+			@media (min-width: 650px) {
 				flex-grow: 0;
 			}
 		}
