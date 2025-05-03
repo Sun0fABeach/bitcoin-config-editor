@@ -4,9 +4,9 @@
 </script>
 
 <header>
-	<span>
+	<h1>
 		<CurrencyBtc size={32} weight="light" /><span>itcoin Config Editor</span>
-	</span>
+	</h1>
 	<a href={repoUrl} target="_blank" title="visit git repository">
 		<GithubLogo size={32} weight="duotone" />
 	</a>
@@ -16,6 +16,7 @@
 	header {
 		grid-area: header;
 		display: flex;
+		align-items: center;
 		padding: 0.5rem;
 		border-bottom: 2px solid var(--color-layout-border);
 

@@ -2,10 +2,10 @@
 	import { X } from 'phosphor-svelte'
 	import usePreviewStore from '@/stores/preview.svelte'
 	import Button from '@/components/button.svelte'
-	import ClearButton from '@/components/preview-menu/clear-button.svelte'
-	import UploadButton from '@/components/preview-menu/upload-button.svelte'
-	import DownloadButton from '@/components/preview-menu/download-button.svelte'
-	import CopyButton from '@/components/preview-menu/copy-button.svelte'
+	import ClearButton from '@/components/preview/clear-button.svelte'
+	import UploadButton from '@/components/preview/upload-button.svelte'
+	import DownloadButton from '@/components/preview/download-button.svelte'
+	import CopyButton from '@/components/preview/copy-button.svelte'
 
 	const previewStore = usePreviewStore()
 </script>

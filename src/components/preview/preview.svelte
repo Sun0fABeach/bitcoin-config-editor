@@ -4,7 +4,7 @@
 	import { building } from '$app/environment'
 	import { getOnDesktopContext } from '@/context/onDesktop'
 	import usePreviewStore from '@/stores/preview.svelte'
-	import Panel from '@/components/preview-menu/panel.svelte'
+	import Panel from '@/components/preview/panel.svelte'
 
 	const previewStore = usePreviewStore()
 

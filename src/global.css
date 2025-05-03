@@ -24,6 +24,14 @@ body {
 	font-size: 1.125rem;
 }
 
+h1,
+h2,
+h3 {
+	font-size: inherit;
+	font-weight: inherit;
+	margin: 0;
+}
+
 a {
 	color: inherit;
 }
@@ -46,6 +54,12 @@ button {
 	border: none;
 	color: inherit;
 	cursor: pointer;
+}
+
+ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
 }
 
 :focus-visible {

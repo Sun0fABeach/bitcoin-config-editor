@@ -165,6 +165,7 @@
 			cursor: pointer;
 		}
 		button {
+			flex-shrink: 0;
 			width: 25px;
 			height: 25px;
 			padding: 0;
