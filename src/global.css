@@ -15,6 +15,10 @@
 	);
 
 	--menu-height-desktop: 50px;
+
+	--scrollbar-width: 0.75rem;
+	--scrollbar-color: hsl(from green h s l / 0.2);
+	--scrollbar-thumb-color: hsl(from green h s l / 0.45);
 }
 
 body {

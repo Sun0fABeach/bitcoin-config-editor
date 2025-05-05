@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { ScrollArea, Accordion } from 'bits-ui'
+	import { Accordion } from 'bits-ui'
+	import ScrollArea from '@/components/scroll-area.svelte'
 	import Category from '@/components/editor/category.svelte'
 
 	interface Category {
@@ -53,64 +54,31 @@
 	let openCategories = $state<Category['title'][]>([])
 </script>
 
-<ScrollArea.Root type="always">
-	{#snippet child({ props })}
-		<main {...props}>
-			<ScrollArea.Viewport>
-				<Accordion.Root type="multiple" bind:value={openCategories}>
-					{#snippet child({ props })}
-						<ul {...props}>
-							{#each categories as category (category.title)}
-								<li>
-									<Category {...category} />
-								</li>
-							{/each}
-						</ul>
-					{/snippet}
-				</Accordion.Root>
-			</ScrollArea.Viewport>
-
-			<ScrollArea.Scrollbar orientation="vertical">
-				{#snippet child({ props })}
-					<div {...props} class="scrollbar">
-						<ScrollArea.Thumb>
-							{#snippet child({ props })}
-								<div {...props} class="thumb"></div>
-							{/snippet}
-						</ScrollArea.Thumb>
-					</div>
-				{/snippet}
-			</ScrollArea.Scrollbar>
-		</main>
-	{/snippet}
-</ScrollArea.Root>
+<main>
+	<ScrollArea>
+		<Accordion.Root type="multiple" bind:value={openCategories}>
+			{#snippet child({ props })}
+				<ul {...props}>
+					{#each categories as category (category.title)}
+						<li>
+							<Category {...category} />
+						</li>
+					{/each}
+				</ul>
+			{/snippet}
+		</Accordion.Root>
+	</ScrollArea>
+</main>
 
 <style lang="postcss">
 	main {
-		--scrollbar-width: 0.75rem;
-		--scrollbar-color: hsl(from green h s l / 0.2);
-		--scrollbar-thumb-color: hsl(from green h s l / 0.45);
+		/* consumed by ScrollArea component */
+		--scroll-area-padding: 0 calc(1rem + var(--scrollbar-width)) 1.25rem 1rem;
 
 		grid-area: editor;
 		display: flex;
-		width: 100%;
-		padding: 0 calc(1rem + var(--scrollbar-width)) 1.25rem 1rem;
+		flex-direction: column;
 		overflow-y: hidden;
-
-		> :global([data-scroll-area-viewport]) {
-			flex-grow: 1;
-		}
-
-		> .scrollbar {
-			background-color: var(--scrollbar-color);
-			width: var(--scrollbar-width);
-			padding: 0 0.125rem;
-
-			> .thumb {
-				background-color: var(--scrollbar-thumb-color);
-				border-radius: 9999px;
-			}
-		}
 
 		ul {
 			display: flex;

@@ -45,7 +45,7 @@
 		}
 
 		@media (min-width: 1024px) {
-			height: var(--menu-height-desktop);
+			flex: 0 0 var(--menu-height-desktop);
 			padding-top: 0;
 			padding-bottom: 0;
 			align-items: center;

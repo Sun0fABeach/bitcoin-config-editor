@@ -5,6 +5,7 @@
 	import { getOnDesktopContext } from '@/context/onDesktop'
 	import usePreviewStore from '@/stores/preview.svelte'
 	import Panel from '@/components/preview/panel.svelte'
+	import ScrollArea from '@/components/scroll-area.svelte'
 
 	const previewStore = usePreviewStore()
 
@@ -32,14 +33,17 @@
 {#if previewStore.showPreview || onDesktop.current || building}
 	<aside class={{ 'visibility-guard': visibiltyGuard }} transition:scaleOnMobile>
 		<Panel />
-		<code>
-			<textarea readonly value={configText}></textarea>
-		</code>
+		<ScrollArea>
+			<code>{configText}</code>
+		</ScrollArea>
 	</aside>
 {/if}
 
 <style lang="postcss">
 	aside {
+		/* consumed by ScrollArea component */
+		--scroll-area-padding: 1rem calc(1rem + var(--scrollbar-width)) 1rem 1rem;
+
 		display: flex;
 		flex-direction: column;
 		position: fixed;
@@ -53,25 +57,6 @@
 			display: none;
 		}
 
-		code {
-			flex-grow: 1;
-			display: flex;
-
-			> textarea {
-				flex-grow: 1;
-				padding: 1rem;
-				resize: none;
-				border: 0;
-				background-color: var(--color-background);
-				color: var(--color-text-medium);
-				font-size: 0.875em;
-
-				&:focus {
-					outline: none;
-				}
-			}
-		}
-
 		@media (min-width: 1024px) {
 			position: relative;
 			grid-area: preview;
@@ -79,6 +64,13 @@
 			&.visibility-guard {
 				display: flex;
 			}
+		}
+
+		code {
+			display: block;
+			color: var(--color-text-medium);
+			font-size: 0.875em;
+			white-space: pre-wrap;
 		}
 	}
 </style>
