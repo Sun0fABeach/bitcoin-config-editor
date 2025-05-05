@@ -79,10 +79,6 @@
 			&.visibility-guard {
 				display: flex;
 			}
-
-			> code {
-				border-left: 1px dashed var(--color-layout-border);
-			}
 		}
 	}
 </style>
