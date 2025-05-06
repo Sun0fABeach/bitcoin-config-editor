@@ -34,24 +34,26 @@
 			</Button>
 		{/snippet}
 	</Popover.Trigger>
-	<Popover.Content
-		forceMount
-		trapFocus={false}
-		escapeKeydownBehavior="ignore"
-		interactOutsideBehavior="ignore"
-		sideOffset={-1}
-	>
-		{#snippet child({ wrapperProps, props, open })}
-			{#if open}
-				<div {...wrapperProps}>
-					<div {...props} class="popover-text" out:slide>Config copied!</div>
-					<div out:fade>
-						<Popover.Arrow />
+	<Popover.Portal>
+		<Popover.Content
+			forceMount
+			trapFocus={false}
+			escapeKeydownBehavior="ignore"
+			interactOutsideBehavior="ignore"
+			sideOffset={-1}
+		>
+			{#snippet child({ wrapperProps, props, open })}
+				{#if open}
+					<div {...wrapperProps}>
+						<div {...props} class="popover-text" out:slide>Config copied!</div>
+						<div out:fade>
+							<Popover.Arrow />
+						</div>
 					</div>
-				</div>
-			{/if}
-		{/snippet}
-	</Popover.Content>
+				{/if}
+			{/snippet}
+		</Popover.Content>
+	</Popover.Portal>
 </Popover.Root>
 
 <style lang="postcss">
