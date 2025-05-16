@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { slide, fade } from 'svelte/transition'
 	import { MediaQuery } from 'svelte/reactivity'
-	import { DropdownMenu, Checkbox, Label } from 'bits-ui'
-	import { Check } from 'phosphor-svelte'
+	import { DropdownMenu, Label, useId } from 'bits-ui'
 	import Button from '@/components/button.svelte'
+	import Checkbox from '@/components/checkbox.svelte'
+	import { colors } from '@/globals'
 
 	const dropDownPaddingMQ = new MediaQuery('min-width: 400px')
 
@@ -13,29 +14,29 @@
 	let inlineDescriptors = $state(false)
 
 	const options = {
-		get highlightKnotsExclusives() {
-			return highlightKnotsExclusives
-		},
-		set highlightKnotsExclusives(value) {
-			highlightKnotsExclusives = value
-		},
 		get searchDescriptions() {
 			return searchDescriptions
 		},
 		set searchDescriptions(value) {
 			searchDescriptions = value
 		},
-		get explicitDefaults() {
-			return explicitDefaults
+		get highlightKnotsExclusives() {
+			return highlightKnotsExclusives
 		},
-		set explicitDefaults(value) {
-			explicitDefaults = value
+		set highlightKnotsExclusives(value) {
+			highlightKnotsExclusives = value
 		},
 		get inlineDescriptors() {
 			return inlineDescriptors
 		},
 		set inlineDescriptors(value) {
 			inlineDescriptors = value
+		},
+		get explicitDefaults() {
+			return explicitDefaults
+		},
+		set explicitDefaults(value) {
+			explicitDefaults = value
 		},
 	}
 </script>
@@ -67,21 +68,23 @@
 							{#snippet item(key: keyof typeof options, label: string)}
 								<DropdownMenu.CheckboxItem bind:checked={options[key]} closeOnSelect={false}>
 									{#snippet children({ checked })}
+										{@const id = useId()}
+
 										<div {...props} class="item">
-											<Label.Root>
+											<Label.Root for={id} onclick={(e) => e.preventDefault()}>
 												{#snippet child({ props })}
 													<label {...props}>
 														{label}
 													</label>
 												{/snippet}
 											</Label.Root>
-											<Checkbox.Root {checked}>
-												{#snippet child({ props })}
-													<button {...props}>
-														<Check weight="bold" color="hsl(135.29, 100%, 50%)" />
-													</button>
-												{/snippet}
-											</Checkbox.Root>
+											<Checkbox
+												{id}
+												class="checkbox"
+												{checked}
+												backgroundColor={colors.background}
+												borderColor="hsl(from green h s l / 0.8)"
+											/>
 										</div>
 									{/snippet}
 								</DropdownMenu.CheckboxItem>
@@ -164,19 +167,8 @@
 			flex-grow: 1;
 			cursor: pointer;
 		}
-		button {
+		:global(.checkbox) {
 			flex-shrink: 0;
-			width: 25px;
-			height: 25px;
-			padding: 0;
-			padding-top: 2px;
-			border: 1px solid hsl(from green h s l / 0.8);
-			border-radius: 0.25rem;
-			background-color: var(--color-background);
-
-			&[data-state='unchecked'] > :global(:first-child) {
-				visibility: hidden;
-			}
 		}
 	}
 </style>

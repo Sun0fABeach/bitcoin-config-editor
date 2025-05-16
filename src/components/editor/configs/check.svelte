@@ -1,15 +1,17 @@
 <script lang="ts">
-	type TextConfigProps = {
+	import Checkbox from '@/components/checkbox.svelte'
+	import { colors } from '@/globals'
+
+	type CheckConfigProps = {
 		title: string
 		key: string
 		description: string
-		value: string
+		checked: boolean
 	}
 
-	let { title, key, description, value = $bindable('') }: TextConfigProps = $props()
+	let { title, key, description, checked = $bindable(false) }: CheckConfigProps = $props()
 
-	let input: HTMLInputElement
-	const onContainerClick = () => input.focus()
+	const onContainerClick = () => (checked = !checked)
 </script>
 
 <button class="container" tabindex="-1" onclick={onContainerClick}>
@@ -24,8 +26,7 @@
 	</div>
 
 	<div class="input-container">
-		<input bind:value bind:this={input} type="text" />
-		<div class="input-underline"></div>
+		<Checkbox class="checkbox" {checked} checkmarkColor={colors.accent1} />
 	</div>
 </button>
 
@@ -50,9 +51,13 @@
 			}
 		}
 
-		&:hover .input-underline::after,
-		&:focus-within .input-underline::after {
-			width: 100%;
+		&:hover :global(.checkbox)::after,
+		&:focus-within :global(.checkbox)::after {
+			top: -1px;
+			bottom: -1px;
+			left: -1px;
+			right: -1px;
+			border-color: var(--color-accent1);
 		}
 	}
 
@@ -83,27 +88,29 @@
 
 	.input-container {
 		display: flex;
-		flex-direction: column;
 
-		> input {
-			color: var(--color-accent1);
+		> :global(.checkbox) {
+			position: relative;
+		}
+		> :global(.checkbox):focus {
+			outline: none;
 		}
 
-		> .input-underline {
-			position: relative;
-			display: flex;
-			justify-content: center;
-			height: 1px;
-			background-color: var(--color-text-medium);
-
-			&::after {
-				content: '';
-				position: absolute;
-				width: 0;
-				height: 1px;
-				background-color: var(--color-accent1);
-				transition: width 0.25s;
-			}
+		:global(.checkbox)::after {
+			content: '';
+			position: absolute;
+			top: -10px;
+			bottom: -10px;
+			left: -10px;
+			right: -10px;
+			border: 1px solid transparent;
+			border-radius: 0.25rem;
+			transition:
+				top 0.3s,
+				bottom 0.3s,
+				left 0.3s,
+				right 0.3s,
+				border-color 0.3s;
 		}
 	}
 </style>

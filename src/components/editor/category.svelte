@@ -3,6 +3,7 @@
 	import { Accordion } from 'bits-ui'
 	import { CaretDown } from 'phosphor-svelte'
 	import TextConfig from '@/components/editor/configs/text.svelte'
+	import CheckConfig from '@/components/editor/configs/check.svelte'
 
 	type CategoryProps = {
 		title: string
@@ -10,6 +11,10 @@
 	}
 
 	const { title, description }: CategoryProps = $props()
+
+	let textConfig1 = $state('foobar')
+	let textConfig2 = $state('hello world etc pp')
+	let boolConfig = $state(true)
 </script>
 
 <Accordion.Item value={title}>
@@ -36,7 +41,15 @@
 							title="Alert Notification"
 							key="alertnotify"
 							description="Execute command when an alert is raised (%s in cmd is replaced by message)"
-							value="foobar"
+							bind:value={textConfig1}
+						/>
+					</li>
+					<li>
+						<CheckConfig
+							title="Blocks Data XOR"
+							key="blocksxor"
+							description="Whether an XOR-key applies to blocksdir *.dat files. The created XOR-key will be zeros for an existing blocksdir or when `-blocksxor=0` is set, and random for a freshly initialized blocksdir"
+							bind:checked={boolConfig}
 						/>
 					</li>
 					<li>
@@ -44,7 +57,7 @@
 							title="Block Notification"
 							key="blocknotify"
 							description="Execute command when the best block changes (%s in cmd is replaced by block hash). Filler filler filler"
-							value="hello world etc pp"
+							bind:value={textConfig2}
 						/>
 					</li>
 				</ul>
