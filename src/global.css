@@ -3,7 +3,7 @@
 	--color-text-light: hsl(135.29, 100%, 50%);
 
 	--color-accent1: white;
-	--color-accent2: #d0d05c;
+	--color-accent2: hsl(60, 55.24%, 58.82%);
 
 	--color-background: hsl(327.27, 73.33%, 2.94%);
 	--color-popover-background: hsl(120, 100%, 11.57%);
@@ -62,10 +62,11 @@ input {
 }
 
 button {
+	padding: 0;
 	border: none;
 	color: inherit;
-	cursor: pointer;
 	background-color: transparent;
+	cursor: pointer;
 }
 
 ul {
