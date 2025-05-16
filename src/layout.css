@@ -17,6 +17,6 @@
 			'header header'
 			'menu preview'
 			'editor preview';
-		grid-template-columns: 5fr minmax(500px, 3fr);
+		grid-template-columns: 5fr minmax(var(--preview-width-desktop), 3fr);
 	}
 }

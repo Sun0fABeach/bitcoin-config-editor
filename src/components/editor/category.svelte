@@ -2,6 +2,7 @@
 	import { slide } from 'svelte/transition'
 	import { Accordion } from 'bits-ui'
 	import { CaretDown } from 'phosphor-svelte'
+	import TextConfig from '@/components/editor/configs/text.svelte'
 
 	type CategoryProps = {
 		title: string
@@ -29,17 +30,24 @@
 	<Accordion.Content forceMount={true}>
 		{#snippet child({ props, open })}
 			{#if open}
-				<div {...props} class="content" transition:slide>
-					This is the accordion content that will transition in and out.<br />
-					filler<br />
-					filler<br />
-					filler<br />
-					filler<br />
-					filler<br />
-					filler<br />
-					filler<br />
-					filler<br />
-				</div>
+				<ul {...props} transition:slide>
+					<li>
+						<TextConfig
+							title="Alert Notification"
+							key="alertnotify"
+							description="Execute command when an alert is raised (%s in cmd is replaced by message)"
+							value="foobar"
+						/>
+					</li>
+					<li>
+						<TextConfig
+							title="Block Notification"
+							key="blocknotify"
+							description="Execute command when the best block changes (%s in cmd is replaced by block hash). Filler filler filler"
+							value="hello world etc pp"
+						/>
+					</li>
+				</ul>
 			{/if}
 		{/snippet}
 	</Accordion.Content>
@@ -62,6 +70,7 @@
 
 			> h2 {
 				font-size: 1.125em;
+				transition: transform 0.15s;
 			}
 		}
 
@@ -82,7 +91,16 @@
 		}
 	}
 
-	.content {
+	ul {
+		display: flex;
+		flex-direction: column;
+		row-gap: 1.125rem;
 		padding-bottom: 1.5rem;
+
+		> li {
+			display: flex;
+			flex-direction: column;
+			border-left: 1px dashed var(--color-accent2);
+		}
 	}
 </style>

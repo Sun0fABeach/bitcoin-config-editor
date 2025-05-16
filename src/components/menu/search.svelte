@@ -54,10 +54,6 @@
 			flex-grow: 1;
 			margin-left: 0.5rem;
 
-			&:focus {
-				outline: none;
-			}
-
 			&::placeholder {
 				color: var(--color-text-medium);
 			}
