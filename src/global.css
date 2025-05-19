@@ -28,7 +28,10 @@
 body {
 	background-color: var(--color-background);
 	color: var(--color-text-light);
-	font-family: Inconsolata, monospace;
+	font-family:
+		Inconsolata,
+		Courier New,
+		monospace;
 	font-size: 1.125rem;
 }
 
