@@ -17,16 +17,16 @@
 		</Button>
 	</li>
 	<li>
-		<ClearButton />
-	</li>
-	<li>
-		<UploadButton />
+		<CopyButton />
 	</li>
 	<li>
 		<DownloadButton />
 	</li>
 	<li>
-		<CopyButton />
+		<UploadButton />
+	</li>
+	<li>
+		<ClearButton />
 	</li>
 </menu>
 
