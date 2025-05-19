@@ -2,8 +2,8 @@
 	import { slide } from 'svelte/transition'
 	import { Accordion } from 'bits-ui'
 	import { CaretDown } from 'phosphor-svelte'
-	import TextConfig from '@/components/editor/configs/text.svelte'
-	import CheckConfig from '@/components/editor/configs/check.svelte'
+	import TextConfig from '@/components/editor/configs/text-config.svelte'
+	import ToggleConfig from '@/components/editor/configs/toggle-config.svelte'
 
 	type CategoryProps = {
 		title: string
@@ -45,7 +45,7 @@
 						/>
 					</li>
 					<li>
-						<CheckConfig
+						<ToggleConfig
 							title="Blocks Data XOR"
 							key="blocksxor"
 							description="Whether an XOR-key applies to blocksdir *.dat files. The created XOR-key will be zeros for an existing blocksdir or when `-blocksxor=0` is set, and random for a freshly initialized blocksdir"

@@ -1,18 +1,26 @@
 <script lang="ts">
-	type TextConfigProps = {
+	import type { Snippet } from 'svelte'
+	import type { HTMLButtonAttributes } from 'svelte/elements'
+
+	type ConfigContainerProps = HTMLButtonAttributes & {
 		title: string
 		key: string
 		description: string
-		value: string
+		children: Snippet
 	}
 
-	let { title, key, description, value = $bindable('') }: TextConfigProps = $props()
-
-	let input: HTMLInputElement
-	const onContainerClick = () => input.focus()
+	const {
+		class: passedClass,
+		title,
+		key,
+		description,
+		onclick,
+		children,
+		...attrs
+	}: ConfigContainerProps = $props()
 </script>
 
-<button class="container" tabindex="-1" onclick={onContainerClick}>
+<button class={['config-container', passedClass]} {...attrs} tabindex="-1" {onclick}>
 	<div class="info">
 		<div class="heading">
 			<span>{title}</span>
@@ -23,14 +31,11 @@
 		</div>
 	</div>
 
-	<div class="input-container">
-		<input bind:value bind:this={input} type="text" />
-		<div class="input-underline"></div>
-	</div>
+	{@render children()}
 </button>
 
 <style lang="postcss">
-	.container {
+	.config-container {
 		display: flex;
 		flex-direction: column;
 		row-gap: 0.75rem;
@@ -48,11 +53,6 @@
 			> .info {
 				flex-grow: 1;
 			}
-		}
-
-		&:hover .input-underline::after,
-		&:focus-within .input-underline::after {
-			width: 100%;
 		}
 	}
 
@@ -78,32 +78,6 @@
 			font-size: 0.875em;
 			text-align: left;
 			color: var(--color-text-medium);
-		}
-	}
-
-	.input-container {
-		display: flex;
-		flex-direction: column;
-
-		> input {
-			color: var(--color-accent1);
-		}
-
-		> .input-underline {
-			position: relative;
-			display: flex;
-			justify-content: center;
-			height: 1px;
-			background-color: var(--color-text-medium);
-
-			&::after {
-				content: '';
-				position: absolute;
-				width: 0;
-				height: 1px;
-				background-color: var(--color-accent1);
-				transition: width 0.25s;
-			}
 		}
 	}
 </style>
