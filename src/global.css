@@ -7,6 +7,7 @@
 
 	--color-background: hsl(327.27, 73.33%, 2.94%);
 	--color-popover-background: hsl(120, 100%, 11.57%);
+	--color-background-highlight: hsl(from green h s l / 0.3);
 
 	--color-layout-border: var(--color-popover-background);
 	--color-element-border: var(--color-text-medium);

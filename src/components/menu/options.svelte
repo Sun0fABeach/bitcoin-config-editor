@@ -160,7 +160,7 @@
 		}
 
 		&:hover {
-			background-color: hsl(from green h s l / 0.3);
+			background-color: var(--color-background-highlight);
 		}
 
 		label {

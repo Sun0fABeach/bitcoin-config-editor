@@ -3,7 +3,7 @@
 	import Checkbox from '@/components/checkbox.svelte'
 	import { colors } from '@/globals'
 
-	type CheckConfigProps = {
+	interface CheckConfigProps {
 		title: string
 		key: string
 		description: string

@@ -4,8 +4,9 @@
 	import { CaretDown } from 'phosphor-svelte'
 	import TextConfig from '@/components/editor/configs/text-config.svelte'
 	import ToggleConfig from '@/components/editor/configs/toggle-config.svelte'
+	import SelectConfig from '@/components/editor/configs/select-config.svelte'
 
-	type CategoryProps = {
+	export interface CategoryProps {
 		title: string
 		description: string
 	}
@@ -15,6 +16,29 @@
 	let textConfig1 = $state('foobar')
 	let textConfig2 = $state('hello world etc pp')
 	let boolConfig = $state(true)
+	const selectConfig = [
+		{
+			value: '0',
+			label: 'Disable',
+		},
+		{
+			value: '1',
+			label: 'Enable',
+		},
+		{
+			value: 'v0',
+			label: 'v0',
+		},
+		{
+			value: 'basic',
+			label: 'Basic',
+		},
+		{
+			value: 'ultralong',
+			label: 'Ultra long test label to check overflow',
+		},
+	]
+	let selected = $state(selectConfig[0].value)
 </script>
 
 <Accordion.Item value={title}>
@@ -60,6 +84,15 @@
 							bind:value={textConfig2}
 						/>
 					</li>
+					<li>
+						<SelectConfig
+							title="Block Filter Index"
+							key="blockfilterindex"
+							description="Maintain an index of compact filters by block. If set to 1, certain indexes are enabled (currently just basic)"
+							items={selectConfig}
+							bind:value={selected}
+						/>
+					</li>
 				</ul>
 			{/if}
 		{/snippet}
@@ -75,6 +108,7 @@
 		width: 100%;
 		padding: 1.5rem 0;
 		background-color: transparent;
+		text-align: left;
 
 		> .heading {
 			display: flex;
@@ -89,7 +123,6 @@
 
 		> .description {
 			color: var(--color-text-medium);
-			text-align: left;
 		}
 
 		:global(.caret) {

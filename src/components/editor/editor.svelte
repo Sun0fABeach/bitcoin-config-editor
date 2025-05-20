@@ -1,14 +1,9 @@
 <script lang="ts">
 	import { Accordion } from 'bits-ui'
 	import ScrollArea from '@/components/scroll-area.svelte'
-	import Category from '@/components/editor/category.svelte'
+	import Category, { type CategoryProps } from '@/components/editor/category.svelte'
 
-	interface Category {
-		title: string
-		description: string
-	}
-
-	const categories: Category[] = [
+	const categories: CategoryProps[] = [
 		{
 			title: 'General',
 			description: 'Basic parameters regarding node operation',
@@ -51,7 +46,7 @@
 		},
 	]
 
-	let openCategories = $state<Category['title'][]>([])
+	let openCategories = $state<CategoryProps['title'][]>([])
 </script>
 
 <main>

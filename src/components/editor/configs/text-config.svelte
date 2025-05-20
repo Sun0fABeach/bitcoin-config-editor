@@ -1,7 +1,7 @@
 <script lang="ts">
 	import ConfigContainer from '@/components/editor/configs/config-container.svelte'
 
-	type TextConfigProps = {
+	interface TextConfigProps {
 		title: string
 		key: string
 		description: string

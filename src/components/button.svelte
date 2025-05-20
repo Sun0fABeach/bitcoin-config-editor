@@ -27,6 +27,7 @@
 
 			display: inline-flex;
 			justify-content: center;
+			align-items: center;
 			padding: 0.375rem 0.875rem;
 			border: 1px solid var(--border-color-dark);
 			border-top-color: var(--border-color-light);

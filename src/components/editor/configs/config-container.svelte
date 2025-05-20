@@ -47,11 +47,13 @@
 
 		@media (800px <= width <= 1024px) or (min-width: calc(800px + 500px)) {
 			flex-direction: row;
-			align-items: flex-end;
 			column-gap: 1.5rem;
 
 			> .info {
 				flex-grow: 1;
+			}
+			> :global(:last-child) {
+				align-self: flex-end;
 			}
 		}
 	}
@@ -60,6 +62,7 @@
 		display: flex;
 		flex-direction: column;
 		row-gap: 0.5rem;
+		text-align: left;
 
 		> .heading {
 			display: flex;
@@ -76,7 +79,6 @@
 
 		> .description {
 			font-size: 0.875em;
-			text-align: left;
 			color: var(--color-text-medium);
 		}
 	}
