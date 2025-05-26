@@ -80,7 +80,7 @@
 						<TextConfig
 							title="Block Notification"
 							key="blocknotify"
-							description="Execute command when the best block changes (%s in cmd is replaced by block hash). Filler filler filler"
+							description="Execute command when the best block changes (%s in cmd is replaced by block hash)"
 							bind:value={textConfig2}
 						/>
 					</li>

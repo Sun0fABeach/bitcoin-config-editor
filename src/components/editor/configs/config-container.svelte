@@ -47,13 +47,12 @@
 
 		@media (800px <= width <= 1024px) or (min-width: calc(800px + 500px)) {
 			flex-direction: row;
+			align-items: flex-end;
 			column-gap: 1.5rem;
 
 			> .info {
 				flex-grow: 1;
-			}
-			> :global(:last-child) {
-				align-self: flex-end;
+				align-self: flex-start;
 			}
 		}
 	}

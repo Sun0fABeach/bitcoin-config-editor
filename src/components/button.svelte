@@ -14,9 +14,15 @@
 		{ 'bce-button--icon': icon },
 		{ 'bce-button--no-border': noBorder },
 	]
+
+	let ref = $state<HTMLButtonElement | null>(null)
+
+	export function focus() {
+		ref?.focus()
+	}
 </script>
 
-<Button.Root {...attrs} class={classes} />
+<Button.Root {...attrs} class={classes} bind:ref />
 
 <style lang="postcss">
 	/* employing 'bce'-prefixed BEM-style classes here because all styles are global */

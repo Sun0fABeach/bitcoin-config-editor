@@ -16,9 +16,15 @@
 		checkmarkColor = colors.textLight,
 		...attrs
 	}: CheckboxProps = $props()
+
+	let ref = $state<HTMLButtonElement | null>(null)
+
+	export function focus() {
+		ref?.focus()
+	}
 </script>
 
-<Checkbox.Root bind:checked {...attrs}>
+<Checkbox.Root bind:checked {...attrs} bind:ref>
 	{#snippet child({ props })}
 		<button {...props} style:background-color={backgroundColor} style:border-color={borderColor}>
 			<Check weight="bold" color={checkmarkColor} />
