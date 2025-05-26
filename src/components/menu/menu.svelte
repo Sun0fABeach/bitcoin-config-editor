@@ -10,9 +10,9 @@
 
 <menu>
 	<NodeTypeSwitch />
-	<Search />
 	<Options />
 	<Button class="generate-button" onclick={openPreview}>Generate Config</Button>
+	<Search />
 </menu>
 
 <style lang="postcss">
