@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { tick } from 'svelte'
 	import { slide } from 'svelte/transition'
 	import { useId } from 'bits-ui'
 	import { Trash, Plus } from 'phosphor-svelte'
@@ -31,9 +32,11 @@
 		inputs[idx].focus()
 	}
 
-	const onAddClick = (event: MouseEvent) => {
+	const onAddClick = async (event: MouseEvent) => {
 		event.stopPropagation()
 		entries.push({ id: useId(), text: '' })
+		await tick()
+		inputs[entries.length - 1].focus()
 	}
 
 	const onDeleteClick = (event: MouseEvent, idx: number) => {
@@ -42,7 +45,7 @@
 		if (entries.length > 1) {
 			entries.splice(idx, 1)
 		} else {
-			entries[idx].text = ''
+			entries[0].text = ''
 		}
 	}
 </script>
@@ -101,8 +104,8 @@
 			}
 
 			:global > :last-child:disabled {
-				pointer-events: none;
 				color: var(--color-text-medium);
+				pointer-events: none;
 			}
 		}
 
