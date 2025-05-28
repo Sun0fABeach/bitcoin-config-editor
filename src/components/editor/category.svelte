@@ -1,8 +1,11 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition'
-	import { Accordion } from 'bits-ui'
+	import { Accordion, useId } from 'bits-ui'
 	import { CaretDown } from 'phosphor-svelte'
 	import TextConfig from '@/components/editor/configs/text-config.svelte'
+	import MultiTextConfig, {
+		type MultiTextEntry,
+	} from '@/components/editor/configs/multi-text-config.svelte'
 	import ToggleConfig from '@/components/editor/configs/toggle-config.svelte'
 	import SelectConfig from '@/components/editor/configs/select-config.svelte'
 
@@ -15,6 +18,7 @@
 
 	let textConfig1 = $state('foobar')
 	let textConfig2 = $state('hello world etc pp')
+	let multiTextConfig = $state<MultiTextEntry[]>([{ id: useId(), text: '' }])
 	let boolConfig = $state(true)
 	const selectConfig = [
 		{
@@ -66,6 +70,14 @@
 							key="alertnotify"
 							description="Execute command when an alert is raised (%s in cmd is replaced by message)"
 							bind:value={textConfig1}
+						/>
+					</li>
+					<li>
+						<MultiTextConfig
+							title="Import Blocks From File"
+							key="loadblock"
+							description="Imports blocks from external blk000??.dat file on startup. This option can be set multiple times with different file values"
+							bind:entries={multiTextConfig}
 						/>
 					</li>
 					<li>
@@ -140,7 +152,7 @@
 	ul {
 		display: flex;
 		flex-direction: column;
-		row-gap: 1.125rem;
+		row-gap: 1.5rem;
 		padding-bottom: 1.5rem;
 
 		> li {

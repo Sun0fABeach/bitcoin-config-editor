@@ -10,7 +10,7 @@
 </script>
 
 <div class="container">
-	<input bind:value bind:this={ref} type="text" />
+	<input bind:value bind:this={ref} type="text" onclick={(e) => e.stopPropagation()} />
 	<div class="underline"></div>
 </div>
 
