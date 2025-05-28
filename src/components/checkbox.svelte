@@ -24,7 +24,7 @@
 	}
 </script>
 
-<Checkbox.Root bind:checked {...attrs} bind:ref>
+<Checkbox.Root {...attrs} bind:checked bind:ref>
 	{#snippet child({ props })}
 		<button {...props} style:background-color={backgroundColor} style:border-color={borderColor}>
 			<Check weight="bold" color={checkmarkColor} />

@@ -1,26 +1,18 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte'
-	import type { HTMLButtonAttributes } from 'svelte/elements'
+	import type { HTMLAttributes } from 'svelte/elements'
 
-	type ConfigContainerProps = HTMLButtonAttributes & {
+	type ConfigContainerProps = HTMLAttributes<HTMLDivElement> & {
 		title: string
 		key: string
 		description: string
 		children: Snippet
 	}
 
-	const {
-		class: passedClass,
-		title,
-		key,
-		description,
-		onclick,
-		children,
-		...attrs
-	}: ConfigContainerProps = $props()
+	const { title, key, description, onclick, children, ...attrs }: ConfigContainerProps = $props()
 </script>
 
-<button class={['config-container', passedClass]} {...attrs} tabindex="-1" {onclick}>
+<div {...attrs} class="config-container" role="button" tabindex="-1" {onclick}>
 	<div class="info">
 		<div class="heading">
 			<span>{title}</span>
@@ -32,7 +24,7 @@
 	</div>
 
 	{@render children()}
-</button>
+</div>
 
 <style lang="postcss">
 	.config-container {
@@ -40,6 +32,7 @@
 		flex-direction: column;
 		row-gap: 0.75rem;
 		padding: 0.5rem 0 0.5rem 1rem;
+		cursor: pointer;
 
 		@media (min-width: 420px) {
 			padding: 0.5rem 1.125rem;

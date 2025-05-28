@@ -50,8 +50,15 @@
 <div class="wrapper">
 	<ConfigContainer {...info} onclick={onContainerClick}>
 		<div class="inputs-container">
-			{#each entries as { key }, idx (key)}
-				<button class="input-row" transition:slide onclick={(e) => onInputRowClick(e, idx)}>
+			{#each entries as { id }, idx (id)}
+				<div
+					class="input-row"
+					role="button"
+					tabindex="-1"
+					transition:slide
+					onclick={(e) => onInputRowClick(e, idx)}
+					onkeypress={() => {}}
+				>
 					<ConfigTextInput bind:value={entries[idx].text} bind:this={inputs[idx]} />
 					<Button
 						icon
@@ -61,7 +68,7 @@
 					>
 						<Trash weight="light" />
 					</Button>
-				</button>
+				</div>
 			{/each}
 			<Button icon noBorder onclick={onAddClick}>
 				<Plus />

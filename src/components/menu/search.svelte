@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { MagnifyingGlass, X } from 'phosphor-svelte'
+	import { Label, Button } from 'bits-ui'
 
 	let inputRef: HTMLInputElement
 	let searchInput = $state('')
-
-	const clearInput = () => {
-		searchInput = ''
-		inputRef.focus()
-	}
 </script>
 
-<div>
-	<label for="search">
-		<MagnifyingGlass size={20} weight="regular" />
-	</label>
+<div role="button" tabindex="-1" onclick={() => inputRef.focus()} onkeypress={() => {}}>
+	<Label.Root for="search">
+		{#snippet child({ props })}
+			<label {...props}>
+				<MagnifyingGlass size={20} weight="regular" />
+			</label>
+		{/snippet}
+	</Label.Root>
 	<input
 		id="search"
 		type="search"
@@ -21,9 +21,12 @@
 		bind:value={searchInput}
 		bind:this={inputRef}
 	/>
-	<button style:display={searchInput ? 'inline-flex' : 'none'} onclick={clearInput}>
+	<Button.Root
+		class={['clear-button', { hidden: !searchInput }]}
+		onclick={() => (searchInput = '')}
+	>
 		<X size={20} weight="bold" />
-	</button>
+	</Button.Root>
 </div>
 
 <style lang="postcss">
@@ -35,6 +38,7 @@
 		padding-right: 0.125rem;
 		border: 1px solid var(--color-element-border);
 		border-radius: 0.5rem;
+		cursor: pointer;
 
 		&:hover {
 			background: var(--color-button-highlight-gradient);
@@ -47,6 +51,7 @@
 			display: inline-flex;
 			align-items: center;
 			padding-left: 0.5rem;
+			cursor: inherit;
 		}
 
 		> input {
@@ -63,10 +68,14 @@
 			}
 		}
 
-		> button {
+		:global > .clear-button {
+			display: inline-flex;
 			margin-left: auto;
 			padding: 0.375rem;
 			background-color: transparent;
+		}
+		:global > .clear-button.hidden {
+			display: none;
 		}
 	}
 </style>
