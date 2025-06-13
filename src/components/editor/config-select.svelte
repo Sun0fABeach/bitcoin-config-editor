@@ -23,7 +23,14 @@
 		containerId,
 	}: ConfigSelectProps = $props()
 
-	const selectedLabel = $derived(items.find((option) => option.value === value)?.label)
+	const placeholderItem: SelectItem = { value: '', label: '--- select ---' }
+
+	const shownItems = $derived.by(() => {
+		const showPlaceholder = value === placeholderItem.value
+		return (showPlaceholder ? [placeholderItem] : []).concat(items)
+	})
+
+	const selectedLabel = $derived(shownItems.find((option) => option.value === value)?.label)
 
 	let triggerButton: Button | null = null
 	export const focus = () => triggerButton?.focus()
@@ -40,7 +47,7 @@
 </script>
 
 <div class="wrapper">
-	<Select.Root type="single" bind:value bind:open {items}>
+	<Select.Root type="single" bind:value bind:open items={shownItems}>
 		<Select.Trigger onclick={onTriggerClick}>
 			{#snippet child({ props })}
 				<Button {...props} class="trigger-button" bind:this={triggerButton}>
@@ -95,6 +102,7 @@
 			}
 
 			> :first-child {
+				flex-grow: 1;
 				color: var(--color-accent1);
 			}
 			> :global(:nth-child(2)) {

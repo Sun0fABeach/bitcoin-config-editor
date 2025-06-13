@@ -16,10 +16,15 @@
 
 	const { title, description }: CategoryProps = $props()
 
-	let textConfig1 = $state('foobar')
+	let textConfig1 = $state('')
 	let textConfig2 = $state('hello world etc pp')
-	let multiTextConfig = $state<MultiTextEntry[]>([{ id: useId(), text: '' }])
+	// let multiTextConfig = $state<MultiTextEntry[]>([{ id: useId(), text: '' }])
+	let multiTextConfig = $state<MultiTextEntry[]>([
+		{ id: useId(), text: 'one' },
+		{ id: useId(), text: 'two' },
+	])
 	let boolConfig = $state(true)
+
 	const selectConfig = [
 		{
 			value: '0',
@@ -42,7 +47,7 @@
 			label: 'Ultra long test label to check overflow',
 		},
 	]
-	let selected = $state(selectConfig[0].value)
+	let selected = $state('')
 </script>
 
 <Accordion.Item value={title}>
