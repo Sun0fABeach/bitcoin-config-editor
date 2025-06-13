@@ -3,7 +3,7 @@
 		value: string
 	}
 
-	let { value = $bindable('') }: ConfigTextInputProps = $props()
+	let { value = $bindable() }: ConfigTextInputProps = $props()
 
 	let ref: HTMLInputElement | null = null
 	export const focus = () => ref?.focus()

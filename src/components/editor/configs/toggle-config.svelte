@@ -5,10 +5,10 @@
 	import ConfigCheckbox from '@/components/editor/config-checkbox.svelte'
 
 	type CheckConfigProps = ConfigContainerBaseProps & {
-		checked: boolean
+		checked: boolean | null
 	}
 
-	let { checked = $bindable(false), ...info }: CheckConfigProps = $props()
+	let { checked = $bindable(null), ...info }: CheckConfigProps = $props()
 
 	let checkbox: ConfigCheckbox | null = null
 

@@ -3,17 +3,23 @@
 	import { colors } from '@/globals'
 
 	interface ConfigCheckboxInputProps {
-		checked: boolean
+		checked: boolean | null
 	}
 
-	let { checked = $bindable(false) }: ConfigCheckboxInputProps = $props()
+	let { checked = $bindable() }: ConfigCheckboxInputProps = $props()
 
 	let ref: Checkbox | null = null
 	export const focus = () => ref?.focus()
 </script>
 
 <div>
-	<Checkbox class="checkbox" bind:checked checkmarkColor={colors.accent1} bind:this={ref} />
+	<Checkbox
+		class="checkbox"
+		bind:checked={() => !!checked, (c) => (checked = c)}
+		indeterminate={checked === null}
+		checkmarkColor={colors.accent1}
+		bind:this={ref}
+	/>
 </div>
 
 <style lang="postcss">

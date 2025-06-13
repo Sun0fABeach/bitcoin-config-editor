@@ -18,7 +18,7 @@
 
 	let {
 		open = $bindable(false),
-		value = $bindable(''),
+		value = $bindable(),
 		items,
 		containerId,
 	}: ConfigSelectProps = $props()

@@ -23,7 +23,7 @@
 		{ id: useId(), text: 'one' },
 		{ id: useId(), text: 'two' },
 	])
-	let boolConfig = $state(true)
+	let boolConfig: boolean | null = $state(null)
 
 	const selectConfig = [
 		{
@@ -91,6 +91,7 @@
 							title="Blocks Data XOR"
 							key="blocksxor"
 							description="Whether an XOR-key applies to blocksdir *.dat files. The created XOR-key will be zeros for an existing blocksdir or when `-blocksxor=0` is set, and random for a freshly initialized blocksdir"
+							defaultValue="1"
 							bind:checked={boolConfig}
 						/>
 					</li>
@@ -107,6 +108,7 @@
 							title="Block Filter Index"
 							key="blockfilterindex"
 							description="Maintain an index of compact filters by block. If set to 1, certain indexes are enabled (currently just basic)"
+							defaultValue="0"
 							items={selectConfig}
 							bind:value={selected}
 						/>

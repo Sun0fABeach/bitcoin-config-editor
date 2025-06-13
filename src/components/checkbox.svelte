@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Checkbox, type WithoutChildrenOrChild } from 'bits-ui'
-	import { Check } from 'phosphor-svelte'
+	import { Check, Minus } from 'phosphor-svelte'
 	import { colors } from '@/globals'
 
 	type CheckboxProps = WithoutChildrenOrChild<Checkbox.RootProps> & {
@@ -11,6 +11,7 @@
 
 	let {
 		checked = $bindable(false),
+		indeterminate = $bindable(false),
 		backgroundColor = 'transparent',
 		borderColor = colors.elementBorder,
 		checkmarkColor = colors.textLight,
@@ -24,10 +25,14 @@
 	}
 </script>
 
-<Checkbox.Root {...attrs} bind:checked bind:ref>
-	{#snippet child({ props })}
+<Checkbox.Root {...attrs} bind:checked bind:indeterminate bind:ref>
+	{#snippet child({ props, indeterminate })}
 		<button {...props} style:background-color={backgroundColor} style:border-color={borderColor}>
-			<Check weight="bold" color={checkmarkColor} />
+			{#if indeterminate}
+				<Minus weight="bold" color={checkmarkColor} />
+			{:else}
+				<Check weight="bold" color={checkmarkColor} />
+			{/if}
 		</button>
 	{/snippet}
 </Checkbox.Root>
