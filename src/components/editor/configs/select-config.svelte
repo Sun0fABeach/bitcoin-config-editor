@@ -1,12 +1,11 @@
 <script lang="ts">
 	import { useId } from 'bits-ui'
-	import ConfigContainer from '@/components/editor/configs/config-container.svelte'
+	import ConfigContainer, {
+		type ConfigContainerBaseProps,
+	} from '@/components/editor/configs/config-container.svelte'
 	import ConfigSelect, { type SelectItem } from '@/components/editor/config-select.svelte'
 
-	interface SelectConfigProps {
-		title: string
-		key: string
-		description: string
+	type SelectConfigProps = ConfigContainerBaseProps & {
 		items: SelectItem[]
 		value: string
 	}

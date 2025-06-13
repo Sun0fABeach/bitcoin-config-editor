@@ -1,11 +1,10 @@
 <script lang="ts">
-	import ConfigContainer from '@/components/editor/configs/config-container.svelte'
+	import ConfigContainer, {
+		type ConfigContainerBaseProps,
+	} from '@/components/editor/configs/config-container.svelte'
 	import ConfigCheckbox from '@/components/editor/config-checkbox.svelte'
 
-	interface CheckConfigProps {
-		title: string
-		key: string
-		description: string
+	type CheckConfigProps = ConfigContainerBaseProps & {
 		checked: boolean
 	}
 

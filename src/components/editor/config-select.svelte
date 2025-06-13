@@ -11,7 +11,7 @@
 
 	interface ConfigSelectProps {
 		open: boolean
-		value: string
+		value: SelectItem['value']
 		items: SelectItem[]
 		containerId: string
 	}
@@ -28,10 +28,10 @@
 	let triggerButton: Button | null = null
 	export const focus = () => triggerButton?.focus()
 
-	/* let container handler the event */
+	/* let container handle the event */
 	const onTriggerClick = (e: MouseEvent) => e.stopPropagation()
 
-	/* let container handler the event if click outside dropdown lands on it */
+	/* let container handle the event if click outside dropdown lands on it */
 	const onInteractOutsideDropdown = (e: MouseEvent) => {
 		if ((e.target as HTMLElement)?.closest(`#${containerId}`)) {
 			e.preventDefault()

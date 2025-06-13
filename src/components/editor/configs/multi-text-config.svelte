@@ -4,7 +4,9 @@
 	import { useId } from 'bits-ui'
 	import { Trash, Plus } from 'phosphor-svelte'
 	import Button from '@/components/button.svelte'
-	import ConfigContainer from '@/components/editor/configs/config-container.svelte'
+	import ConfigContainer, {
+		type ConfigContainerBaseProps,
+	} from '@/components/editor/configs/config-container.svelte'
 	import ConfigTextInput from '@/components/editor/config-text-input.svelte'
 
 	export type MultiTextEntry = {
@@ -12,10 +14,7 @@
 		text: string
 	}
 
-	interface MultiTextConfigProps {
-		title: string
-		key: string
-		description: string
+	type MultiTextConfigProps = ConfigContainerBaseProps & {
 		entries: MultiTextEntry[]
 	}
 
@@ -27,9 +26,9 @@
 
 	const onContainerClick = () => inputs[0].focus()
 
-	const onInputRowClick = (event: MouseEvent, idx: number) => {
+	const onInputRowClick = (event: MouseEvent, rowIdx: number) => {
 		event.stopPropagation()
-		inputs[idx].focus()
+		inputs[rowIdx].focus()
 	}
 
 	const onAddClick = async (event: MouseEvent) => {
@@ -39,11 +38,11 @@
 		inputs[entries.length - 1].focus()
 	}
 
-	const onDeleteClick = (event: MouseEvent, idx: number) => {
+	const onDeleteClick = (event: MouseEvent, rowIdx: number) => {
 		event.stopPropagation()
 
 		if (entries.length > 1) {
-			entries.splice(idx, 1)
+			entries.splice(rowIdx, 1)
 		} else {
 			entries[0].text = ''
 		}
@@ -53,21 +52,21 @@
 <div class="wrapper">
 	<ConfigContainer {...info} onclick={onContainerClick}>
 		<div class="inputs-container">
-			{#each entries as { id }, idx (id)}
+			{#each entries as { id }, rowIdx (id)}
 				<div
 					class="input-row"
 					role="button"
 					tabindex="-1"
 					transition:slide
-					onclick={(e) => onInputRowClick(e, idx)}
+					onclick={(e) => onInputRowClick(e, rowIdx)}
 					onkeypress={() => {}}
 				>
-					<ConfigTextInput bind:value={entries[idx].text} bind:this={inputs[idx]} />
+					<ConfigTextInput bind:value={entries[rowIdx].text} bind:this={inputs[rowIdx]} />
 					<Button
 						icon
 						noBorder
 						disabled={deleteDisabled}
-						onclick={(e: MouseEvent) => onDeleteClick(e, idx)}
+						onclick={(e: MouseEvent) => onDeleteClick(e, rowIdx)}
 					>
 						<Trash weight="light" />
 					</Button>

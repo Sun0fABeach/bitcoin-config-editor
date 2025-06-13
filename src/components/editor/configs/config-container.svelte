@@ -2,14 +2,27 @@
 	import type { Snippet } from 'svelte'
 	import type { HTMLAttributes } from 'svelte/elements'
 
-	type ConfigContainerProps = HTMLAttributes<HTMLDivElement> & {
+	export interface ConfigContainerBaseProps {
 		title: string
 		key: string
 		description: string
-		children: Snippet
+		defaultValue?: string
 	}
 
-	const { title, key, description, onclick, children, ...attrs }: ConfigContainerProps = $props()
+	type ConfigContainerProps = ConfigContainerBaseProps &
+		HTMLAttributes<HTMLDivElement> & {
+			children: Snippet
+		}
+
+	const {
+		title,
+		key,
+		description,
+		defaultValue,
+		onclick,
+		children,
+		...attrs
+	}: ConfigContainerProps = $props()
 </script>
 
 <div {...attrs} class="config-container" role="button" tabindex="-1" {onclick}>
@@ -21,6 +34,12 @@
 		<div class="description">
 			{description}
 		</div>
+		{#if defaultValue}
+			<div class="default-value">
+				<span>Default: </span>
+				<span>{defaultValue}</span>
+			</div>
+		{/if}
 	</div>
 
 	{@render children()}
@@ -72,6 +91,16 @@
 		> .description {
 			font-size: 0.875em;
 			color: var(--color-text-medium);
+		}
+
+		> .default-value {
+			font-size: 0.75em;
+			> :first-child {
+				color: var(--color-text-medium);
+			}
+			> :last-child {
+				color: var(--color-accent1);
+			}
 		}
 	}
 </style>

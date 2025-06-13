@@ -69,6 +69,7 @@
 							title="Alert Notification"
 							key="alertnotify"
 							description="Execute command when an alert is raised (%s in cmd is replaced by message)"
+							defaultValue="testDefault"
 							bind:value={textConfig1}
 						/>
 					</li>

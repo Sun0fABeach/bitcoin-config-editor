@@ -1,11 +1,10 @@
 <script lang="ts">
-	import ConfigContainer from '@/components/editor/configs/config-container.svelte'
+	import ConfigContainer, {
+		type ConfigContainerBaseProps,
+	} from '@/components/editor/configs/config-container.svelte'
 	import ConfigTextInput from '@/components/editor/config-text-input.svelte'
 
-	interface TextConfigProps {
-		title: string
-		key: string
-		description: string
+	type TextConfigProps = ConfigContainerBaseProps & {
 		value: string
 	}
 
