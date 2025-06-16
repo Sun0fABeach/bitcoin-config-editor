@@ -40,7 +40,7 @@
 		open.push(false)
 	}
 
-	const updateSelect = (rowIdx: number, newValue: SelectItem['value']) => {
+	const updateSelect = (newValue: SelectItem['value'], rowIdx: number) => {
 		mappedValues[rowIdx].value = newValue
 		unmapValues()
 	}
@@ -61,6 +61,8 @@
 			.map(({ value }) => value)
 	}
 
+	/* event handlers */
+
 	const onContainerClick = () => {
 		const openIndex = open.findIndex((isOpen) => isOpen)
 		if (openIndex !== -1) {
@@ -79,6 +81,10 @@
 		event.stopPropagation()
 		closeAll()
 		addSelect()
+	}
+
+	const onUpdate = (newValue: SelectItem['value'], rowIdx: number) => {
+		updateSelect(newValue, rowIdx)
 	}
 
 	const onDeleteClick = async (event: MouseEvent, rowIdx: number) => {
@@ -103,7 +109,7 @@
 				>
 					<ConfigSelect
 						bind:open={open[rowIdx]}
-						bind:value={() => value, (v) => updateSelect(rowIdx, v)}
+						bind:value={() => value, (v) => onUpdate(v, rowIdx)}
 						{items}
 						{containerId}
 					/>

@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { slide } from 'svelte/transition'
-	import { Accordion, useId } from 'bits-ui'
+	import { Accordion } from 'bits-ui'
 	import { CaretDown } from 'phosphor-svelte'
 	import TextConfig from '@/components/editor/configs/text-config.svelte'
-	import MultiTextConfig, {
-		type MultiTextEntry,
-	} from '@/components/editor/configs/multi-text-config.svelte'
+	import MultiTextConfig from '@/components/editor/configs/multi-text-config.svelte'
 	import ToggleConfig from '@/components/editor/configs/toggle-config.svelte'
 	import SelectConfig from '@/components/editor/configs/select-config.svelte'
 	import MultiSelectConfig from '@/components/editor/configs/multi-select-config.svelte'
@@ -19,11 +17,8 @@
 
 	let textConfig1 = $state('')
 	let textConfig2 = $state('hello world etc pp')
-	// let multiTextConfig = $state<MultiTextEntry[]>([{ id: useId(), text: '' }])
-	let multiTextConfig = $state<MultiTextEntry[]>([
-		{ id: useId(), text: 'one' },
-		{ id: useId(), text: 'two' },
-	])
+	// let multiTextConfig = $state<string[]>([])
+	let multiTextConfig = $state(['one', 'two'])
 	let boolConfig: boolean | null = $state(null)
 
 	const selectConfig = [
@@ -113,7 +108,7 @@
 							title="Import Blocks From File"
 							key="loadblock"
 							description="Imports blocks from external blk000??.dat file on startup. This option can be set multiple times with different file values"
-							bind:entries={multiTextConfig}
+							bind:values={multiTextConfig}
 						/>
 					</li>
 					<li>

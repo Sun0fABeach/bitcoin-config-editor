@@ -9,18 +9,23 @@
 	} from '@/components/editor/configs/config-container.svelte'
 	import ConfigTextInput from '@/components/editor/config-text-input.svelte'
 
-	export type MultiTextEntry = {
-		id: string
-		text: string
-	}
-
 	type MultiTextConfigProps = ConfigContainerBaseProps & {
-		entries: MultiTextEntry[]
+		values: string[]
 	}
 
-	let { entries = $bindable(), ...info }: MultiTextConfigProps = $props()
+	let { values = $bindable([]), ...info }: MultiTextConfigProps = $props()
 
-	const deleteDisabled = $derived(entries.length === 1 && !entries[0].text)
+	const mappedValues = $state(
+		values.length > 0
+			? values.map((value) => ({ value, id: useId() }))
+			: [{ value: '', id: useId() }],
+	)
+
+	const deleteDisabled = $derived(mappedValues.length === 1 && !mappedValues[0].value)
+
+	const unmapValues = () => {
+		values = mappedValues.filter(({ value }) => value).map(({ value }) => value)
+	}
 
 	const inputs: ConfigTextInput[] = $state([])
 
@@ -33,26 +38,31 @@
 
 	const onAddClick = async (event: MouseEvent) => {
 		event.stopPropagation()
-		entries.push({ id: useId(), text: '' })
+		mappedValues.push({ value: '', id: useId() })
 		await tick()
-		inputs[entries.length - 1].focus()
+		inputs[mappedValues.length - 1].focus()
+	}
+
+	const onUpdate = (newValue: string, rowIdx: number) => {
+		mappedValues[rowIdx].value = newValue
+		unmapValues()
 	}
 
 	const onDeleteClick = (event: MouseEvent, rowIdx: number) => {
 		event.stopPropagation()
-
-		if (entries.length > 1) {
-			entries.splice(rowIdx, 1)
+		if (mappedValues.length === 1) {
+			mappedValues[0].value = ''
 		} else {
-			entries[0].text = ''
+			mappedValues.splice(rowIdx, 1)
 		}
+		unmapValues()
 	}
 </script>
 
 <div class="wrapper">
 	<ConfigContainer {...info} onclick={onContainerClick}>
 		<div class="inputs-container">
-			{#each entries as { id }, rowIdx (id)}
+			{#each mappedValues as { value, id }, rowIdx (id)}
 				<div
 					class="input-row"
 					role="button"
@@ -61,7 +71,10 @@
 					onclick={(e) => onInputRowClick(e, rowIdx)}
 					onkeypress={() => {}}
 				>
-					<ConfigTextInput bind:value={entries[rowIdx].text} bind:this={inputs[rowIdx]} />
+					<ConfigTextInput
+						bind:value={() => value, (v) => onUpdate(v, rowIdx)}
+						bind:this={inputs[rowIdx]}
+					/>
 					<Button
 						icon
 						noBorder
