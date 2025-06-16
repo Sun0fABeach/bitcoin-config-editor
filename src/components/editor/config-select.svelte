@@ -1,3 +1,7 @@
+<script module lang="ts">
+	export const placeholderItem: SelectItem = { value: '', label: '- select -' }
+</script>
+
 <script lang="ts">
 	import { slide } from 'svelte/transition'
 	import { Select } from 'bits-ui'
@@ -16,14 +20,9 @@
 		containerId: string
 	}
 
-	let {
-		open = $bindable(false),
-		value = $bindable(),
-		items,
-		containerId,
-	}: ConfigSelectProps = $props()
+	const triggerButtonClass = 'trigger-button'
 
-	const placeholderItem: SelectItem = { value: '', label: '--- select ---' }
+	let { open = $bindable(), value = $bindable(), items, containerId }: ConfigSelectProps = $props()
 
 	const shownItems = $derived.by(() => {
 		const showPlaceholder = value === placeholderItem.value
@@ -35,12 +34,14 @@
 	let triggerButton: Button | null = null
 	export const focus = () => triggerButton?.focus()
 
-	/* let container handle the event */
+	// don't let container handle the event
 	const onTriggerClick = (e: MouseEvent) => e.stopPropagation()
 
-	/* let container handle the event if click outside dropdown lands on it */
+	// let container handle the event if click outside dropdown lands on it, unless
+	// it lands on another trigger button inside the same container
 	const onInteractOutsideDropdown = (e: MouseEvent) => {
-		if ((e.target as HTMLElement)?.closest(`#${containerId}`)) {
+		const target = e.target as HTMLElement
+		if (target.closest(`#${containerId}`) && !target.closest(`.${triggerButtonClass}`)) {
 			e.preventDefault()
 		}
 	}
@@ -50,7 +51,7 @@
 	<Select.Root type="single" bind:value bind:open items={shownItems}>
 		<Select.Trigger onclick={onTriggerClick}>
 			{#snippet child({ props })}
-				<Button {...props} class="trigger-button" bind:this={triggerButton}>
+				<Button {...props} class={triggerButtonClass} bind:this={triggerButton}>
 					<span>{selectedLabel}</span>
 					<CaretUpDown />
 					<div class="border-animation-horizontal"></div>

@@ -8,6 +8,7 @@
 	} from '@/components/editor/configs/multi-text-config.svelte'
 	import ToggleConfig from '@/components/editor/configs/toggle-config.svelte'
 	import SelectConfig from '@/components/editor/configs/select-config.svelte'
+	import MultiSelectConfig from '@/components/editor/configs/multi-select-config.svelte'
 
 	export interface CategoryProps {
 		title: string
@@ -48,6 +49,35 @@
 		},
 	]
 	let selected = $state('')
+
+	const multiSelectConfig = [
+		{
+			value: 'any',
+			label: 'Any',
+		},
+		{
+			value: 'ipv4',
+			label: 'IPv4',
+		},
+		{
+			value: 'ipv6',
+			label: 'IPv6',
+		},
+		{
+			value: 'onion',
+			label: 'Tor',
+		},
+		{
+			value: 'i2p',
+			label: 'I2P',
+		},
+		{
+			value: 'cjdns',
+			label: 'cjdns',
+		},
+	]
+	// let multiSelected = $state(['onion', 'ipv4'])
+	let multiSelected = $state([])
 </script>
 
 <Accordion.Item value={title}>
@@ -93,6 +123,15 @@
 							description="Whether an XOR-key applies to blocksdir *.dat files. The created XOR-key will be zeros for an existing blocksdir or when `-blocksxor=0` is set, and random for a freshly initialized blocksdir"
 							defaultValue="1"
 							bind:checked={boolConfig}
+						/>
+					</li>
+					<li>
+						<MultiSelectConfig
+							title="Only Use Specific Network"
+							key="onlynet"
+							description="Make automatic outbound connections only to the selected network. Inbound and manual connections are not affected by this option. It can be specified multiple times to allow multiple networks."
+							items={multiSelectConfig}
+							bind:values={multiSelected}
 						/>
 					</li>
 					<li>
