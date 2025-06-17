@@ -6,6 +6,7 @@
 		title: string
 		key: string
 		description: string
+		options?: string[]
 		defaultValue?: string | Record<string, string>
 	}
 
@@ -18,6 +19,7 @@
 		title,
 		key,
 		description,
+		options,
 		defaultValue,
 		onclick,
 		children,
@@ -36,6 +38,12 @@
 		<div class="description">
 			{description}
 		</div>
+		{#if options}
+			<div class="options">
+				<span>Options: </span>
+				<span>{options?.join(', ')}</span>
+			</div>
+		{/if}
 		{#if defaultValue}
 			<div class="default-value">
 				{#if multipleDefaults}
@@ -104,6 +112,7 @@
 			color: var(--color-text-medium);
 		}
 
+		> .options,
 		> .default-value {
 			font-size: 0.75em;
 			> :first-child {
@@ -112,16 +121,21 @@
 			> :last-child {
 				color: var(--color-accent1);
 			}
-			li {
-				display: flex;
-				flex-direction: row;
-				> :first-child {
-					color: var(--color-accent2);
-				}
-				> :last-child {
-					overflow-x: hidden;
-					text-overflow: ellipsis;
-				}
+		}
+
+		> .options + .default-value {
+			margin-top: -0.375rem; /* offset row-gap a bit */
+		}
+
+		> .default-value li {
+			display: flex;
+			flex-direction: row;
+			> :first-child {
+				color: var(--color-accent2);
+			}
+			> :last-child {
+				overflow-x: hidden;
+				text-overflow: ellipsis;
 			}
 		}
 	}

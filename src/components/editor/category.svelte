@@ -31,12 +31,12 @@
 			label: 'Enable',
 		},
 		{
-			value: 'v0',
-			label: 'v0',
-		},
-		{
 			value: 'basic',
 			label: 'Basic',
+		},
+		{
+			value: 'v0',
+			label: 'v0',
 		},
 		{
 			value: 'ultralong',
@@ -125,6 +125,7 @@
 							title="Only Use Specific Network"
 							key="onlynet"
 							description="Make automatic outbound connections only to the selected network. Inbound and manual connections are not affected by this option. It can be specified multiple times to allow multiple networks."
+							options={['ipv4', 'ipv6', 'onion', 'i2p', 'cjdns']}
 							items={multiSelectConfig}
 							bind:values={multiSelected}
 						/>
@@ -148,6 +149,7 @@
 							title="Block Filter Index"
 							key="blockfilterindex"
 							description="Maintain an index of compact filters by block. If set to 1, certain indexes are enabled (currently just basic)"
+							options={['0', '1', 'basic', 'v0']}
 							defaultValue="0"
 							items={selectConfig}
 							bind:value={selected}
