@@ -19,7 +19,7 @@
 </script>
 
 <div>
-	<ConfigContainer {...info} onclick={onContainerClick}>
+	<ConfigContainer value={checked} {...info} onclick={onContainerClick}>
 		<ConfigCheckbox {checked} bind:this={checkbox} />
 	</ConfigContainer>
 </div>

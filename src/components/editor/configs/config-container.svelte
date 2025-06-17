@@ -12,6 +12,7 @@
 
 	type ConfigContainerProps = ConfigContainerBaseProps &
 		HTMLAttributes<HTMLDivElement> & {
+			value: string | boolean | string[] | null
 			children: Snippet
 		}
 
@@ -21,12 +22,14 @@
 		description,
 		options,
 		defaultValue,
+		value,
 		onclick,
 		children,
 		...attrs
 	}: ConfigContainerProps = $props()
 
 	const multipleDefaults = defaultValue && typeof defaultValue === 'object'
+	const displayedValue = $derived(Array.isArray(value) ? value.join(', ') : value)
 </script>
 
 <div {...attrs} class="config-container" role="button" tabindex="-1" {onclick}>
@@ -38,27 +41,33 @@
 		<div class="description">
 			{description}
 		</div>
-		{#if options}
-			<div class="options">
-				<span>Options: </span>
-				<span>{options?.join(', ')}</span>
+		<div class="settings">
+			{#if options}
+				<div class="options">
+					<span>Options: </span>
+					<span>{options?.join(', ')}</span>
+				</div>
+			{/if}
+			{#if defaultValue}
+				<div class="default-value">
+					{#if multipleDefaults}
+						<div>Defaults</div>
+						<ul>
+							{#each Object.entries(defaultValue) as [key, value] (key)}
+								<li><span>{key}:&nbsp;</span><span>{value}</span></li>
+							{/each}
+						</ul>
+					{:else}
+						<span>Default: </span>
+						<span>{defaultValue}</span>
+					{/if}
+				</div>
+			{/if}
+			<div class="value">
+				<span>User value: </span>
+				<span>{displayedValue}</span>
 			</div>
-		{/if}
-		{#if defaultValue}
-			<div class="default-value">
-				{#if multipleDefaults}
-					<div>Defaults</div>
-					<ul>
-						{#each Object.entries(defaultValue) as [key, value] (key)}
-							<li><span>{key}:&nbsp;</span><span>{value}</span></li>
-						{/each}
-					</ul>
-				{:else}
-					<span>Default: </span>
-					<span>{defaultValue}</span>
-				{/if}
-			</div>
-		{/if}
+		</div>
 	</div>
 
 	{@render children()}
@@ -112,30 +121,37 @@
 			color: var(--color-text-medium);
 		}
 
-		> .options,
-		> .default-value {
-			font-size: 0.75em;
-			> :first-child {
-				color: var(--color-accent2);
-			}
-			> :last-child {
-				color: var(--color-accent1);
-			}
-		}
-
-		> .options + .default-value {
-			margin-top: -0.375rem; /* offset row-gap a bit */
-		}
-
-		> .default-value li {
+		> .settings {
 			display: flex;
-			flex-direction: row;
-			> :first-child {
-				color: var(--color-accent2);
+			flex-direction: column;
+			row-gap: 0.25rem;
+
+			> .options,
+			> .default-value,
+			> .value {
+				font-size: 0.75em;
+				> :first-child {
+					color: var(--color-accent2);
+				}
+				> :last-child {
+					color: var(--color-accent1);
+				}
 			}
-			> :last-child {
-				overflow-x: hidden;
-				text-overflow: ellipsis;
+
+			> .default-value li {
+				display: flex;
+				flex-direction: row;
+				> :first-child {
+					color: var(--color-accent2);
+				}
+				> :last-child {
+					overflow-x: hidden;
+					text-overflow: ellipsis;
+				}
+			}
+
+			> .value {
+				overflow-wrap: anywhere;
 			}
 		}
 	}

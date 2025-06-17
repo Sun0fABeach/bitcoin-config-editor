@@ -96,7 +96,7 @@
 </script>
 
 <div class="wrapper">
-	<ConfigContainer {...info} id={containerId} onclick={onContainerClick}>
+	<ConfigContainer value={values} {...info} id={containerId} onclick={onContainerClick}>
 		<div class="inputs-container">
 			{#each mappedValues as { value, id }, rowIdx (id)}
 				<div

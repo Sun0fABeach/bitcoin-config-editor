@@ -60,7 +60,7 @@
 </script>
 
 <div class="wrapper">
-	<ConfigContainer {...info} onclick={onContainerClick}>
+	<ConfigContainer value={values} {...info} onclick={onContainerClick}>
 		<div class="inputs-container">
 			{#each mappedValues as { value, id }, rowIdx (id)}
 				<div

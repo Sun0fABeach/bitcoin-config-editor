@@ -23,7 +23,7 @@
 </script>
 
 <div>
-	<ConfigContainer {...info} id={containerId} onclick={onContainerClick}>
+	<ConfigContainer {value} {...info} id={containerId} onclick={onContainerClick}>
 		<ConfigSelect bind:open bind:value {items} {containerId} bind:this={select} />
 	</ConfigContainer>
 </div>

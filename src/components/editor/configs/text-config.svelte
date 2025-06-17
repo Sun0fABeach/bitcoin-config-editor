@@ -15,7 +15,7 @@
 </script>
 
 <div>
-	<ConfigContainer {...info} onclick={onContainerClick}>
+	<ConfigContainer {value} {...info} onclick={onContainerClick}>
 		<ConfigTextInput bind:value bind:this={input} />
 	</ConfigContainer>
 </div>
