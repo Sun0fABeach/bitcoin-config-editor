@@ -6,7 +6,7 @@
 		title: string
 		key: string
 		description: string
-		defaultValue?: string
+		defaultValue?: string | Record<string, string>
 	}
 
 	type ConfigContainerProps = ConfigContainerBaseProps &
@@ -23,6 +23,8 @@
 		children,
 		...attrs
 	}: ConfigContainerProps = $props()
+
+	const multipleDefaults = defaultValue && typeof defaultValue === 'object'
 </script>
 
 <div {...attrs} class="config-container" role="button" tabindex="-1" {onclick}>
@@ -36,8 +38,17 @@
 		</div>
 		{#if defaultValue}
 			<div class="default-value">
-				<span>Default: </span>
-				<span>{defaultValue}</span>
+				{#if multipleDefaults}
+					<div>Defaults</div>
+					<ul>
+						{#each Object.entries(defaultValue) as [key, value] (key)}
+							<li><span>{key}:&nbsp;</span><span>{value}</span></li>
+						{/each}
+					</ul>
+				{:else}
+					<span>Default: </span>
+					<span>{defaultValue}</span>
+				{/if}
 			</div>
 		{/if}
 	</div>
@@ -96,10 +107,21 @@
 		> .default-value {
 			font-size: 0.75em;
 			> :first-child {
-				color: var(--color-text-medium);
+				color: var(--color-accent2);
 			}
 			> :last-child {
 				color: var(--color-accent1);
+			}
+			li {
+				display: flex;
+				flex-direction: row;
+				> :first-child {
+					color: var(--color-accent2);
+				}
+				> :last-child {
+					overflow-x: hidden;
+					text-overflow: ellipsis;
+				}
 			}
 		}
 	}

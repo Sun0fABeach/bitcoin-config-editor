@@ -16,7 +16,7 @@
 	const { title, description }: CategoryProps = $props()
 
 	let textConfig1 = $state('')
-	let textConfig2 = $state('hello world etc pp')
+	let textConfig2 = $state('')
 	// let multiTextConfig = $state<string[]>([])
 	let multiTextConfig = $state(['one', 'two'])
 	let boolConfig: boolean | null = $state(null)
@@ -131,9 +131,15 @@
 					</li>
 					<li>
 						<TextConfig
-							title="Block Notification"
-							key="blocknotify"
-							description="Execute command when the best block changes (%s in cmd is replaced by block hash)"
+							title="Assume Valid Chain History"
+							key="assumevalid"
+							description="If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all)"
+							defaultValue={{
+								mainnet: '000000000000000000006e926737e6a349f7581525ad36e743dfe5f4bc3abbb7',
+								testnet3: '000000000000000465b1a66c9f386308e8c75acef9201f3f577811da09fc90ad',
+								testnet4: '000000005be348057db991fa5d89fe7c4695b667cfb311391a8db374b6f681fd',
+								signet: '0000014aad1d58dddcb964dd749b073374c6306e716b22f573a2efe68d414539',
+							}}
 							bind:value={textConfig2}
 						/>
 					</li>
