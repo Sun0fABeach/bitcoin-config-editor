@@ -6,6 +6,13 @@ export interface EditorValue {
 	multiSelect: EditorValue['select'][]
 }
 
+export type EditorValueAny =
+	| EditorValue['text']
+	| EditorValue['checkbox']
+	| EditorValue['select']
+	| EditorValue['multiText']
+	| EditorValue['multiSelect']
+
 export const unset: {
 	text: EditorValue['text']
 	checkbox: EditorValue['checkbox']

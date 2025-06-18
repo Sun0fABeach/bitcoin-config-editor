@@ -41,6 +41,29 @@
 		},
 	]
 	let selected = $state(unset.select)
+	const selectConfig2 = [
+		{
+			value: '0',
+			label: '0',
+		},
+		{
+			value: '1',
+			label: '1',
+		},
+		{
+			value: '2',
+			label: '2',
+		},
+		{
+			value: '3',
+			label: '3',
+		},
+		{
+			value: '4',
+			label: '4',
+		},
+	]
+	let selected2 = $state(unset.select)
 
 	const multiSelectConfig = [
 		{
@@ -87,16 +110,16 @@
 		{#snippet child({ props, open })}
 			{#if open}
 				<ul {...props} transition:slide>
-					<li>
+					<li id="checkblocks">
 						<TextConfig
-							title="Alert Notification"
-							key="alertnotify"
-							description="Execute command when an alert is raised (%s in cmd is replaced by message)"
-							defaultValue="testDefault"
+							title="Check Blocks"
+							key="checkblocks"
+							description="How many blocks to check at startup (0 = all)"
+							defaultValue="6"
 							bind:value={textConfig1}
 						/>
 					</li>
-					<li>
+					<li id="loadblock">
 						<MultiTextConfig
 							title="Import Blocks From File"
 							key="loadblock"
@@ -104,7 +127,7 @@
 							bind:values={multiTextConfig}
 						/>
 					</li>
-					<li>
+					<li id="blocksxor">
 						<CheckboxConfig
 							title="Blocks Data XOR"
 							key="blocksxor"
@@ -113,7 +136,7 @@
 							bind:checked={boolConfig}
 						/>
 					</li>
-					<li>
+					<li id="onlynet">
 						<MultiSelectConfig
 							title="Only Use Specific Network"
 							key="onlynet"
@@ -123,7 +146,7 @@
 							bind:values={multiSelected}
 						/>
 					</li>
-					<li>
+					<li id="assumevalid">
 						<TextConfig
 							title="Assume Valid Chain History"
 							key="assumevalid"
@@ -137,7 +160,7 @@
 							bind:value={textConfig2}
 						/>
 					</li>
-					<li>
+					<li id="blockfilterindex">
 						<SelectConfig
 							title="Block Filter Index"
 							key="blockfilterindex"
@@ -146,6 +169,17 @@
 							defaultValue="0"
 							items={selectConfig}
 							bind:value={selected}
+						/>
+					</li>
+					<li id="checklevel">
+						<SelectConfig
+							title="Check Blocks Level"
+							key="checklevel"
+							description="How thorough the block verification of <a href='#checkblocks'>checkblocks</a> is: level 0 reads the blocks from disk, level 1 verifies block validity, level 2 verifies undo data, level 3 checks disconnection of tip blocks, level 4 tries to reconnect the blocks, each level includes the checks of the previous levels"
+							options={['0', '1', '2', '3', '4']}
+							defaultValue="3"
+							items={selectConfig2}
+							bind:value={selected2}
 						/>
 					</li>
 				</ul>

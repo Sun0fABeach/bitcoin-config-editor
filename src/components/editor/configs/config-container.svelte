@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { Snippet } from 'svelte'
+	import { type Snippet } from 'svelte'
 	import type { HTMLAttributes } from 'svelte/elements'
 
 	export interface ConfigContainerBaseProps {
@@ -44,14 +44,15 @@
 	})
 </script>
 
-<div {...attrs} class="config-container" role="button" tabindex="-1">
+<div {...attrs} class="config-container" tabindex="-1">
 	<div class="info">
 		<div class="heading">
 			<span>{title}</span>
 			<span>{key}</span>
 		</div>
 		<div class="description">
-			{description}
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			{@html description}
 		</div>
 		<div class="settings">
 			{#if options}

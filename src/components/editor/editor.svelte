@@ -47,11 +47,25 @@
 	]
 
 	let openCategories = $state<CategoryProps['title'][]>([])
+
+	const onClick = (event: MouseEvent) => {
+		const target = event.target as HTMLElement
+		const href = target.getAttribute('href')
+		if (href) {
+			event.stopPropagation()
+			event.preventDefault()
+			// TODO: this only works if link target is inside open category rn
+			document.getElementById(href.slice(1))!.scrollIntoView({
+				behavior: 'smooth',
+				block: 'center',
+			})
+		}
+	}
 </script>
 
 <main>
 	<ScrollArea>
-		<Accordion.Root type="multiple" bind:value={openCategories}>
+		<Accordion.Root type="multiple" bind:value={openCategories} onclickcapture={onClick}>
 			{#snippet child({ props })}
 				<ul {...props}>
 					{#each categories as category (category.title)}
