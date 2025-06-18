@@ -23,16 +23,28 @@
 		options,
 		defaultValue,
 		value,
-		onclick,
 		children,
 		...attrs
 	}: ConfigContainerProps = $props()
 
 	const multipleDefaults = defaultValue && typeof defaultValue === 'object'
-	const displayedValue = $derived(Array.isArray(value) ? value.join(', ') : value)
+	const displayedValue = $derived.by(() => {
+		if (Array.isArray(value)) {
+			return value.join(', ')
+		} else {
+			switch (value) {
+				case true:
+					return '1'
+				case false:
+					return '0'
+				default:
+					return value
+			}
+		}
+	})
 </script>
 
-<div {...attrs} class="config-container" role="button" tabindex="-1" {onclick}>
+<div {...attrs} class="config-container" role="button" tabindex="-1">
 	<div class="info">
 		<div class="heading">
 			<span>{title}</span>

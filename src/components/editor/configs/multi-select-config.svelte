@@ -1,12 +1,12 @@
 <script lang="ts">
 	import { tick } from 'svelte'
-	import { slide } from 'svelte/transition'
 	import { useId } from 'bits-ui'
-	import { Trash, Plus } from 'phosphor-svelte'
+	import { Plus } from 'phosphor-svelte'
 	import Button from '@/components/button.svelte'
 	import ConfigContainer, {
 		type ConfigContainerBaseProps,
 	} from '@/components/editor/configs/config-container.svelte'
+	import InputRow from '@/components/editor/input-row.svelte'
 	import ConfigSelect, {
 		placeholderItem,
 		type SelectItem,
@@ -32,12 +32,15 @@
 	)
 
 	const containerId = useId()
+	const selects: ConfigSelect[] = $state([])
 
 	const closeAll = () => (open = open.map(() => false))
 
-	const addSelect = () => {
+	const addSelect = async () => {
 		mappedValues.push({ value: placeholderItem.value, id: useId() })
 		open.push(false)
+		await tick()
+		selects[mappedValues.length - 1].focus()
 	}
 
 	const updateSelect = (newValue: SelectItem['value'], rowIdx: number) => {
@@ -99,29 +102,20 @@
 	<ConfigContainer value={values} {...info} id={containerId} onclick={onContainerClick}>
 		<div class="inputs-container">
 			{#each mappedValues as { value, id }, rowIdx (id)}
-				<div
-					class="input-row"
-					role="button"
-					tabindex="-1"
-					transition:slide
+				<InputRow
+					withTransition
+					{deleteDisabled}
 					onclick={onInputRowClick}
-					onkeypress={() => {}}
+					ondelete={(e) => onDeleteClick(e, rowIdx)}
 				>
 					<ConfigSelect
 						bind:open={open[rowIdx]}
 						bind:value={() => value, (v) => onUpdate(v, rowIdx)}
 						{items}
 						{containerId}
+						bind:this={selects[rowIdx]}
 					/>
-					<Button
-						icon
-						noBorder
-						disabled={deleteDisabled}
-						onclick={(e: MouseEvent) => onDeleteClick(e, rowIdx)}
-					>
-						<Trash weight="light" />
-					</Button>
-				</div>
+				</InputRow>
 			{/each}
 			<Button icon noBorder onclick={onAddClick}>
 				<Plus />
@@ -139,30 +133,14 @@
 	}
 
 	.inputs-container {
-		--row-gap: 0.75rem;
+		--input-row-gap: 0.75rem;
 
 		display: flex;
 		flex-direction: column;
 
-		> .input-row {
-			display: flex;
-			column-gap: 0.75rem;
-			padding: calc(var(--row-gap) / 2) 0;
-
-			/* double :first-child b/c config-select is nested inside "display: contents" wrapper */
-			:global > :first-child > :first-child {
-				flex-grow: 1;
-			}
-
-			:global > :last-child:disabled {
-				color: var(--color-text-medium);
-				pointer-events: none;
-			}
-		}
-
 		:global > :last-child {
 			align-self: flex-end;
-			margin-top: calc(var(--row-gap) / 2);
+			margin-top: calc(var(--input-row-gap) / 2);
 		}
 	}
 </style>

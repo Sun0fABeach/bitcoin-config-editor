@@ -17,8 +17,8 @@
 
 	let textConfig1 = $state('')
 	let textConfig2 = $state('')
-	// let multiTextConfig = $state<string[]>([])
-	let multiTextConfig = $state(['one', 'two'])
+	let multiTextConfig = $state<string[]>([])
+	// let multiTextConfig = $state(['one', 'two'])
 	let boolConfig: boolean | null = $state(null)
 
 	const selectConfig = [
@@ -38,18 +38,10 @@
 			value: 'v0',
 			label: 'v0',
 		},
-		{
-			value: 'ultralong',
-			label: 'Ultra long test label to check overflow',
-		},
 	]
 	let selected = $state('')
 
 	const multiSelectConfig = [
-		{
-			value: 'any',
-			label: 'Any',
-		},
 		{
 			value: 'ipv4',
 			label: 'IPv4',

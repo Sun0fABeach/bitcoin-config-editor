@@ -2,6 +2,7 @@
 	import ConfigContainer, {
 		type ConfigContainerBaseProps,
 	} from '@/components/editor/configs/config-container.svelte'
+	import InputRow from '@/components/editor/input-row.svelte'
 	import ConfigCheckbox from '@/components/editor/config-checkbox.svelte'
 
 	type CheckConfigProps = ConfigContainerBaseProps & {
@@ -16,11 +17,18 @@
 		checkbox?.focus()
 		checked = !checked
 	}
+
+	const onDeleteClick = (event: MouseEvent) => {
+		event.stopPropagation()
+		checked = null
+	}
 </script>
 
 <div>
 	<ConfigContainer value={checked} {...info} onclick={onContainerClick}>
-		<ConfigCheckbox {checked} bind:this={checkbox} />
+		<InputRow deleteDisabled={checked === null} ondelete={onDeleteClick}>
+			<ConfigCheckbox {checked} bind:this={checkbox} />
+		</InputRow>
 	</ConfigContainer>
 </div>
 
