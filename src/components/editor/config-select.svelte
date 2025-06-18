@@ -1,15 +1,12 @@
-<script module lang="ts">
-	export const placeholderItem: SelectItem = { value: '', label: '- select -' }
-</script>
-
 <script lang="ts">
 	import { slide } from 'svelte/transition'
 	import { Select } from 'bits-ui'
 	import { CaretUpDown, Check } from 'phosphor-svelte'
 	import Button from '@/components/button.svelte'
+	import { unset, type EditorValue } from '@/lib/config'
 
 	export interface SelectItem {
-		value: string
+		value: EditorValue['select']
 		label: string
 	}
 
@@ -20,13 +17,16 @@
 		containerId: string
 	}
 
-	const triggerButtonClass = 'trigger-button'
-
 	let { open = $bindable(), value = $bindable(), items, containerId }: ConfigSelectProps = $props()
 
+	const triggerButtonClass = 'trigger-button'
+
 	const shownItems = $derived.by(() => {
-		const showPlaceholder = value === placeholderItem.value
-		return (showPlaceholder ? [placeholderItem] : []).concat(items)
+		if (value === unset.select) {
+			const placeholderItem: SelectItem = { value: unset.select, label: '- select -' }
+			return [placeholderItem].concat(items)
+		}
+		return items
 	})
 
 	const selectedLabel = $derived(shownItems.find((option) => option.value === value)?.label)

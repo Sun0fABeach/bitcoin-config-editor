@@ -5,13 +5,14 @@
 	} from '@/components/editor/configs/config-container.svelte'
 	import InputRow from '@/components/editor/input-row.svelte'
 	import ConfigSelect, { type SelectItem } from '@/components/editor/config-select.svelte'
+	import { unset, type EditorValue } from '@/lib/config'
 
 	type SelectConfigProps = ConfigContainerBaseProps & {
 		items: SelectItem[]
-		value: string
+		value: EditorValue['select']
 	}
 
-	let { value = $bindable(''), items, ...info }: SelectConfigProps = $props()
+	let { value = $bindable(unset.select), items, ...info }: SelectConfigProps = $props()
 
 	let open = $state(false)
 	let select: ConfigSelect | null = null
@@ -24,7 +25,7 @@
 
 	const onDeleteClick = (event: MouseEvent) => {
 		event.stopPropagation()
-		value = ''
+		value = unset.select
 	}
 </script>
 

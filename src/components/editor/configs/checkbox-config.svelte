@@ -4,12 +4,13 @@
 	} from '@/components/editor/configs/config-container.svelte'
 	import InputRow from '@/components/editor/input-row.svelte'
 	import ConfigCheckbox from '@/components/editor/config-checkbox.svelte'
+	import { unset, type EditorValue } from '@/lib/config'
 
 	type CheckConfigProps = ConfigContainerBaseProps & {
-		checked: boolean | null
+		checked: EditorValue['checkbox']
 	}
 
-	let { checked = $bindable(null), ...info }: CheckConfigProps = $props()
+	let { checked = $bindable(unset.checkbox), ...info }: CheckConfigProps = $props()
 
 	let checkbox: ConfigCheckbox | null = null
 
@@ -20,13 +21,13 @@
 
 	const onDeleteClick = (event: MouseEvent) => {
 		event.stopPropagation()
-		checked = null
+		checked = unset.checkbox
 	}
 </script>
 
 <div>
 	<ConfigContainer value={checked} {...info} onclick={onContainerClick}>
-		<InputRow deleteDisabled={checked === null} ondelete={onDeleteClick}>
+		<InputRow deleteDisabled={checked === unset.checkbox} ondelete={onDeleteClick}>
 			<ConfigCheckbox {checked} bind:this={checkbox} />
 		</InputRow>
 	</ConfigContainer>

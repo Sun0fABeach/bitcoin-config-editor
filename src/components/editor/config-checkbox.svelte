@@ -1,9 +1,10 @@
 <script lang="ts">
 	import Checkbox from '@/components/checkbox.svelte'
 	import { colors } from '@/globals'
+	import { unset, type EditorValue } from '@/lib/config'
 
 	interface ConfigCheckboxInputProps {
-		checked: boolean | null
+		checked: EditorValue['checkbox']
 	}
 
 	let { checked = $bindable() }: ConfigCheckboxInputProps = $props()
@@ -16,7 +17,7 @@
 	<Checkbox
 		class="checkbox"
 		bind:checked={() => !!checked, (c) => (checked = c)}
-		indeterminate={checked === null}
+		indeterminate={checked === unset.checkbox}
 		checkmarkColor={colors.accent1}
 		bind:this={ref}
 	/>

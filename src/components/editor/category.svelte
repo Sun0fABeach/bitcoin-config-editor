@@ -4,9 +4,10 @@
 	import { CaretDown } from 'phosphor-svelte'
 	import TextConfig from '@/components/editor/configs/text-config.svelte'
 	import MultiTextConfig from '@/components/editor/configs/multi-text-config.svelte'
-	import ToggleConfig from '@/components/editor/configs/toggle-config.svelte'
+	import CheckboxConfig from '@/components/editor/configs/checkbox-config.svelte'
 	import SelectConfig from '@/components/editor/configs/select-config.svelte'
 	import MultiSelectConfig from '@/components/editor/configs/multi-select-config.svelte'
+	import { unset } from '@/lib/config'
 
 	export interface CategoryProps {
 		title: string
@@ -15,11 +16,11 @@
 
 	const { title, description }: CategoryProps = $props()
 
-	let textConfig1 = $state('')
-	let textConfig2 = $state('')
-	let multiTextConfig = $state<string[]>([])
+	let textConfig1 = $state(unset.text)
+	let textConfig2 = $state(unset.text)
+	let multiTextConfig = $state(unset.multiText())
 	// let multiTextConfig = $state(['one', 'two'])
-	let boolConfig: boolean | null = $state(null)
+	let boolConfig = $state(unset.checkbox)
 
 	const selectConfig = [
 		{
@@ -39,7 +40,7 @@
 			label: 'v0',
 		},
 	]
-	let selected = $state('')
+	let selected = $state(unset.select)
 
 	const multiSelectConfig = [
 		{
@@ -64,7 +65,7 @@
 		},
 	]
 	// let multiSelected = $state(['onion', 'ipv4'])
-	let multiSelected = $state([])
+	let multiSelected = $state(unset.multiSelect())
 </script>
 
 <Accordion.Item value={title}>
@@ -104,7 +105,7 @@
 						/>
 					</li>
 					<li>
-						<ToggleConfig
+						<CheckboxConfig
 							title="Blocks Data XOR"
 							key="blocksxor"
 							description="Whether an XOR-key applies to blocksdir *.dat files. The created XOR-key will be zeros for an existing blocksdir or when `-blocksxor=0` is set, and random for a freshly initialized blocksdir"

@@ -1,6 +1,8 @@
 <script lang="ts">
+	import { type EditorValue } from '@/lib/config'
+
 	interface ConfigTextInputProps {
-		value: string
+		value: EditorValue['text']
 	}
 
 	let { value = $bindable() }: ConfigTextInputProps = $props()

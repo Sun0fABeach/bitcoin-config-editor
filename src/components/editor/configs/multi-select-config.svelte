@@ -7,28 +7,26 @@
 		type ConfigContainerBaseProps,
 	} from '@/components/editor/configs/config-container.svelte'
 	import InputRow from '@/components/editor/input-row.svelte'
-	import ConfigSelect, {
-		placeholderItem,
-		type SelectItem,
-	} from '@/components/editor/config-select.svelte'
+	import ConfigSelect, { type SelectItem } from '@/components/editor/config-select.svelte'
+	import { unset, type EditorValue } from '@/lib/config'
 
 	type MultiSelectConfigProps = ConfigContainerBaseProps & {
 		items: SelectItem[]
-		values: SelectItem['value'][]
+		values: EditorValue['multiSelect']
 	}
 
-	let { items, values = $bindable([]), ...info }: MultiSelectConfigProps = $props()
+	let { items, values = $bindable(unset.multiSelect()), ...info }: MultiSelectConfigProps = $props()
 
 	const mappedValues = $state(
 		values.length > 0
 			? values.map((value) => ({ value, id: useId() }))
-			: [{ value: placeholderItem.value, id: useId() }],
+			: [{ value: unset.select, id: useId() }],
 	)
 
 	let open = $state(mappedValues.map(() => false))
 
 	const deleteDisabled = $derived(
-		mappedValues.length === 1 && mappedValues[0].value === placeholderItem.value,
+		mappedValues.length === 1 && mappedValues[0].value === unset.select,
 	)
 
 	const containerId = useId()
@@ -37,7 +35,7 @@
 	const closeAll = () => (open = open.map(() => false))
 
 	const addSelect = async () => {
-		mappedValues.push({ value: placeholderItem.value, id: useId() })
+		mappedValues.push({ value: unset.select, id: useId() })
 		open.push(false)
 		await tick()
 		selects[mappedValues.length - 1].focus()
@@ -50,7 +48,7 @@
 
 	const deleteSelect = (rowIdx: number) => {
 		if (mappedValues.length === 1) {
-			mappedValues[0].value = placeholderItem.value
+			mappedValues[0].value = unset.select
 		} else {
 			mappedValues.splice(rowIdx, 1)
 			open.splice(rowIdx, 1)
@@ -59,9 +57,7 @@
 	}
 
 	const unmapValues = () => {
-		values = mappedValues
-			.filter(({ value }) => value !== placeholderItem.value)
-			.map(({ value }) => value)
+		values = mappedValues.filter(({ value }) => value !== unset.select).map(({ value }) => value)
 	}
 
 	/* event handlers */

@@ -4,12 +4,13 @@
 	} from '@/components/editor/configs/config-container.svelte'
 	import InputRow from '@/components/editor/input-row.svelte'
 	import ConfigTextInput from '@/components/editor/config-text-input.svelte'
+	import { unset, type EditorValue } from '@/lib/config'
 
 	type TextConfigProps = ConfigContainerBaseProps & {
-		value: string
+		value: EditorValue['text']
 	}
 
-	let { value = $bindable(''), ...info }: TextConfigProps = $props()
+	let { value = $bindable(unset.text), ...info }: TextConfigProps = $props()
 
 	let input: ConfigTextInput | null
 
@@ -17,7 +18,7 @@
 
 	const onDeleteClick = (event: MouseEvent) => {
 		event.stopPropagation()
-		value = ''
+		value = unset.text
 	}
 </script>
 
