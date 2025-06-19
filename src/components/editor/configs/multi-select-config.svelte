@@ -17,6 +17,8 @@
 
 	let { items, values = $bindable(unset.multiSelect()), ...info }: MultiSelectConfigProps = $props()
 
+	const options = items.map(({ value }) => value)
+
 	const mappedValues = $state(
 		values.length > 0
 			? values.map((value) => ({ value, id: useId() }))
@@ -95,7 +97,7 @@
 </script>
 
 <div class="wrapper">
-	<ConfigContainer value={values} {...info} id={containerId} onclick={onContainerClick}>
+	<ConfigContainer value={values} {options} {...info} id={containerId} onclick={onContainerClick}>
 		<div class="inputs-container">
 			{#each mappedValues as { value, id }, rowIdx (id)}
 				<InputRow

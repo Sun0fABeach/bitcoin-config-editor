@@ -12,7 +12,9 @@
 		value: EditorValue['select']
 	}
 
-	let { value = $bindable(unset.select), items, ...info }: SelectConfigProps = $props()
+	let { items, value = $bindable(unset.select), ...info }: SelectConfigProps = $props()
+
+	const options = items.map(({ value }) => value)
 
 	let open = $state(false)
 	let select: ConfigSelect | null = null
@@ -30,7 +32,7 @@
 </script>
 
 <div>
-	<ConfigContainer {value} {...info} id={containerId} onclick={onContainerClick}>
+	<ConfigContainer {value} {options} {...info} id={containerId} onclick={onContainerClick}>
 		<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
 			<ConfigSelect bind:open bind:value {items} {containerId} bind:this={select} />
 		</InputRow>

@@ -155,7 +155,6 @@
 							title="Only Use Specific Network"
 							key="onlynet"
 							description="Make automatic outbound connections only to the selected network. Inbound and manual connections are not affected by this option. It can be specified multiple times to allow multiple networks."
-							options={['ipv4', 'ipv6', 'onion', 'i2p', 'cjdns']}
 							items={multiSelectConfig}
 							bind:values={multiSelected}
 						/>
@@ -179,7 +178,6 @@
 							title="Block Filter Index"
 							key="blockfilterindex"
 							description="Maintain an index of compact filters by block. If set to 1, certain indexes are enabled (currently just basic)"
-							options={['0', '1', 'basic', 'v0']}
 							defaultValue="0"
 							items={selectConfig}
 							bind:value={selected}
@@ -190,7 +188,6 @@
 							title="Check Blocks Level"
 							key="checklevel"
 							description="How thorough the block verification of <a href='#checkblocks'>checkblocks</a> is: level 0 reads the blocks from disk, level 1 verifies block validity, level 2 verifies undo data, level 3 checks disconnection of tip blocks, level 4 tries to reconnect the blocks, each level includes the checks of the previous levels"
-							options={['0', '1', '2', '3', '4']}
 							defaultValue="3"
 							items={selectConfig2}
 							bind:value={selected2}
