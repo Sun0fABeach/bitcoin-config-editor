@@ -1,18 +1,39 @@
 <script lang="ts">
 	import { type EditorValue } from '@/lib/config'
+	import { unset } from '@/lib/config'
 
 	interface ConfigTextInputProps {
-		value: EditorValue['text']
+		value: EditorValue['text'] | EditorValue['number']
+		min?: number
+		max?: number
+		wholeNumbers?: boolean
 	}
 
-	let { value = $bindable() }: ConfigTextInputProps = $props()
+	let { value = $bindable(), wholeNumbers, ...rest }: ConfigTextInputProps = $props()
 
 	let ref: HTMLInputElement | null = null
 	export const focus = () => ref?.focus()
+
+	const type = typeof value === 'number' || value === unset.number ? 'number' : 'text'
+
+	const getValue = () => value
+	const setValue = (newValue: typeof value) => {
+		if (typeof newValue === 'number' && wholeNumbers) {
+			value = Math.trunc(newValue)
+		} else {
+			value = newValue
+		}
+	}
 </script>
 
 <div class="container">
-	<input bind:value bind:this={ref} type="text" onclick={(e) => e.stopPropagation()} />
+	<input
+		{type}
+		bind:value={getValue, setValue}
+		bind:this={ref}
+		{...rest}
+		onclick={(e) => e.stopPropagation()}
+	/>
 	<div class="underline"></div>
 </div>
 

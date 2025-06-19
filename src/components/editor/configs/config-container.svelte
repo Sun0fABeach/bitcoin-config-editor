@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { type Snippet } from 'svelte'
 	import type { HTMLAttributes } from 'svelte/elements'
+	import { type EditorValueAny } from '@/lib/config'
 
 	export interface ConfigContainerBaseProps {
 		title: string
@@ -12,7 +13,7 @@
 
 	type ConfigContainerProps = ConfigContainerBaseProps &
 		HTMLAttributes<HTMLDivElement> & {
-			value: string | boolean | string[] | null
+			value: EditorValueAny
 			children: Snippet
 		}
 

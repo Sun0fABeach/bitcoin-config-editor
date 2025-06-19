@@ -3,6 +3,7 @@
 	import { Accordion } from 'bits-ui'
 	import { CaretDown } from 'phosphor-svelte'
 	import TextConfig from '@/components/editor/configs/text-config.svelte'
+	import NumberConfig from '@/components/editor/configs/number-config.svelte'
 	import MultiTextConfig from '@/components/editor/configs/multi-text-config.svelte'
 	import CheckboxConfig from '@/components/editor/configs/checkbox-config.svelte'
 	import SelectConfig from '@/components/editor/configs/select-config.svelte'
@@ -16,7 +17,8 @@
 
 	const { title, description }: CategoryProps = $props()
 
-	let textConfig1 = $state(unset.text)
+	let numberConfig = $state(unset.number)
+	let numberConfig2 = $state(unset.number)
 	let textConfig2 = $state(unset.text)
 	let multiTextConfig = $state(unset.multiText())
 	// let multiTextConfig = $state(['one', 'two'])
@@ -111,12 +113,24 @@
 			{#if open}
 				<ul {...props} transition:slide>
 					<li id="checkblocks">
-						<TextConfig
+						<NumberConfig
 							title="Check Blocks"
 							key="checkblocks"
 							description="How many blocks to check at startup (0 = all)"
 							defaultValue="6"
-							bind:value={textConfig1}
+							min={0}
+							wholeNumbers
+							bind:value={numberConfig}
+						/>
+					</li>
+					<li id="minrelaytxfee">
+						<NumberConfig
+							title="Minimum Transaction Relay Fee"
+							key="minrelaytxfee"
+							description="Fees (in BTC/kvB) smaller than this are considered zero fee for relaying, mining and transaction creation"
+							defaultValue="0.00001"
+							min={0}
+							bind:value={numberConfig2}
 						/>
 					</li>
 					<li id="loadblock">

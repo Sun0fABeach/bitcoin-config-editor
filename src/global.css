@@ -63,6 +63,19 @@ input {
 		-webkit-text-fill-color: var(--color-text-light);
 		transition: background-color 5000s ease-in-out 0s;
 	}
+
+	/* hide number input controls */
+	/* Firefox */
+	&[type='number'] {
+		appearance: textfield;
+	}
+
+	/* Chrome */
+	&::-webkit-outer-spin-button,
+	&::-webkit-inner-spin-button {
+		-webkit-appearance: none;
+		margin: 0;
+	}
 }
 
 button {
