@@ -1,24 +1,26 @@
 <script lang="ts">
-	import { type EditorValue } from '@/lib/config'
 	import { unset } from '@/lib/config'
+	import { EditorValueType } from '@/enums'
+	import type { EditorValueText, EditorValueNumber } from '@/types/editor'
 
 	interface ConfigTextInputProps {
-		value: EditorValue['text'] | EditorValue['number']
+		value: EditorValueText | EditorValueNumber
 		min?: number
 		max?: number
-		wholeNumbers?: boolean
+		wholeNumber?: boolean
 	}
 
-	let { value = $bindable(), wholeNumbers, ...rest }: ConfigTextInputProps = $props()
+	let { value = $bindable(), wholeNumber, ...rest }: ConfigTextInputProps = $props()
 
 	let ref: HTMLInputElement | null = null
 	export const focus = () => ref?.focus()
 
-	const type = typeof value === 'number' || value === unset.number ? 'number' : 'text'
+	const type =
+		typeof value === 'number' || value === unset[EditorValueType.NUMBER] ? 'number' : 'text'
 
 	const getValue = () => value
 	const setValue = (newValue: typeof value) => {
-		if (typeof newValue === 'number' && wholeNumbers) {
+		if (typeof newValue === 'number' && wholeNumber) {
 			value = Math.trunc(newValue)
 		} else {
 			value = newValue

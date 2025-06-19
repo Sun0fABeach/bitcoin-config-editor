@@ -8,89 +8,26 @@
 	import CheckboxConfig from '@/components/editor/configs/checkbox-config.svelte'
 	import SelectConfig from '@/components/editor/configs/select-config.svelte'
 	import MultiSelectConfig from '@/components/editor/configs/multi-select-config.svelte'
-	import { unset } from '@/lib/config'
+	import { EditorValueType } from '@/enums'
+	import type { ConfigDefinition } from '@/types/config-definition'
+	import type {
+		EditorValueAny,
+		EditorValueText,
+		EditorValueNumber,
+		EditorValueCheckbox,
+		EditorValueSelect,
+		EditorValueMultiSelect,
+		EditorValueMultiText,
+	} from '@/types/editor'
 
 	export interface CategoryProps {
 		title: string
 		description: string
+		configs: Record<string, ConfigDefinition>
+		values: Record<string, EditorValueAny>
 	}
 
-	const { title, description }: CategoryProps = $props()
-
-	let numberConfig = $state(unset.number)
-	let numberConfig2 = $state(unset.number)
-	let textConfig2 = $state(unset.text)
-	let multiTextConfig = $state(unset.multiText())
-	// let multiTextConfig = $state(['one', 'two'])
-	let boolConfig = $state(unset.checkbox)
-
-	const selectConfig = [
-		{
-			value: '0',
-			label: 'Disable',
-		},
-		{
-			value: '1',
-			label: 'Enable',
-		},
-		{
-			value: 'basic',
-			label: 'Basic',
-		},
-		{
-			value: 'v0',
-			label: 'v0',
-		},
-	]
-	let selected = $state(unset.select)
-	const selectConfig2 = [
-		{
-			value: '0',
-			label: '0',
-		},
-		{
-			value: '1',
-			label: '1',
-		},
-		{
-			value: '2',
-			label: '2',
-		},
-		{
-			value: '3',
-			label: '3',
-		},
-		{
-			value: '4',
-			label: '4',
-		},
-	]
-	let selected2 = $state(unset.select)
-
-	const multiSelectConfig = [
-		{
-			value: 'ipv4',
-			label: 'IPv4',
-		},
-		{
-			value: 'ipv6',
-			label: 'IPv6',
-		},
-		{
-			value: 'onion',
-			label: 'Tor',
-		},
-		{
-			value: 'i2p',
-			label: 'I2P',
-		},
-		{
-			value: 'cjdns',
-			label: 'cjdns',
-		},
-	]
-	// let multiSelected = $state(['onion', 'ipv4'])
-	let multiSelected = $state(unset.multiSelect())
+	const { title, description, configs, values = $bindable() }: CategoryProps = $props()
 </script>
 
 <Accordion.Item value={title}>
@@ -112,87 +49,64 @@
 		{#snippet child({ props, open })}
 			{#if open}
 				<ul {...props} transition:slide>
-					<li id="checkblocks">
-						<NumberConfig
-							title="Check Blocks"
-							key="checkblocks"
-							description="How many blocks to check at startup (0 = all)"
-							defaultValue="6"
-							min={0}
-							wholeNumbers
-							bind:value={numberConfig}
-						/>
-					</li>
-					<li id="minrelaytxfee">
-						<NumberConfig
-							title="Minimum Transaction Relay Fee"
-							key="minrelaytxfee"
-							description="Fees (in BTC/kvB) smaller than this are considered zero fee for relaying, mining and transaction creation"
-							defaultValue="0.00001"
-							min={0}
-							bind:value={numberConfig2}
-						/>
-					</li>
-					<li id="loadblock">
-						<MultiTextConfig
-							title="Import Blocks From File"
-							key="loadblock"
-							description="Imports blocks from external blk000??.dat file on startup. This option can be set multiple times with different file values"
-							bind:values={multiTextConfig}
-						/>
-					</li>
-					<li id="blocksxor">
-						<CheckboxConfig
-							title="Blocks Data XOR"
-							key="blocksxor"
-							description="Whether an XOR-key applies to blocksdir *.dat files. The created XOR-key will be zeros for an existing blocksdir or when `-blocksxor=0` is set, and random for a freshly initialized blocksdir"
-							defaultValue="1"
-							bind:checked={boolConfig}
-						/>
-					</li>
-					<li id="onlynet">
-						<MultiSelectConfig
-							title="Only Use Specific Network"
-							key="onlynet"
-							description="Make automatic outbound connections only to the selected network. Inbound and manual connections are not affected by this option. It can be specified multiple times to allow multiple networks."
-							items={multiSelectConfig}
-							bind:values={multiSelected}
-						/>
-					</li>
-					<li id="assumevalid">
-						<TextConfig
-							title="Assume Valid Chain History"
-							key="assumevalid"
-							description="If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all)"
-							defaultValue={{
-								mainnet: '000000000000000000006e926737e6a349f7581525ad36e743dfe5f4bc3abbb7',
-								testnet3: '000000000000000465b1a66c9f386308e8c75acef9201f3f577811da09fc90ad',
-								testnet4: '000000005be348057db991fa5d89fe7c4695b667cfb311391a8db374b6f681fd',
-								signet: '0000014aad1d58dddcb964dd749b073374c6306e716b22f573a2efe68d414539',
-							}}
-							bind:value={textConfig2}
-						/>
-					</li>
-					<li id="blockfilterindex">
-						<SelectConfig
-							title="Block Filter Index"
-							key="blockfilterindex"
-							description="Maintain an index of compact filters by block. If set to 1, certain indexes are enabled (currently just basic)"
-							defaultValue="0"
-							items={selectConfig}
-							bind:value={selected}
-						/>
-					</li>
-					<li id="checklevel">
-						<SelectConfig
-							title="Check Blocks Level"
-							key="checklevel"
-							description="How thorough the block verification of <a href='#checkblocks'>checkblocks</a> is: level 0 reads the blocks from disk, level 1 verifies block validity, level 2 verifies undo data, level 3 checks disconnection of tip blocks, level 4 tries to reconnect the blocks, each level includes the checks of the previous levels"
-							defaultValue="3"
-							items={selectConfig2}
-							bind:value={selected2}
-						/>
-					</li>
+					{#each Object.entries(configs) as [key, definition] (key)}
+						<li id={key}>
+							{#if definition.type === EditorValueType.TEXT}
+								<TextConfig
+									{key}
+									title={definition.title}
+									description={definition.description}
+									defaultValue={definition.defaultValue}
+									bind:value={values[key] as EditorValueText}
+								/>
+							{:else if definition.type === EditorValueType.NUMBER}
+								<NumberConfig
+									{key}
+									title={definition.title}
+									description={definition.description}
+									defaultValue={definition.defaultValue}
+									min={definition.typeConstraints?.min}
+									max={definition.typeConstraints?.max}
+									wholeNumber={definition.typeConstraints?.wholeNumber}
+									bind:value={values[key] as EditorValueNumber}
+								/>
+							{:else if definition.type === EditorValueType.CHECKBOX}
+								<CheckboxConfig
+									{key}
+									title={definition.title}
+									description={definition.description}
+									defaultValue={definition.defaultValue}
+									bind:checked={values[key] as EditorValueCheckbox}
+								/>
+							{:else if definition.type === EditorValueType.SELECT}
+								<SelectConfig
+									{key}
+									title={definition.title}
+									description={definition.description}
+									defaultValue={definition.defaultValue}
+									items={definition.options!}
+									bind:value={values[key] as EditorValueSelect}
+								/>
+							{:else if definition.type === EditorValueType.MULTI_SELECT}
+								<MultiSelectConfig
+									{key}
+									title={definition.title}
+									description={definition.description}
+									defaultValue={definition.defaultValue}
+									items={definition.options!}
+									bind:values={values[key] as EditorValueMultiSelect}
+								/>
+							{:else if definition.type === EditorValueType.MULTI_TEXT}
+								<MultiTextConfig
+									{key}
+									title={definition.title}
+									description={definition.description}
+									defaultValue={definition.defaultValue}
+									bind:values={values[key] as EditorValueMultiText}
+								/>
+							{/if}
+						</li>
+					{/each}
 				</ul>
 			{/if}
 		{/snippet}

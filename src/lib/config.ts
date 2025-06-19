@@ -1,32 +1,25 @@
-export interface EditorValue {
-	text: string
-	number: number | null
-	checkbox: boolean | null
-	select: string
-	multiText: EditorValue['text'][]
-	multiSelect: EditorValue['select'][]
-}
-
-export type EditorValueAny =
-	| EditorValue['text']
-	| EditorValue['number']
-	| EditorValue['checkbox']
-	| EditorValue['select']
-	| EditorValue['multiText']
-	| EditorValue['multiSelect']
+import { EditorValueType } from '@/enums'
+import type {
+	EditorValueText,
+	EditorValueNumber,
+	EditorValueCheckbox,
+	EditorValueSelect,
+	EditorValueMultiText,
+	EditorValueMultiSelect,
+} from '@/types/editor'
 
 export const unset: {
-	text: EditorValue['text']
-	number: EditorValue['number']
-	checkbox: EditorValue['checkbox']
-	select: EditorValue['select']
-	multiText: () => EditorValue['multiText']
-	multiSelect: () => EditorValue['multiSelect']
+	[EditorValueType.TEXT]: EditorValueText
+	[EditorValueType.NUMBER]: EditorValueNumber
+	[EditorValueType.CHECKBOX]: EditorValueCheckbox
+	[EditorValueType.SELECT]: EditorValueSelect
+	[EditorValueType.MULTI_TEXT]: () => EditorValueMultiText
+	[EditorValueType.MULTI_SELECT]: () => EditorValueMultiSelect
 } = {
-	text: '',
-	number: null,
-	checkbox: null,
-	select: '',
-	multiText: () => [],
-	multiSelect: () => [],
+	[EditorValueType.TEXT]: '',
+	[EditorValueType.NUMBER]: null,
+	[EditorValueType.CHECKBOX]: null,
+	[EditorValueType.SELECT]: '',
+	[EditorValueType.MULTI_TEXT]: () => [],
+	[EditorValueType.MULTI_SELECT]: () => [],
 }

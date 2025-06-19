@@ -8,21 +8,25 @@
 	} from '@/components/editor/configs/config-container.svelte'
 	import InputRow from '@/components/editor/input-row.svelte'
 	import ConfigTextInput from '@/components/editor/config-text-input.svelte'
-	import { unset, type EditorValue } from '@/lib/config'
+	import { unset } from '@/lib/config'
+	import { EditorValueType } from '@/enums'
+	import type { EditorValueMultiText } from '@/types/editor'
 
 	type MultiTextConfigProps = ConfigContainerBaseProps & {
-		values: EditorValue['multiText']
+		values: EditorValueMultiText
 	}
 
-	let { values = $bindable(unset.multiText()), ...info }: MultiTextConfigProps = $props()
+	let { values = $bindable(), ...info }: MultiTextConfigProps = $props()
 
 	const mappedValues = $state(
 		values.length > 0
 			? values.map((value) => ({ value, id: useId() }))
-			: [{ value: unset.text, id: useId() }],
+			: [{ value: unset[EditorValueType.TEXT], id: useId() }],
 	)
 
-	const deleteDisabled = $derived(mappedValues.length === 1 && mappedValues[0].value === unset.text)
+	const deleteDisabled = $derived(
+		mappedValues.length === 1 && mappedValues[0].value === unset[EditorValueType.TEXT],
+	)
 
 	const unmapValues = () => {
 		values = mappedValues.filter(({ value }) => value).map(({ value }) => value)
@@ -39,7 +43,7 @@
 
 	const onAddClick = async (event: MouseEvent) => {
 		event.stopPropagation()
-		mappedValues.push({ value: unset.text, id: useId() })
+		mappedValues.push({ value: unset[EditorValueType.TEXT], id: useId() })
 		await tick()
 		inputs[mappedValues.length - 1].focus()
 	}
@@ -52,7 +56,7 @@
 	const onDeleteClick = (event: MouseEvent, rowIdx: number) => {
 		event.stopPropagation()
 		if (mappedValues.length === 1) {
-			mappedValues[0].value = unset.text
+			mappedValues[0].value = unset[EditorValueType.TEXT]
 		} else {
 			mappedValues.splice(rowIdx, 1)
 		}

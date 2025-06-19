@@ -2,49 +2,9 @@
 	import { Accordion } from 'bits-ui'
 	import ScrollArea from '@/components/scroll-area.svelte'
 	import Category, { type CategoryProps } from '@/components/editor/category.svelte'
+	import useConfigStore from '@/stores/config.svelte'
 
-	const categories: CategoryProps[] = [
-		{
-			title: 'General',
-			description: 'Basic parameters regarding node operation',
-		},
-		{
-			title: 'Chain Selection',
-			description: 'Which network / blockchain to use',
-		},
-		{
-			title: 'Networking',
-			description: 'How your node interacts with other peers on the network',
-		},
-		{
-			title: 'Mempool',
-			description: 'What transactions your node will relay to peers',
-		},
-		{
-			title: 'Mining',
-			description: 'Attributes of blocks that can be mined by your node',
-		},
-		{
-			title: 'RPC',
-			description: "Security and performance options for accessing your node's RPC interface",
-		},
-		{
-			title: 'Wallet',
-			description: "Behavior of your node's wallet",
-		},
-		{
-			title: 'ZeroMQ',
-			description: 'Options for handling notifications emitted via ZeroMQ',
-		},
-		{
-			title: 'Statistics',
-			description: 'Options for collecting statistics',
-		},
-		{
-			title: 'Debugging & Testing',
-			description: 'Features that help developers',
-		},
-	]
+	const configStore = useConfigStore()
 
 	let openCategories = $state<CategoryProps['title'][]>([])
 
@@ -68,9 +28,9 @@
 		<Accordion.Root type="multiple" bind:value={openCategories} onclickcapture={onClick}>
 			{#snippet child({ props })}
 				<ul {...props}>
-					{#each categories as category (category.title)}
+					{#each configStore.categories as category (category.title)}
 						<li>
-							<Category {...category} />
+							<Category {...category} bind:values={configStore.values} />
 						</li>
 					{/each}
 				</ul>

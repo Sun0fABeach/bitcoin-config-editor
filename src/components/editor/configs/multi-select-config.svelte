@@ -8,27 +8,29 @@
 	} from '@/components/editor/configs/config-container.svelte'
 	import InputRow from '@/components/editor/input-row.svelte'
 	import ConfigSelect, { type SelectItem } from '@/components/editor/config-select.svelte'
-	import { unset, type EditorValue } from '@/lib/config'
+	import { unset } from '@/lib/config'
+	import { EditorValueType } from '@/enums'
+	import type { EditorValueMultiSelect } from '@/types/editor'
 
 	type MultiSelectConfigProps = ConfigContainerBaseProps & {
 		items: SelectItem[]
-		values: EditorValue['multiSelect']
+		values: EditorValueMultiSelect
 	}
 
-	let { items, values = $bindable(unset.multiSelect()), ...info }: MultiSelectConfigProps = $props()
+	let { items, values = $bindable(), ...info }: MultiSelectConfigProps = $props()
 
 	const options = items.map(({ value }) => value)
 
 	const mappedValues = $state(
 		values.length > 0
 			? values.map((value) => ({ value, id: useId() }))
-			: [{ value: unset.select, id: useId() }],
+			: [{ value: unset[EditorValueType.SELECT], id: useId() }],
 	)
 
 	let open = $state(mappedValues.map(() => false))
 
 	const deleteDisabled = $derived(
-		mappedValues.length === 1 && mappedValues[0].value === unset.select,
+		mappedValues.length === 1 && mappedValues[0].value === unset[EditorValueType.SELECT],
 	)
 
 	const containerId = useId()
@@ -37,7 +39,7 @@
 	const closeAll = () => (open = open.map(() => false))
 
 	const addSelect = async () => {
-		mappedValues.push({ value: unset.select, id: useId() })
+		mappedValues.push({ value: unset[EditorValueType.SELECT], id: useId() })
 		open.push(false)
 		await tick()
 		selects[mappedValues.length - 1].focus()
@@ -50,7 +52,7 @@
 
 	const deleteSelect = (rowIdx: number) => {
 		if (mappedValues.length === 1) {
-			mappedValues[0].value = unset.select
+			mappedValues[0].value = unset[EditorValueType.SELECT]
 		} else {
 			mappedValues.splice(rowIdx, 1)
 			open.splice(rowIdx, 1)
@@ -59,7 +61,9 @@
 	}
 
 	const unmapValues = () => {
-		values = mappedValues.filter(({ value }) => value !== unset.select).map(({ value }) => value)
+		values = mappedValues
+			.filter(({ value }) => value !== unset[EditorValueType.SELECT])
+			.map(({ value }) => value)
 	}
 
 	/* event handlers */

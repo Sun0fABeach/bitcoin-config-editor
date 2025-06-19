@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { type Snippet } from 'svelte'
 	import type { HTMLAttributes } from 'svelte/elements'
-	import { type EditorValueAny } from '@/lib/config'
+	import type { EditorValueAny } from '@/types/editor'
 
 	export interface ConfigContainerBaseProps {
 		title: string

@@ -4,20 +4,22 @@
 	} from '@/components/editor/configs/config-container.svelte'
 	import InputRow from '@/components/editor/input-row.svelte'
 	import ConfigTextInput from '@/components/editor/config-text-input.svelte'
-	import { unset, type EditorValue } from '@/lib/config'
+	import { unset } from '@/lib/config'
+	import { EditorValueType } from '@/enums'
+	import type { EditorValueNumber } from '@/types/editor'
 
 	type TextConfigProps = ConfigContainerBaseProps & {
-		value: EditorValue['number']
+		value: EditorValueNumber
 		min?: number
 		max?: number
-		wholeNumbers?: boolean
+		wholeNumber?: boolean
 	}
 
 	let {
-		value = $bindable(unset.number),
+		value = $bindable(),
 		min = -Infinity,
 		max = Infinity,
-		wholeNumbers = false,
+		wholeNumber = false,
 		...info
 	}: TextConfigProps = $props()
 
@@ -27,14 +29,14 @@
 
 	const onDeleteClick = (event: MouseEvent) => {
 		event.stopPropagation()
-		value = unset.number
+		value = unset[EditorValueType.NUMBER]
 	}
 </script>
 
 <div>
 	<ConfigContainer {value} {...info} onclick={onContainerClick}>
 		<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
-			<ConfigTextInput {min} {max} {wholeNumbers} bind:value bind:this={input} />
+			<ConfigTextInput {min} {max} {wholeNumber} bind:value bind:this={input} />
 		</InputRow>
 	</ConfigContainer>
 </div>

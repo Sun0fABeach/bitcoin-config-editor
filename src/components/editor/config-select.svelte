@@ -3,10 +3,12 @@
 	import { Select } from 'bits-ui'
 	import { CaretUpDown, Check } from 'phosphor-svelte'
 	import Button from '@/components/button.svelte'
-	import { unset, type EditorValue } from '@/lib/config'
+	import { unset } from '@/lib/config'
+	import { EditorValueType } from '@/enums'
+	import type { EditorValueSelect } from '@/types/editor'
 
 	export interface SelectItem {
-		value: EditorValue['select']
+		value: EditorValueSelect
 		label: string
 	}
 
@@ -22,8 +24,11 @@
 	const triggerButtonClass = 'trigger-button'
 
 	const shownItems = $derived.by(() => {
-		if (value === unset.select) {
-			const placeholderItem: SelectItem = { value: unset.select, label: '- select -' }
+		if (value === unset[EditorValueType.SELECT]) {
+			const placeholderItem: SelectItem = {
+				value: unset[EditorValueType.SELECT],
+				label: '- select -',
+			}
 			return [placeholderItem].concat(items)
 		}
 		return items
