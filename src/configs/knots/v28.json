@@ -3,10 +3,24 @@
 		"title": "General",
 		"description": "Basic parameters regarding node operation",
 		"configs": {
+			"alertnotify": {
+				"type": "text",
+				"title": "Alert Notification",
+				"description": "Execute command when an alert is raised (%s in cmd is replaced by message)",
+				"shortDescription": "Execute command when an alert is raised (%s is replaced by message)"
+			},
+			"allowignoredconf": {
+				"type": "checkbox",
+				"title": "Allow Ignored Config File",
+				"description": "For backwards compatibility, treat an unused bitcoin.conf file in the datadir as a warning, not an error",
+				"shortDescription": "Treat unused bitcoin.conf file in the datadir as warning, not error",
+				"defaultValue": "0"
+			},
 			"assumevalid": {
 				"type": "text",
 				"title": "Assume Valid Chain History",
 				"description": "If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all)",
+				"shortDescription": "If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification",
 				"defaultValue": {
 					"mainnet": "000000000000000000006e926737e6a349f7581525ad36e743dfe5f4bc3abbb7",
 					"testnet3": "000000000000000465b1a66c9f386308e8c75acef9201f3f577811da09fc90ad",
@@ -18,6 +32,7 @@
 				"type": "select",
 				"title": "Block Filter Index",
 				"description": "Maintain an index of compact filters by block. If set to 1, certain indexes are enabled (currently just basic)",
+				"shortDescription": "Maintain an index of compact filters by block",
 				"options": [
 					{ "value": "0", "label": "Disable" },
 					{ "value": "1", "label": "Enable" },
@@ -26,11 +41,44 @@
 				],
 				"defaultValue": "0"
 			},
+			"blocknotify": {
+				"type": "text",
+				"title": "Block Notification",
+				"description": "Execute command when the best block changes (%s in cmd is replaced by block hash)",
+				"shortDescription": "Execute command when the best block changes (%s is replaced by block hash)"
+			},
+			"blockreconstructionextratxn": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Block Reconstruction Transactions",
+				"description": "Extra transactions to keep in memory for compact block reconstructions",
+				"defaultValue": "100"
+			},
+			"blocksdir": {
+				"type": "text",
+				"title": "Block Data Storage Location",
+				"description": "Specify directory to hold blocks subdirectory for *.dat files",
+				"defaultValue": "value of <a href=\"#datadir\">datadir</a>"
+			},
+			"blocksonly": {
+				"type": "checkbox",
+				"title": "Blocks Only Mode",
+				"description": "Whether to reject unconfirmed transactions from network peers. Disables automatic broadcast and rebroadcast of transactions, unless the source peer has the 'forcerelay' permission. RPC transactions are not affected",
+				"shortDescription": "Whether to reject unconfirmed transactions from network peers",
+				"defaultValue": "0"
+			},
 			"blocksxor": {
 				"type": "checkbox",
 				"title": "Block Data XOR",
 				"description": "Whether an XOR-key applies to <a href=\"#blocksdir\">blocksdir</a> *.dat files. The created XOR-key will be zeros for an existing blocksdir or when 0 is set, and random for a freshly initialized blocksdir",
 				"defaultValue": "1"
+			},
+			"datadir": {
+				"type": "text",
+				"title": "Data Storage Location",
+				"description": "Specify data directory"
 			},
 			"loadblock": {
 				"type": "multiText",

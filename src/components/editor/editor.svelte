@@ -15,10 +15,7 @@
 			event.stopPropagation()
 			event.preventDefault()
 			// TODO: this only works if link target is inside open category rn
-			document.getElementById(href.slice(1))!.scrollIntoView({
-				behavior: 'smooth',
-				block: 'center',
-			})
+			document.getElementById(href.slice(1))!.scrollIntoView({ behavior: 'smooth' })
 		}
 	}
 </script>

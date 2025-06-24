@@ -73,7 +73,8 @@
 						</ul>
 					{:else}
 						<span>Default: </span>
-						<span>{defaultValue}</span>
+						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+						<span>{@html defaultValue}</span>
 					{/if}
 				</div>
 			{/if}

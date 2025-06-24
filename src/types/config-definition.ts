@@ -9,6 +9,7 @@ export interface ConfigDefinition {
 	}
 	title: string
 	description: string
+	shortDescription?: string
 	options?: {
 		value: string
 		label: string
