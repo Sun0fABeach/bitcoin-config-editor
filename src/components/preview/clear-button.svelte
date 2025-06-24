@@ -91,7 +91,7 @@
 		left: 50%;
 		transform: translate(-50%, -50%);
 		display: flex;
-		flex-direction: column;
+		flex-flow: column;
 		padding: 1rem;
 		border: 2px solid var(--color-element-border);
 		border-radius: 0.375rem;
@@ -104,10 +104,10 @@
 		}
 
 		> .dialog-buttons {
-			align-self: flex-end;
+			align-self: end;
 			display: flex;
-			margin-top: 1rem;
 			column-gap: 0.5rem;
+			margin-top: 1rem;
 		}
 	}
 </style>

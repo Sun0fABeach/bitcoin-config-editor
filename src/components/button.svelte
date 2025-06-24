@@ -31,7 +31,7 @@
 			--border-color-dark: hsl(from green h s l / 0.5);
 			--border-color-light: hsl(from green h s l / 0.8);
 
-			display: inline-flex;
+			display: inline flex;
 			justify-content: center;
 			align-items: center;
 			padding: 0.375rem 0.875rem;

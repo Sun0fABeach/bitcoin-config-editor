@@ -130,7 +130,7 @@
 
 	.content {
 		display: flex;
-		flex-direction: column;
+		flex-flow: column;
 		row-gap: 0.75rem;
 		padding: 0.75rem 0.375rem 0.5rem 0.875rem;
 		background-color: var(--color-popover-background);
@@ -148,7 +148,6 @@
 	.item {
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
 		column-gap: 1rem;
 		padding: 0.25rem 0;
 		border-radius: 0.25rem;
@@ -164,11 +163,8 @@
 		}
 
 		label {
-			flex-grow: 1;
+			flex: 1;
 			cursor: pointer;
-		}
-		:global(.checkbox) {
-			flex-shrink: 0;
 		}
 	}
 </style>

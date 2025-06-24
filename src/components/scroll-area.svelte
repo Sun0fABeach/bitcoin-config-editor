@@ -29,7 +29,7 @@
 <style lang="postcss">
 	.scroll-area-root {
 		display: flex;
-		flex-direction: column;
+		flex-flow: column;
 		height: 100%;
 		padding: var(--scroll-area-padding); /* to be defined by parent component */
 		overflow-y: hidden;

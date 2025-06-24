@@ -46,12 +46,12 @@
 
 		grid-area: editor;
 		display: flex;
-		flex-direction: column;
+		flex-flow: column;
 		overflow-y: hidden;
 
 		ul {
 			display: flex;
-			flex-direction: column;
+			flex-flow: column;
 
 			> li:not(:last-child)::after {
 				content: '';

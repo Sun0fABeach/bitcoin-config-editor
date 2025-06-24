@@ -19,8 +19,8 @@
 	menu {
 		grid-area: menu;
 		display: flex;
+		flex-flow: wrap;
 		align-items: center;
-		flex-wrap: wrap;
 		column-gap: 0.75rem;
 		row-gap: 0.75rem;
 		margin: 0;
@@ -28,9 +28,9 @@
 		border-bottom: 1px solid var(--color-layout-border);
 
 		> :global(:not(:first-child)) {
-			flex-grow: 1;
+			flex: 1 auto;
 			@media (min-width: 650px) {
-				flex-grow: 0;
+				flex: none;
 			}
 		}
 

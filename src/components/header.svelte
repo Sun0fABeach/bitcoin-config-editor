@@ -21,8 +21,8 @@
 		border-bottom: 2px solid var(--color-layout-border);
 
 		> :first-child {
-			display: inline-flex;
-			align-items: flex-end;
+			display: inline flex;
+			align-items: end;
 			margin-right: auto;
 
 			@media (min-width: 420px) {

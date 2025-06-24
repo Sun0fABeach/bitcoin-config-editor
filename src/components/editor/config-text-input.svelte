@@ -42,7 +42,7 @@
 <style lang="postcss">
 	.container {
 		display: flex;
-		flex-direction: column;
+		flex-flow: column;
 
 		> input {
 			color: var(--color-accent1);

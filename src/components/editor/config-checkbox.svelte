@@ -32,7 +32,6 @@
 
 		:global .checkbox {
 			position: relative;
-			flex-shrink: 0;
 		}
 
 		:global .checkbox:focus {

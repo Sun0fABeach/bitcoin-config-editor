@@ -45,7 +45,7 @@
 		--scroll-area-padding: 1rem calc(1rem + var(--scrollbar-width)) 1rem 1rem;
 
 		display: flex;
-		flex-direction: column;
+		flex-flow: column;
 		position: fixed;
 		top: 0;
 		left: 0;

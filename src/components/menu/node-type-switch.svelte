@@ -40,9 +40,8 @@
 	}
 
 	button {
-		display: inline-flex;
+		display: inline flex;
 		justify-content: center;
-		align-items: center;
 		width: 4rem;
 		height: 2rem;
 		border: 2px solid var(--color-element-border);
@@ -51,7 +50,7 @@
 	}
 
 	.knob {
-		display: inline-flex;
+		display: inline flex;
 		width: 1.75rem;
 		height: 1.75rem;
 		background-color: black;
@@ -74,7 +73,7 @@
 	}
 
 	label {
-		display: inline-flex;
+		display: inline flex;
 		align-items: center;
 		width: 3.5rem; /* keep text width stable when switching between "Core" and "Knots" */
 		padding: 0 0.375rem;

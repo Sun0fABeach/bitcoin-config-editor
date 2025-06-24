@@ -48,13 +48,13 @@
 		}
 
 		:global > :first-child {
-			flex-grow: 1;
+			flex: 1;
 		}
 		:global > :first-child > .checkbox {
 			margin-left: auto;
 		}
 		:global > :first-child > .trigger-button {
-			flex-grow: 1;
+			flex: 1;
 		}
 
 		:global > :last-child:disabled {

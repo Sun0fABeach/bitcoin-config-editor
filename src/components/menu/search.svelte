@@ -31,7 +31,7 @@
 
 <style lang="postcss">
 	div {
-		display: inline-flex;
+		display: inline flex;
 		align-items: center;
 		width: 12rem;
 		height: 2rem;
@@ -48,15 +48,14 @@
 		}
 
 		> label {
-			display: inline-flex;
-			align-items: center;
+			display: inline flex;
 			padding-left: 0.5rem;
 			cursor: inherit;
 		}
 
 		> input {
 			width: 0; /* reset browser defined width */
-			flex-grow: 1;
+			flex: 1;
 			margin-left: 0.5rem;
 
 			&::placeholder {
@@ -69,7 +68,7 @@
 		}
 
 		:global > .clear-button {
-			display: inline-flex;
+			display: inline flex;
 			margin-left: auto;
 			padding: 0.375rem;
 			background-color: transparent;

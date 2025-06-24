@@ -97,7 +97,6 @@
 		display: contents;
 
 		:global(.trigger-button) {
-			flex-shrink: 0;
 			justify-content: space-between;
 			position: relative;
 			column-gap: 0.5rem;
@@ -108,11 +107,8 @@
 			}
 
 			> :first-child {
-				flex-grow: 1;
+				flex: 1;
 				color: var(--color-accent1);
-			}
-			> :global(:nth-child(2)) {
-				flex-shrink: 0;
 			}
 
 			> .border-animation-horizontal,
@@ -202,7 +198,7 @@
 
 	.content {
 		display: flex;
-		flex-direction: column;
+		flex-flow: column;
 		width: var(--bits-select-anchor-width);
 		padding: 0.375rem 0.25rem;
 		background-color: var(--color-popover-background);
@@ -221,7 +217,7 @@
 			}
 
 			> :global(:nth-child(2)) {
-				flex-shrink: 0;
+				flex: none;
 			}
 		}
 	}

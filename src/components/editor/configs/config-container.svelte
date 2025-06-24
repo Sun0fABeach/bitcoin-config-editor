@@ -90,7 +90,7 @@
 <style lang="postcss">
 	.config-container {
 		display: flex;
-		flex-direction: column;
+		flex-flow: column;
 		row-gap: 0.75rem;
 		padding: 0.5rem 0 0.5rem 1rem;
 		cursor: pointer;
@@ -100,27 +100,27 @@
 		}
 
 		@media (800px <= width <= 1024px) or (min-width: calc(800px + 500px)) {
-			flex-direction: row;
-			align-items: flex-end;
+			flex-flow: row;
+			align-items: end;
 			column-gap: 1.5rem;
 
 			> .info {
-				flex-grow: 1;
-				align-self: flex-start;
+				flex: 1;
+				align-self: start;
 			}
 		}
 	}
 
 	.info {
 		display: flex;
-		flex-direction: column;
+		flex-flow: column;
 		row-gap: 0.5rem;
 		text-align: left;
 
 		> .heading {
 			display: flex;
+			flex-flow: wrap;
 			align-items: baseline;
-			flex-wrap: wrap;
 			column-gap: 0.75rem;
 			row-gap: 0.125rem;
 
@@ -137,7 +137,7 @@
 
 		> .settings {
 			display: flex;
-			flex-direction: column;
+			flex-flow: column;
 			row-gap: 0.25rem;
 
 			> .options,
@@ -154,7 +154,6 @@
 
 			> .default-value li {
 				display: flex;
-				flex-direction: row;
 				> :first-child {
 					color: var(--color-accent2);
 				}

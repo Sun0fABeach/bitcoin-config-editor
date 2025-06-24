@@ -39,8 +39,8 @@
 <style lang="postcss">
 	.error-container {
 		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
+		flex-flow: column;
+		align-items: start;
 		row-gap: 1rem;
 		padding: 0 2rem;
 
@@ -49,7 +49,8 @@
 		}
 
 		> div > :first-child {
-			margin-right: 0.5rem;
+			display: inline flow-root;
+			margin: 0 0.5rem 1rem 0;
 		}
 	}
 </style>

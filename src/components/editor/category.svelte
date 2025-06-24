@@ -116,8 +116,8 @@
 <style lang="postcss">
 	button {
 		display: flex;
-		flex-direction: column;
-		align-items: flex-start;
+		flex-flow: column;
+		align-items: start;
 		row-gap: 0.5rem;
 		width: 100%;
 		padding: 1.5rem 0;
@@ -153,13 +153,13 @@
 
 	ul {
 		display: flex;
-		flex-direction: column;
+		flex-flow: column;
 		row-gap: 1.5rem;
 		padding-bottom: 1.5rem;
 
 		> li {
 			display: flex;
-			flex-direction: column;
+			flex-flow: column;
 			border-left: 1px dashed var(--color-accent2);
 		}
 	}

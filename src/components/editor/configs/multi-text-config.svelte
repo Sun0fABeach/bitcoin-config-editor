@@ -99,10 +99,10 @@
 		--input-row-gap: 0.75rem;
 
 		display: flex;
-		flex-direction: column;
+		flex-flow: column;
 
 		:global > :last-child {
-			align-self: flex-end;
+			align-self: end;
 			margin-top: calc(var(--input-row-gap) / 2);
 		}
 	}
