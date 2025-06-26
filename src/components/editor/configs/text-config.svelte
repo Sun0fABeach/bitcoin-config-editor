@@ -10,9 +10,12 @@
 
 	type TextConfigProps = ConfigContainerBaseProps & {
 		value: EditorValueText
+		hex?: boolean
+		minLength?: number
+		maxLength?: number
 	}
 
-	let { value = $bindable(), ...info }: TextConfigProps = $props()
+	let { value = $bindable(), hex, minLength, maxLength, ...info }: TextConfigProps = $props()
 
 	let input: ConfigTextInput | null
 
@@ -27,7 +30,14 @@
 <div>
 	<ConfigContainer {value} {...info} onclick={onContainerClick}>
 		<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
-			<ConfigTextInput bind:value bind:this={input} />
+			{@const pattern = hex ? '[0-9a-fA-F]+' : undefined}
+			<ConfigTextInput
+				{pattern}
+				minlength={minLength}
+				maxlength={maxLength}
+				bind:value
+				bind:this={input}
+			/>
 		</InputRow>
 	</ConfigContainer>
 </div>

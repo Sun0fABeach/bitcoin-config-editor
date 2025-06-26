@@ -12,6 +12,7 @@
 		value: EditorValueNumber
 		min?: number
 		max?: number
+		invalidRange?: [number, number]
 		wholeNumber?: boolean
 	}
 
@@ -19,6 +20,7 @@
 		value = $bindable(),
 		min = -Infinity,
 		max = Infinity,
+		invalidRange,
 		wholeNumber = false,
 		...info
 	}: TextConfigProps = $props()
@@ -36,7 +38,7 @@
 <div>
 	<ConfigContainer {value} {...info} onclick={onContainerClick}>
 		<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
-			<ConfigTextInput {min} {max} {wholeNumber} bind:value bind:this={input} />
+			<ConfigTextInput {min} {max} {invalidRange} {wholeNumber} bind:value bind:this={input} />
 		</InputRow>
 	</ConfigContainer>
 </div>

@@ -57,6 +57,9 @@
 									title={definition.title}
 									description={definition.description}
 									defaultValue={definition.defaultValue}
+									hex={definition.typeConstraints?.hex}
+									minLength={definition.typeConstraints?.minLength}
+									maxLength={definition.typeConstraints?.maxLength}
 									bind:value={values[key] as EditorValueText}
 								/>
 							{:else if definition.type === EditorValueType.NUMBER}
@@ -67,6 +70,7 @@
 									defaultValue={definition.defaultValue}
 									min={definition.typeConstraints?.min}
 									max={definition.typeConstraints?.max}
+									invalidRange={definition.typeConstraints?.invalidRange}
 									wholeNumber={definition.typeConstraints?.wholeNumber}
 									bind:value={values[key] as EditorValueNumber}
 								/>

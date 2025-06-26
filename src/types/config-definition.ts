@@ -5,7 +5,11 @@ export interface ConfigDefinition {
 	typeConstraints?: {
 		min?: number
 		max?: number
+		invalidRange?: [number, number]
 		wholeNumber?: boolean
+		minLength?: number
+		maxLength?: number
+		hex?: boolean
 	}
 	title: string
 	description: string
