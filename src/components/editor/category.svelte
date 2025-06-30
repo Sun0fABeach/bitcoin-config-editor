@@ -25,9 +25,16 @@
 		description: string
 		configs: Record<string, ConfigDefinition>
 		values: Record<string, EditorValueAny>
+		onOpenFinished: () => void
 	}
 
-	const { title, description, configs, values = $bindable() }: CategoryProps = $props()
+	const {
+		title,
+		description,
+		configs,
+		values = $bindable(),
+		onOpenFinished,
+	}: CategoryProps = $props()
 </script>
 
 <Accordion.Item value={title}>
@@ -48,7 +55,7 @@
 	<Accordion.Content forceMount={true}>
 		{#snippet child({ props, open })}
 			{#if open}
-				<ul {...props} transition:slide>
+				<ul {...props} transition:slide onintroend={onOpenFinished}>
 					{#each Object.entries(configs) as [key, definition] (key)}
 						<li id={key}>
 							{#if definition.type === EditorValueType.TEXT}

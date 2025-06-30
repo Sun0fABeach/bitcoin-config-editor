@@ -8,16 +8,45 @@
 
 	let openCategories = $state<CategoryProps['title'][]>([])
 
-	const onClick = (event: MouseEvent) => {
+	const categoryIsOpen = (title: CategoryProps['title']) => openCategories.includes(title)
+
+	const openCategory = (title: CategoryProps['title']) => {
+		if (!categoryIsOpen(title)) {
+			openCategories.push(title)
+		}
+	}
+
+	const scrollIntoView = (id: string) => {
+		const scrollTarget = document.getElementById(id)
+		if (scrollTarget) {
+			scrollTarget.scrollIntoView({ behavior: 'smooth' })
+		}
+	}
+
+	const onClick = async (event: MouseEvent) => {
 		const target = event.target as HTMLElement
 		const href = target.getAttribute('href')
+
 		if (href) {
 			event.stopPropagation()
 			event.preventDefault()
-			// TODO: this only works if link target is inside open category rn
-			document.getElementById(href.slice(1))!.scrollIntoView({ behavior: 'smooth' })
+
+			const elementId = href.slice(1)
+			const categoryTitle = configStore.configIndex[elementId].category
+
+			if (categoryIsOpen(categoryTitle)) {
+				scrollIntoView(elementId)
+			} else {
+				openCategory(categoryTitle)
+				onCategoryOpenFinished = () => {
+					scrollIntoView(elementId)
+					onCategoryOpenFinished = () => {}
+				}
+			}
 		}
 	}
+
+	let onCategoryOpenFinished = $state(() => {}) // modified by onClick
 </script>
 
 <main>
@@ -27,7 +56,11 @@
 				<ul {...props}>
 					{#each configStore.categories as category (category.title)}
 						<li>
-							<Category {...category} bind:values={configStore.values} />
+							<Category
+								{...category}
+								bind:values={configStore.values}
+								onOpenFinished={onCategoryOpenFinished}
+							/>
 						</li>
 					{/each}
 				</ul>

@@ -343,6 +343,196 @@
 		"title": "Networking",
 		"description": "How your node interacts with other peers on the network",
 		"configs": {
+			"addnode": {
+				"type": "multiText",
+				"title": "Connect to Peer",
+				"description": "Add a node IP address to connect to and attempt to keep the connection open. This option can be set multiple times to add multiple nodes. Connections are limited to 8 at a time and are counted separately from the <a href=\"#maxconnections\">maxconnections</a> limit",
+				"shortDescription": "Add a node IP address to connect to and attempt to keep the connection open"
+			},
+			"asmap": {
+				"type": "text",
+				"title": "ASN Mapping",
+				"description": "Specify asn mapping used for bucketing of the peers. Relative paths will be prefixed by the net-specific datadir location",
+				"shortDescription": "Specify asn mapping used for bucketing of the peers",
+				"defaultValue": "ip_asn.map"
+			},
+			"bantime": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Peer Ban Time",
+				"description": "Default duration (in seconds) of manually configured bans",
+				"defaultValue": "86400"
+			},
+			"bind": {
+				"type": "text",
+				"title": "Bind to IP Address",
+				"description": "Bind to given address and always listen on it. Use [host]:port notation for IPv6. Append =onion to tag any incoming connections to that address and port as incoming Tor connections",
+				"shortDescription": "Bind to given address and always listen on it",
+				"defaultValue": {
+					"clearnet": "0.0.0.0",
+					"mainnet tor": "127.0.0.1:8334=onion",
+					"testnet3 tor": "127.0.0.1:18334=onion",
+					"testnet4 tor": "127.0.0.1:48334=onion",
+					"signet tor": "127.0.0.1:38334=onion",
+					"regtest tor": "127.0.0.1:18445=onion"
+				}
+			},
+			"cjdnsreachable": {
+				"type": "checkbox",
+				"title": "CJDNS Reachable",
+				"description": "If set, then this host is configured for CJDNS (connecting to fc00::/8 addresses would lead us to the CJDNS network)",
+				"shortDescription": "If set, then this host is configured for CJDNS",
+				"defaultValue": "0"
+			},
+			"connect": {
+				"type": "multiText",
+				"title": "Only Connect to Peer",
+				"description": "Connect only to the specified node, <a href=\"#noconnect\">noconnect</a> disables automatic connections (the rules for this peer are the same as for <a href=\"#addnode\">addnode</a>). This option can be specified multiple times to connect to multiple nodes",
+				"shortDescription": "Connect only to the specified node"
+			},
+			"discover": {
+				"type": "checkbox",
+				"title": "Discover IP Address",
+				"description": "Discover own IP addresses (default: 1 when <a href=\"#listen\">listening</a> and no <a href=\"#externalip\">externalip</a> or <a href=\"#proxy\">proxy</a>)",
+				"shortDescription": "Discover own IP addresses",
+				"defaultValue": "1"
+			},
+			"dns": {
+				"type": "checkbox",
+				"title": "Allow DNS Lookups",
+				"description": "Allow DNS lookups for <a href=\"#addnode\">addnode</a>, <a href=\"#seednode\">seednode</a> and <a href=\"#connect\">connect</a>",
+				"shortDescription": "Allow DNS lookups",
+				"defaultValue": "1"
+			},
+			"dnsseed": {
+				"type": "checkbox",
+				"title": "Use DNS Seed",
+				"description": "Query for peer addresses via DNS lookup, if low on addresses (default: 1 unless <a href=\"#connect\">connect</a> used or <a href=\"#maxconnections\">maxconnections</a>=0)",
+				"shortDescription": "Query for peer addresses via DNS lookup, if low on addresses",
+				"defaultValue": "1"
+			},
+			"externalip": {
+				"type": "text",
+				"title": "External IP Address",
+				"description": "Specify your own public IP address"
+			},
+			"feefilter": {
+				"type": "checkbox",
+				"title": "Fee Filter",
+				"description": "Tell other nodes to filter invs to us by our mempool min fee",
+				"defaultValue": "1"
+			},
+			"fixedseeds": {
+				"type": "checkbox",
+				"title": "Use Fixed Seeds",
+				"description": "Allow fixed seeds if DNS seeds don't provide peers",
+				"defaultValue": "1"
+			},
+			"forcednsseed": {
+				"type": "checkbox",
+				"title": "Force DNS Seed",
+				"description": "Always query for peer addresses via DNS lookup",
+				"defaultValue": "0"
+			},
+			"i2pacceptincoming": {
+				"type": "checkbox",
+				"title": "Accept Incoming I2P Connections",
+				"description": "Whether to accept inbound I2P connections. Ignored if <a href=\"#i2psam\">i2psam</a> is not set. Listening for incoming I2P connections is done through the SAM proxy, not by binding to a local address and port",
+				"shortDescription": "Whether to accept inbound I2P connections",
+				"defaultValue": "1"
+			},
+			"i2psam": {
+				"type": "text",
+				"title": "I2P SAM Proxy",
+				"description": "I2P SAM proxy &lt;ip:port&gt; to reach I2P peers and accept I2P connections"
+			},
+			"listen": {
+				"type": "checkbox",
+				"title": "Listen for Incoming Connections",
+				"description": "Accept connections from outside (default: 1 if no <a href=\"#proxy\">proxy</a>, <a href=\"#connect\">connect</a> or <a href=\"#maxconnections\">maxconnections</a>=0)",
+				"shortDescription": "Accept connections from outside",
+				"defaultValue": "1"
+			},
+			"listenonion": {
+				"type": "checkbox",
+				"title": "Tor Hidden Service",
+				"description": "Automatically create Tor onion service",
+				"defaultValue": "1"
+			},
+			"maxconnections": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Max Peer Connections",
+				"description": "Maintain at most <n> automatic connections to peers. This limit does not apply to connections manually added via <a href=\"#addnode\">addnode</a> or the addnode RPC, which have a separate limit of 8",
+				"defaultValue": "125"
+			},
+			"maxreceivebuffer": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Max Receive Buffer",
+				"description": "Maximum per-connection receive buffer, <n>*1000 bytes",
+				"defaultValue": "5000"
+			},
+			"maxsendbuffer": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Max Send Buffer",
+				"description": "Maximum per-connection send buffer, <n>*1000 bytes",
+				"defaultValue": "1000"
+			},
+			"maxuploadtarget": {
+				"type": "text",
+				"title": "Max Upload Target",
+				"description": "Tries to keep outbound traffic under the given target per 24h. Limit does not apply to peers with 'download' permission or blocks created within past week. 0 = no limit. Optional suffix units [k|K|m|M|g|G|t|T] (default: M). Lowercase is 1000 base while uppercase is 1024 base",
+				"shortDescription": "Tries to keep outbound traffic under the given target per 24h",
+				"defaultValue": "0M"
+			},
+			"natpmp": {
+				"type": "checkbox",
+				"title": "NAT Port Mapping Protocol",
+				"description": "Use NAT-PMP to map the listening port",
+				"defaultValue": "0"
+			},
+			"networkactive": {
+				"type": "checkbox",
+				"title": "Network Active",
+				"description": "Enable all P2P network activity. Can be changed by the setnetworkactive RPC command",
+				"shortDescription": "Enable all P2P network activity",
+				"defaultValue": "1"
+			},
+			"noconnect": {
+				"type": "checkbox",
+				"title": "No Automatic Connections",
+				"description": "Disable automatic connections to peers",
+				"defaultValue": "0"
+			},
+			"noonion": {
+				"type": "checkbox",
+				"title": "No Tor Proxy",
+				"description": "Disable connecting through separate SOCKS5 proxy &lt;ip:port|path&gt; to reach peers via Tor hidden services",
+				"shortDescription": "Disable connecting to Tor hidden services",
+				"defaultValue": "0"
+			},
+			"noproxy": {
+				"type": "checkbox",
+				"title": "No Proxy Connection",
+				"description": "Disable connecting through SOCKS5 proxy",
+				"defaultValue": "0"
+			},
+			"onion": {
+				"type": "text",
+				"title": "Tor Proxy",
+				"description": "Use separate SOCKS5 proxy &lt;ip:port|path&gt; to reach peers via Tor hidden services. Set <a href=\"#noonion\">noonion</a> to disable (default: <a href=\"#proxy\">proxy</a>). May be a local file path prefixed with 'unix:'",
+				"shortDescription": "Use separate SOCKS5 proxy <ip:port|path> to reach peers via Tor hidden services"
+			},
 			"onlynet": {
 				"type": "multiSelect",
 				"title": "Only Use Specific Network",
@@ -355,6 +545,52 @@
 					{ "value": "i2p", "label": "I2P" },
 					{ "value": "cjdns", "label": "cjdns" }
 				]
+			},
+			"peerblockfilters": {
+				"type": "checkbox",
+				"title": "Peer Block Filters",
+				"description": "Serve compact block filters to peers per BIP 157. NOTE: enabling this will force <a href=\"#blockfilterindex\">blockfilterindex</a> on",
+				"shortDescription": "Serve compact block filters to peers",
+				"defaultValue": "0"
+			},
+			"peerbloomfilters": {
+				"type": "checkbox",
+				"title": "Peer Bloom Filters",
+				"description": "Support filtering of blocks and transaction with bloom filters",
+				"defaultValue": "1"
+			},
+			"peertimeout": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 1
+				},
+				"title": "Peer Timeout",
+				"description": "Specify a p2p connection timeout delay in seconds. After connecting to a peer, wait this amount of time before considering disconnection based on inactivity",
+				"shortDescription": "Specify a p2p connection timeout delay in seconds",
+				"defaultValue": "60"
+			},
+			"port": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 1,
+					"max": 65535
+				},
+				"title": "Listen Port",
+				"description": "Listen for incoming connections on non-default port. Not relevant for I2P (see doc/i2p.md). If set to a value x, the default onion listening port will be set to x+1",
+				"shortDescription": "Listen for incoming connections on non-default port",
+				"defaultValue": {
+					"mainnet": "8333",
+					"testnet3": "18333",
+					"testnet4": "48333",
+					"signet": "38333",
+					"regtest": "18444"
+				}
+			},
+			"proxy": {
+				"type": "text",
+				"title": "Proxy Connection",
+				"description": "Connect through &lt;ip:port|path&gt; SOCKS5 proxy, set <a href=\"#noproxy\">noproxy</a> to disable. May be a local file path prefixed with 'unix:' if the proxy supports it",
+				"shortDescription": "Connect through <ip:port|path> SOCKS5 proxy"
 			}
 		}
 	},
