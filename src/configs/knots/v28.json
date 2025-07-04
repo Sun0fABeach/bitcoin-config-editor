@@ -167,7 +167,7 @@
 					"min": 0
 				},
 				"title": "Low Memory",
-				"description": "If system available memory falls below <n> MiB, flush caches (0 to disable)",
+				"description": "If system available memory falls below &lt;n&gt; MiB, flush caches (0 to disable)",
 				"shortDescription": "If system available memory falls below <n> MiB, flush caches",
 				"defaultValue": "10"
 			},
@@ -177,7 +177,7 @@
 					"min": 0
 				},
 				"title": "Max Mempool Size",
-				"description": "Keep the transaction memory pool below <n> megabytes",
+				"description": "Keep the transaction memory pool below &lt;n&gt; megabytes",
 				"defaultValue": "300"
 			},
 			"maxorphantx": {
@@ -187,7 +187,7 @@
 					"wholeNumber": true
 				},
 				"title": "Max Orphan Transactions",
-				"description": "Keep at most <n> unconnectable transactions in memory",
+				"description": "Keep at most &lt;n&gt; unconnectable transactions in memory",
 				"defaultValue": "100"
 			},
 			"mempoolexpiry": {
@@ -196,7 +196,7 @@
 					"min": 0
 				},
 				"title": "Mempool Expiration",
-				"description": "Do not keep transactions in the mempool longer than <n> hours",
+				"description": "Do not keep transactions in the mempool longer than &lt;n&gt; hours",
 				"defaultValue": "336"
 			},
 			"minimumchainwork": {
@@ -230,7 +230,8 @@
 			"par": {
 				"type": "number",
 				"typeConstraints": {
-					"max": 15
+					"max": 15,
+					"wholeNumber": true
 				},
 				"title": "Script Verification Parallelization",
 				"description": "Set the number of script verification threads (0 = automatic, up to 15, less than 0 = leave that many cores free)",
@@ -467,7 +468,7 @@
 					"min": 0
 				},
 				"title": "Max Peer Connections",
-				"description": "Maintain at most <n> automatic connections to peers. This limit does not apply to connections manually added via <a href=\"#addnode\">addnode</a> or the addnode RPC, which have a separate limit of 8",
+				"description": "Maintain at most &lt;n&gt; automatic connections to peers. This limit does not apply to connections manually added via <a href=\"#addnode\">addnode</a> or the addnode RPC, which have a separate limit of 8",
 				"defaultValue": "125"
 			},
 			"maxreceivebuffer": {
@@ -476,7 +477,7 @@
 					"min": 0
 				},
 				"title": "Max Receive Buffer",
-				"description": "Maximum per-connection receive buffer, <n>*1000 bytes",
+				"description": "Maximum per-connection receive buffer, &lt;n&gt;*1000 bytes",
 				"defaultValue": "5000"
 			},
 			"maxsendbuffer": {
@@ -485,7 +486,7 @@
 					"min": 0
 				},
 				"title": "Max Send Buffer",
-				"description": "Maximum per-connection send buffer, <n>*1000 bytes",
+				"description": "Maximum per-connection send buffer, &lt;n&gt;*1000 bytes",
 				"defaultValue": "1000"
 			},
 			"maxuploadtarget": {
@@ -562,7 +563,8 @@
 			"peertimeout": {
 				"type": "number",
 				"typeConstraints": {
-					"min": 1
+					"min": 1,
+					"wholeNumber": true
 				},
 				"title": "Peer Timeout",
 				"description": "Specify a p2p connection timeout delay in seconds. After connecting to a peer, wait this amount of time before considering disconnection based on inactivity",
@@ -591,6 +593,85 @@
 				"title": "Proxy Connection",
 				"description": "Connect through &lt;ip:port|path&gt; SOCKS5 proxy, set <a href=\"#noproxy\">noproxy</a> to disable. May be a local file path prefixed with 'unix:' if the proxy supports it",
 				"shortDescription": "Connect through <ip:port|path> SOCKS5 proxy"
+			},
+			"proxyrandomize": {
+				"type": "checkbox",
+				"title": "Randomize Proxy",
+				"description": "Randomize credentials for every proxy connection. This enables Tor stream isolation",
+				"shortDescription": "Randomize credentials for every proxy connection",
+				"defaultValue": "1"
+			},
+			"seednode": {
+				"type": "multiText",
+				"title": "Seed Node",
+				"description": "Connect to a node (IP address) to retrieve peer addresses, then disconnect. This option can be specified multiple times to connect to multiple nodes. During startup, seed nodes will be tried before <a href=\"#dnsseed\">dnsseeds</a>",
+				"shortDescription": "Connect to a node (IP address) to retrieve peer addresses, then disconnect"
+			},
+			"timeout": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 1,
+					"wholeNumber": true
+				},
+				"title": "Connection Timeout",
+				"description": "Initial peer connection timeout in milliseconds. If an initial attempt to connect is unsuccessful after this amount of time, drop it",
+				"shortDescription": "Initial peer connection timeout in milliseconds",
+				"defaultValue": "5000"
+			},
+			"torcontrol": {
+				"type": "text",
+				"title": "Tor Control",
+				"description": "Tor control  &lt;ip:port&gt; to use if onion listening enabled. If no port is specified, the default port of 9051 will be used",
+				"shortDescription": "Tor control <ip:port> to use if onion listening enabled",
+				"defaultValue": "127.0.0.1:9051"
+			},
+			"torpassword": {
+				"type": "text",
+				"title": "Tor Control Password",
+				"description": "Tor control port password"
+			},
+			"txreconciliation": {
+				"type": "checkbox",
+				"title": "Transaction Reconciliation",
+				"description": "Enable transaction reconciliations per BIP 330",
+				"defaultValue": "0"
+			},
+			"uaappend": {
+				"type": "text",
+				"title": "User Agent Append",
+				"description": "Append literal to the user agent string (should only be used for software embedding)",
+				"shortDescription": "Append literal to the user agent string"
+			},
+			"upnp": {
+				"type": "checkbox",
+				"title": "Transaction Reconciliation",
+				"description": "Use UPnP to map the listening port",
+				"defaultValue": "0"
+			},
+			"v2onlyclearnet": {
+				"type": "checkbox",
+				"title": "v2 Only Clearnet",
+				"description": "Disallow outbound v1 connections on IPV4/IPV6. Enable this option only if you really need it. Use <a href=\"#listen\">listen</a>=0 to disable inbound connections since they can be unencrypted",
+				"shortDescription": "Disallow outbound v1 connections on IPV4/IPV6",
+				"defaultValue": "0"
+			},
+			"v2transport": {
+				"type": "checkbox",
+				"title": "v2 Transport",
+				"description": "Support encrypted v2 transport protocol",
+				"defaultValue": "1"
+			},
+			"whitebind": {
+				"type": "multiText",
+				"title": "Whitelist Bound IP Address",
+				"description": "Bind to the given address and add permission flags &lt;[permissions@]addr&gt; to the peers connecting to it. Use [host]:port notation for IPv6. Allowed permissions:<br><br><dl><dt>bloomfilter</dt><dd>allow requesting BIP37 filtered blocks and transactions</dd><br><dt>blockfilters</dt><dd>serve compact block filters to peers per BIP157</dd><br><dt>noban</dt><dd>do not ban for misbehavior; implies download</dd><br><dt>forcerelay</dt><dd>relay transactions that are already in the mempool; implies relay</dd><br><dt>relay</dt><dd>relay even in <a href=\"#blocksonly\">blocksonly</a> mode, and unlimited transaction announcements</dd><br><dt>mempool</dt><dd>allow requesting BIP35 mempool contents</dd><br><dt>download</dt><dd>allow getheaders during IBD, no disconnect after maxuploadtarget limit</dd><br><dt>addr</dt><dd>responses to GETADDR avoid hitting the cache and contain random records with the most up-to-date info</dd><br><dt>forceinbound</dt><dd>when connections are full, attempt to evict a random unprotected inbound peer to open a slot; implies noban</dd><br><br> Specify multiple permissions separated by commas (default: download,noban,mempool,relay). Can be specified multiple times.",
+				"shortDescription": "Bind to the given address and add permission flags to the peers connecting to it"
+			},
+			"whitelist": {
+				"type": "multiText",
+				"title": "Whitelist Bound IP Address",
+				"description": "Add permission flags &lt;[permissions@]IP address or network&gt; to the peers using the given IP address (e.g. 1.2.3.4) or CIDR-notated network (e.g. 1.2.3.0/24). Uses the same permissions as <a href=\"#whitebind\">whitebind</a>. Additional flags \"in\" and \"out\" control whether permissions apply to incoming connections and/or outgoing (default: incoming only). Can be specified multiple times",
+				"shortDescription": "Add permission flags to the peers using the given IP address"
 			}
 		}
 	},
@@ -623,7 +704,221 @@
 	{
 		"title": "Wallet",
 		"description": "Behavior of your node's wallet",
-		"configs": {}
+		"configs": {
+			"addresstype": {
+				"type": "select",
+				"title": "Address Type",
+				"description": "What type of addresses to use",
+				"options": [
+					{ "value": "legacy", "label": "Legacy" },
+					{ "value": "p2sh-segwit", "label": "P2SH Wrapped SegWit" },
+					{ "value": "bech32", "label": "Bech32" },
+					{ "value": "bech32m", "label": "Bech32m" }
+				],
+				"defaultValue": "bech32"
+			},
+			"avoidpartialspends": {
+				"type": "checkbox",
+				"title": "Avoid Partial Spends",
+				"description": "Group outputs by address, selecting many (possibly all) or none, instead of selecting on a per-output basis. Privacy is improved as addresses are mostly swept with fewer transactions and outputs are aggregated in clean change addresses. It may result in higher fees due to less optimal coin selection caused by this added limitation and possibly a larger-than-necessary number of inputs being used. Always enabled for wallets with \"avoid_reuse\" enabled, otherwise default: 0",
+				"shortDescription": "Group outputs by address, selecting many (possibly all) or none, instead of selecting on a per-output basis",
+				"defaultValue": "0"
+			},
+			"changetype": {
+				"type": "select",
+				"title": "Change Address Type",
+				"description": "What type of change address to use. Default is \"legacy\" when <a href=\"#addresstype\">addresstype</a>=legacy, else it is an implementation detail",
+				"shortDescription": "What type of change address to use",
+				"options": [
+					{ "value": "legacy", "label": "Legacy" },
+					{ "value": "p2sh-segwit", "label": "P2SH Wrapped SegWit" },
+					{ "value": "bech32", "label": "Bech32" },
+					{ "value": "bech32m", "label": "Bech32m" }
+				],
+				"defaultValue": "bech32"
+			},
+			"consolidatefeerate": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Consolidation Fee Rate",
+				"description": "The maximum feerate (in BTC/kvB) at which transaction building may use more inputs than strictly necessary so that the wallet's UTXO pool can be reduced",
+				"shortDescription": "Maximum feerate (in BTC/kvB) at which transactions may use more inputs",
+				"defaultValue": "0.0001"
+			},
+			"dblogsize": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "DB Log Size",
+				"description": "Flush wallet database activity from memory to disk log every &lt;n&gt; megabytes",
+				"defaultValue": "100"
+			},
+			"disablewallet": {
+				"type": "checkbox",
+				"title": "Disable Wallet",
+				"description": "Do not load the wallet and disable wallet RPC calls",
+				"defaultValue": "0"
+			},
+			"discardfee": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Discard Change Fee",
+				"description": "The fee rate (in BTC/kB) that indicates your tolerance for discarding change by adding it to the fee. Note: An output is discarded if it is dust at this rate, but we will always discard up to the dust relay fee and a discard fee above that is limited by the fee estimate for the longest target",
+				"shortDescription": "Fee rate (in BTC/kB) that indicates tolerance for discarding change by adding it to the fee",
+				"defaultValue": "0.0001"
+			},
+			"fallbackfee": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Fallback Transaction Fee",
+				"description": "A fee rate (in BTC/kB) that will be used when fee estimation has insufficient data. Set to 0 to entirely disable the fallbackfee feature",
+				"shortDescription": "Fee rate (in BTC/kB) that will be used when fee estimation has insufficient data",
+				"defaultValue": "0.0"
+			},
+			"flushwallet": {
+				"type": "checkbox",
+				"title": "Flush Wallet Automatically",
+				"description": "Run a thread to flush wallet periodically",
+				"defaultValue": "1"
+			},
+			"keypool": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Key Pool Size",
+				"description": "Set key pool size. Warning: Smaller sizes may increase the risk of losing funds when restoring from an old backup, if none of the addresses in the original keypool have been used",
+				"shortDescription": "Set key pool size",
+				"defaultValue": "1000"
+			},
+			"maxapsfee": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Max Avoid Partial Spend Fee",
+				"description": "Spend up to this amount in additional (absolute) fees (in BTC) if it allows the use of partial spend avoidance",
+				"shortDescription": "Spend up to this amount in additional (absolute) fees (in BTC) to avoid partial spends",
+				"defaultValue": "0.0"
+			},
+			"mintxfee": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Minimum Transaction Fee",
+				"description": "Fee rates (in BTC/kB) smaller than this are considered zero fee for transaction creation",
+				"shortDescription": "Fee rates (in BTC/kB) smaller than this are considered zero for tx creation",
+				"defaultValue": "0.00001"
+			},
+			"paytxfee": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Pay Transaction Fee",
+				"description": "Fee rate (in BTC/kvB) to add to transactions you send",
+				"defaultValue": "0.0"
+			},
+			"privdb": {
+				"type": "checkbox",
+				"title": "Private DB",
+				"description": "Set the DB_PRIVATE flag in the wallet db environment",
+				"defaultValue": "1"
+			},
+			"signer": {
+				"type": "text",
+				"title": "Signer Command",
+				"description": "External signing tool, see doc/external-signer.md"
+			},
+			"spendzeroconfchange": {
+				"type": "checkbox",
+				"title": "Spend Unconfirmed Change",
+				"description": "Spend unconfirmed change when sending transactions",
+				"defaultValue": "1"
+			},
+			"swapbdbendian": {
+				"type": "checkbox",
+				"title": "Swap DB Endianness",
+				"description": "Swaps the internal endianness of BDB wallet databases",
+				"defaultValue": "0"
+			},
+			"txconfirmtarget": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Transaction Fee Confirmation Target",
+				"description": "If <a href=\"#paytxfee\">paytxfee</a> is not set, include enough fee so that transactions begin confirmation on average within n blocks",
+				"shortDescription": "If paytxfee not set, add fee so txs begin confirmation on avg within n blocks",
+				"defaultValue": "144"
+			},
+			"unsafesqlitesync": {
+				"type": "checkbox",
+				"title": "Unsafe SQL Lite Sync",
+				"description": "Set SQLite synchronous=OFF to disable waiting for the database to sync to disk. This is unsafe and can cause data loss and corruption. This option is only used by tests to improve their performance",
+				"shortDescription": "Set SQLite synchronous=OFF to disable waiting for database to sync to disk",
+				"defaultValue": "0"
+			},
+			"wallet": {
+				"type": "multiText",
+				"title": "Wallet Path",
+				"description": "Specify wallet path to load at startup. Can be used multiple times to load multiple wallets. Path is to a directory containing wallet data and log files. If the path is not absolute, it is interpreted relative to <a href=\"#walletdir\">walletdir</a>. This only loads existing wallets and does not create new ones. For backwards compatibility this also accepts names of existing top-level data files in <a href=\"#walletdir\">walletdir</a>",
+				"shortDescription": "Specify wallet path to load at startup"
+			},
+			"walletbroadcast": {
+				"type": "checkbox",
+				"title": "Wallet Transaction Broadcast",
+				"description": "Make the wallet broadcast transactions",
+				"defaultValue": "1"
+			},
+			"walletcrosschain": {
+				"type": "checkbox",
+				"title": "Wallet Cross Chain",
+				"description": "Allow reusing wallet files across chains",
+				"defaultValue": "0"
+			},
+			"walletdir": {
+				"type": "text",
+				"title": "Wallet Directory Location",
+				"description": "Specify directory to hold wallets (default: <a href=\"#datadir\">&lt;datadir&gt;</a>/wallets if it exists, otherwise <a href=\"#datadir\">&lt;datadir&gt;</a>)",
+				"shortDescription": "Specify directory to hold wallets",
+				"defaultValue": "<a href=\"#datadir\">&lt;datadir&gt;</a>[/wallets]"
+			},
+			"walletimplicitsegwit": {
+				"type": "checkbox",
+				"title": "Wallet Implicit Segwit",
+				"description": "Support segwit when restoring wallet backups and importing keys",
+				"defaultValue": "0"
+			},
+			"walletnotify": {
+				"type": "text",
+				"title": "Wallet Notification",
+				"description": "Execute command when a wallet transaction changes. %s in cmd is replaced by TxID, %w is replaced by wallet name, %b is replaced by the hash of the block including the transaction (set to 'unconfirmed' if the transaction is not included) and %h is replaced by the block height (-1 if not included). %w should NOT be quoted because this would break shell escaping used to invoke the command",
+				"shortDescription": "Execute command when a wallet transaction changes"
+			},
+			"walletrbf": {
+				"type": "checkbox",
+				"title": "Enable Replace By Fee Transactions",
+				"description": "Send transactions with full-RBF opt-in enabled (RPC only)",
+				"defaultValue": "1"
+			},
+			"walletrejectlongchains": {
+				"type": "checkbox",
+				"title": "Reject Long Transaction Chains",
+				"description": "Wallet will not create transactions that violate mempool chain limits",
+				"defaultValue": "1"
+			}
+		}
 	},
 	{
 		"title": "ZeroMQ",
