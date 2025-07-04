@@ -858,8 +858,8 @@
 					"wholeNumber": true
 				},
 				"title": "Transaction Fee Confirmation Target",
-				"description": "If <a href=\"#paytxfee\">paytxfee</a> is not set, include enough fee so that transactions begin confirmation on average within n blocks",
-				"shortDescription": "If paytxfee not set, add fee so txs begin confirmation on avg within n blocks",
+				"description": "If <a href=\"#paytxfee\">paytxfee</a> is not set, include enough fee so that transactions begin confirmation on average within &lt;n&gt; blocks",
+				"shortDescription": "If paytxfee not set, add fee so txs begin confirmation on avg within <n> blocks",
 				"defaultValue": "144"
 			},
 			"unsafesqlitesync": {

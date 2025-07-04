@@ -57,7 +57,7 @@
 			{#if open}
 				<ul {...props} transition:slide onintroend={onOpenFinished}>
 					{#each Object.entries(configs) as [key, definition] (key)}
-						<li id={key}>
+						<li class="config-list-item" id={key}>
 							{#if definition.type === EditorValueType.TEXT}
 								<TextConfig
 									{key}

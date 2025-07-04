@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { goto, afterNavigate, disableScrollHandling } from '$app/navigation'
 	import { Accordion } from 'bits-ui'
 	import ScrollArea from '@/components/scroll-area.svelte'
 	import Category, { type CategoryProps } from '@/components/editor/category.svelte'
@@ -23,6 +24,35 @@
 		}
 	}
 
+	let doubleNavigation = false
+
+	afterNavigate((navigation) => {
+		if (doubleNavigation) {
+			doubleNavigation = false
+			return
+		}
+
+		const hash = navigation.to?.url.hash
+		if (!hash) {
+			return
+		}
+
+		disableScrollHandling()
+
+		const elementId = hash.slice(1)
+		const categoryTitle = configStore.configIndex[elementId].category
+
+		if (categoryIsOpen(categoryTitle)) {
+			scrollIntoView(elementId)
+		} else {
+			openCategory(categoryTitle)
+			onCategoryOpenFinished = () => {
+				scrollIntoView(elementId)
+				onCategoryOpenFinished = () => {}
+			}
+		}
+	})
+
 	const onClick = async (event: MouseEvent) => {
 		const target = event.target as HTMLElement
 		const href = target.getAttribute('href')
@@ -31,18 +61,14 @@
 			event.stopPropagation()
 			event.preventDefault()
 
-			const elementId = href.slice(1)
-			const categoryTitle = configStore.configIndex[elementId].category
+			const clickedConfigId = target.closest('.config-list-item')!.id
+			const gotoConfigId = href.slice(1)
 
-			if (categoryIsOpen(categoryTitle)) {
-				scrollIntoView(elementId)
-			} else {
-				openCategory(categoryTitle)
-				onCategoryOpenFinished = () => {
-					scrollIntoView(elementId)
-					onCategoryOpenFinished = () => {}
-				}
-			}
+			doubleNavigation = true
+			// remember where we navigated from to enable return via browser-back
+			// keepFocus flag also required to prevent native scroll
+			await goto(`#${clickedConfigId}`, { noScroll: true, keepFocus: true })
+			goto(`#${gotoConfigId}`, { noScroll: true, keepFocus: true })
 		}
 	}
 
