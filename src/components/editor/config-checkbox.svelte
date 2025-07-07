@@ -15,53 +15,67 @@
 	export const focus = () => ref?.focus()
 </script>
 
-<div>
-	<Checkbox
-		class="checkbox"
-		bind:checked={() => !!checked, (c) => (checked = c)}
-		indeterminate={checked === unset[EditorValueType.CHECKBOX]}
-		checkmarkColor={colors.accent1}
-		bind:this={ref}
-	/>
+<div class="container">
+	<div class="checkbox-wrapper">
+		<Checkbox
+			class="checkbox"
+			bind:checked={() => !!checked, (c) => (checked = c)}
+			indeterminate={checked === unset[EditorValueType.CHECKBOX]}
+			checkmarkColor={colors.accent1}
+			bind:this={ref}
+		/>
+		<div class="outline"></div>
+	</div>
 </div>
 
 <style lang="postcss">
-	/* wrapper div's sole purpose is to cause tighter scoping of :global() styles */
-	div {
-		display: contents;
+	.container {
+		display: flex;
+		justify-content: end;
+		align-items: center;
 
-		:global .checkbox {
+		.checkbox-wrapper {
 			position: relative;
-		}
 
-		:global .checkbox:focus {
-			outline: none;
-		}
+			.outline {
+				position: absolute;
+				top: -10px;
+				bottom: -10px;
+				left: -10px;
+				right: -10px;
+				cursor: pointer;
+				pointer-events: none;
+			}
 
-		:global .checkbox::after {
-			content: '';
-			position: absolute;
-			top: var(--checkbox-highlight-border-offset, -10px);
-			bottom: var(--checkbox-highlight-border-offset, -10px);
-			left: var(--checkbox-highlight-border-offset, -10px);
-			right: var(--checkbox-highlight-border-offset, -10px);
-			border: 1px solid var(--checkbox-highlight-border-color, transparent);
-			border-radius: 0.25rem;
-			transition:
-				top 0.3s,
-				bottom 0.3s,
-				left 0.3s,
-				right 0.3s,
-				border-color 0.3s;
-		}
+			.outline::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				border: 1px solid transparent;
+				border-radius: 0.25rem;
+				transition:
+					top 0.3s,
+					bottom 0.3s,
+					left 0.3s,
+					right 0.3s,
+					border-color 0.3s;
+			}
 
-		:global(.checkbox:hover::after),
-		:global(.checkbox:focus::after) {
-			top: -1px;
-			bottom: -1px;
-			left: -1px;
-			right: -1px;
-			border-color: var(--color-accent1);
+			&:hover > .outline::after,
+			:global(.checkbox:focus + .outline::after) {
+				top: 10px;
+				bottom: 10px;
+				left: 10px;
+				right: 10px;
+				border-color: var(--color-accent1);
+			}
+
+			:global .checkbox:focus {
+				outline: none;
+			}
 		}
 	}
 </style>

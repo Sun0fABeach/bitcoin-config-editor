@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { useId } from 'bits-ui'
 	import ConfigContainer, {
 		type ConfigContainerBaseProps,
 	} from '@/components/editor/configs/config-container.svelte'
@@ -18,34 +17,13 @@
 
 	const options = items.map(({ value }) => value)
 
-	let open = $state(false)
-	let select: ConfigSelect | null = null
-	const containerId = useId()
-
-	const onContainerClick = () => {
-		select?.focus()
-		open = !open
-	}
-
-	const onDeleteClick = (event: MouseEvent) => {
-		event.stopPropagation()
+	const onDeleteClick = () => {
 		value = unset[EditorValueType.SELECT]
 	}
 </script>
 
-<div>
-	<ConfigContainer {value} {options} {...info} id={containerId} onclick={onContainerClick}>
-		<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
-			<ConfigSelect bind:open bind:value {items} {containerId} bind:this={select} />
-		</InputRow>
-	</ConfigContainer>
-</div>
-
-<style lang="postcss">
-	div {
-		display: contents;
-		&:hover {
-			--select-highlight-border-expansion: 100%;
-		}
-	}
-</style>
+<ConfigContainer {value} {options} {...info}>
+	<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
+		<ConfigSelect bind:value {items} />
+	</InputRow>
+</ConfigContainer>

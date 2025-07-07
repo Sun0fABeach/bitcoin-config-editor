@@ -59,5 +59,9 @@
 			border-bottom-color: var(--border-color-light);
 			border-right-color: var(--border-color-light);
 		}
+		.bce-button:disabled {
+			color: var(--color-text-medium);
+			pointer-events: none;
+		}
 	}
 </style>

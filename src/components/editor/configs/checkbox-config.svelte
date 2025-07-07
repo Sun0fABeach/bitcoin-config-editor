@@ -14,33 +14,13 @@
 
 	let { checked = $bindable(), ...info }: CheckConfigProps = $props()
 
-	let checkbox: ConfigCheckbox | null = null
-
-	const onContainerClick = () => {
-		checkbox?.focus()
-		checked = !checked
-	}
-
-	const onDeleteClick = (event: MouseEvent) => {
-		event.stopPropagation()
+	const onDeleteClick = () => {
 		checked = unset[EditorValueType.CHECKBOX]
 	}
 </script>
 
-<div>
-	<ConfigContainer value={checked} {...info} onclick={onContainerClick}>
-		<InputRow deleteDisabled={checked === unset[EditorValueType.CHECKBOX]} ondelete={onDeleteClick}>
-			<ConfigCheckbox {checked} bind:this={checkbox} />
-		</InputRow>
-	</ConfigContainer>
-</div>
-
-<style lang="postcss">
-	div {
-		display: contents;
-		&:hover {
-			--checkbox-highlight-border-offset: -1px;
-			--checkbox-highlight-border-color: var(--color-accent1);
-		}
-	}
-</style>
+<ConfigContainer value={checked} {...info}>
+	<InputRow deleteDisabled={checked === unset[EditorValueType.CHECKBOX]} ondelete={onDeleteClick}>
+		<ConfigCheckbox bind:checked />
+	</InputRow>
+</ConfigContainer>

@@ -17,36 +17,14 @@
 
 	let { value = $bindable(), hex, minLength, maxLength, ...info }: TextConfigProps = $props()
 
-	let input: ConfigTextInput | null
-
-	const onContainerClick = () => input?.focus()
-
-	const onDeleteClick = (event: MouseEvent) => {
-		event.stopPropagation()
+	const onDeleteClick = () => {
 		value = unset[EditorValueType.TEXT]
 	}
 </script>
 
-<div>
-	<ConfigContainer {value} {...info} onclick={onContainerClick}>
-		<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
-			{@const pattern = hex ? '[0-9a-fA-F]+' : undefined}
-			<ConfigTextInput
-				{pattern}
-				minlength={minLength}
-				maxlength={maxLength}
-				bind:value
-				bind:this={input}
-			/>
-		</InputRow>
-	</ConfigContainer>
-</div>
-
-<style lang="postcss">
-	div {
-		display: contents;
-		&:hover {
-			--input-highlight-underline-width: 100%;
-		}
-	}
-</style>
+<ConfigContainer {value} {...info}>
+	<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
+		{@const pattern = hex ? '[0-9a-fA-F]+' : undefined}
+		<ConfigTextInput {pattern} minlength={minLength} maxlength={maxLength} bind:value />
+	</InputRow>
+</ConfigContainer>

@@ -33,16 +33,11 @@
 		mappedValues.length === 1 && mappedValues[0].value === unset[EditorValueType.SELECT],
 	)
 
-	const containerId = useId()
-	const selects: ConfigSelect[] = $state([])
-
 	const closeAll = () => (open = open.map(() => false))
 
 	const addSelect = async () => {
 		mappedValues.push({ value: unset[EditorValueType.SELECT], id: useId() })
 		open.push(false)
-		await tick()
-		selects[mappedValues.length - 1].focus()
 	}
 
 	const updateSelect = (newValue: SelectItem['value'], rowIdx: number) => {
@@ -68,22 +63,7 @@
 
 	/* event handlers */
 
-	const onContainerClick = () => {
-		const openIndex = open.findIndex((isOpen) => isOpen)
-		if (openIndex !== -1) {
-			open[openIndex] = false
-		} else {
-			open[0] = true
-		}
-	}
-
-	const onInputRowClick = (event: MouseEvent) => {
-		// UX tweak: do nothing when user (mis-)clicks gap between select and delete icon
-		event.stopPropagation()
-	}
-
-	const onAddClick = async (event: MouseEvent) => {
-		event.stopPropagation()
+	const onAddClick = () => {
 		closeAll()
 		addSelect()
 	}
@@ -92,48 +72,31 @@
 		updateSelect(newValue, rowIdx)
 	}
 
-	const onDeleteClick = async (event: MouseEvent, rowIdx: number) => {
-		event.stopPropagation()
+	const onDeleteClick = async (rowIdx: number) => {
 		closeAll()
 		await tick() // needed in case select to delete is currently open
 		deleteSelect(rowIdx)
 	}
 </script>
 
-<div class="wrapper">
-	<ConfigContainer value={values} {options} {...info} id={containerId} onclick={onContainerClick}>
-		<div class="inputs-container">
-			{#each mappedValues as { value, id }, rowIdx (id)}
-				<InputRow
-					withTransition
-					{deleteDisabled}
-					onclick={onInputRowClick}
-					ondelete={(e) => onDeleteClick(e, rowIdx)}
-				>
-					<ConfigSelect
-						bind:open={open[rowIdx]}
-						bind:value={() => value, (v) => onUpdate(v, rowIdx)}
-						{items}
-						{containerId}
-						bind:this={selects[rowIdx]}
-					/>
-				</InputRow>
-			{/each}
-			<Button icon noBorder onclick={onAddClick}>
-				<Plus />
-			</Button>
-		</div>
-	</ConfigContainer>
-</div>
+<ConfigContainer value={values} {options} {...info}>
+	<div class="inputs-container">
+		{#each mappedValues as { value, id }, rowIdx (id)}
+			<InputRow withTransition {deleteDisabled} ondelete={() => onDeleteClick(rowIdx)}>
+				<ConfigSelect
+					bind:open={open[rowIdx]}
+					bind:value={() => value, (v) => onUpdate(v, rowIdx)}
+					{items}
+				/>
+			</InputRow>
+		{/each}
+		<Button icon noBorder onclick={onAddClick}>
+			<Plus />
+		</Button>
+	</div>
+</ConfigContainer>
 
 <style lang="postcss">
-	.wrapper {
-		display: contents;
-		&:hover {
-			--select-highlight-border-expansion: 100%;
-		}
-	}
-
 	.inputs-container {
 		--input-row-gap: 0.75rem;
 

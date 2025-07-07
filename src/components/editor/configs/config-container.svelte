@@ -94,7 +94,6 @@
 		flex-flow: column;
 		row-gap: 0.75rem;
 		padding: 0.5rem 0 0.5rem 1rem;
-		cursor: pointer;
 
 		@media (min-width: 420px) {
 			padding: 0.5rem 1.125rem;

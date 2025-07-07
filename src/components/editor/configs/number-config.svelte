@@ -25,29 +25,13 @@
 		...info
 	}: TextConfigProps = $props()
 
-	let input: ConfigTextInput | null
-
-	const onContainerClick = () => input?.focus()
-
-	const onDeleteClick = (event: MouseEvent) => {
-		event.stopPropagation()
+	const onDeleteClick = () => {
 		value = unset[EditorValueType.NUMBER]
 	}
 </script>
 
-<div>
-	<ConfigContainer {value} {...info} onclick={onContainerClick}>
-		<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
-			<ConfigTextInput {min} {max} {invalidRange} {wholeNumber} bind:value bind:this={input} />
-		</InputRow>
-	</ConfigContainer>
-</div>
-
-<style lang="postcss">
-	div {
-		display: contents;
-		&:hover {
-			--input-highlight-underline-width: 100%;
-		}
-	}
-</style>
+<ConfigContainer {value} {...info}>
+	<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
+		<ConfigTextInput {min} {max} {invalidRange} {wholeNumber} bind:value />
+	</InputRow>
+</ConfigContainer>

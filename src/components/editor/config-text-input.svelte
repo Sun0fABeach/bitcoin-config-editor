@@ -67,7 +67,7 @@
 			&::after {
 				content: '';
 				position: absolute;
-				width: var(--input-highlight-underline-width, 0);
+				width: 0;
 				height: 1px;
 				background-color: var(--color-accent1);
 				transition: width 0.25s;

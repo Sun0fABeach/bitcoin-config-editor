@@ -13,15 +13,12 @@
 	}
 
 	interface ConfigSelectProps {
-		open: boolean
+		open?: boolean
 		value: SelectItem['value']
 		items: SelectItem[]
-		containerId: string
 	}
 
-	let { open = $bindable(), value = $bindable(), items, containerId }: ConfigSelectProps = $props()
-
-	const triggerButtonClass = 'trigger-button'
+	let { open = $bindable(false), value = $bindable(), items }: ConfigSelectProps = $props()
 
 	const shownItems = $derived.by(() => {
 		if (value === unset[EditorValueType.SELECT]) {
@@ -38,25 +35,13 @@
 
 	let triggerButton: Button | null = null
 	export const focus = () => triggerButton?.focus()
-
-	// don't let container handle the event
-	const onTriggerClick = (e: MouseEvent) => e.stopPropagation()
-
-	// let container handle the event if click outside dropdown lands on it, unless
-	// it lands on another trigger button inside the same container
-	const onInteractOutsideDropdown = (e: MouseEvent) => {
-		const target = e.target as HTMLElement
-		if (target.closest(`#${containerId}`) && !target.closest(`.${triggerButtonClass}`)) {
-			e.preventDefault()
-		}
-	}
 </script>
 
 <div class="wrapper">
 	<Select.Root type="single" bind:value bind:open items={shownItems}>
-		<Select.Trigger onclick={onTriggerClick}>
+		<Select.Trigger>
 			{#snippet child({ props })}
-				<Button {...props} class={triggerButtonClass} bind:this={triggerButton}>
+				<Button {...props} class="trigger-button" bind:this={triggerButton}>
 					<span>{selectedLabel}</span>
 					<CaretUpDown />
 					<div class="border-animation-horizontal"></div>
@@ -65,7 +50,7 @@
 			{/snippet}
 		</Select.Trigger>
 		<Select.Portal>
-			<Select.Content forceMount onInteractOutside={onInteractOutsideDropdown}>
+			<Select.Content forceMount>
 				{#snippet child({ wrapperProps, props, open })}
 					{#if open}
 						<div {...wrapperProps}>
@@ -133,7 +118,7 @@
 			> .border-animation-horizontal {
 				&::before,
 				&::after {
-					width: var(--select-highlight-border-expansion, 0);
+					width: 0;
 					height: 100%;
 				}
 				&::before {
@@ -152,7 +137,7 @@
 				&::before,
 				&::after {
 					width: 100%;
-					height: var(--select-highlight-border-expansion, 0);
+					height: 0;
 				}
 				&::before {
 					bottom: 0;

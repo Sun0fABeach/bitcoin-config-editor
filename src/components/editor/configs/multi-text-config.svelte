@@ -34,15 +34,7 @@
 
 	const inputs: ConfigTextInput[] = $state([])
 
-	const onContainerClick = () => inputs[0].focus()
-
-	const onInputRowClick = (event: MouseEvent, rowIdx: number) => {
-		event.stopPropagation()
-		inputs[rowIdx].focus()
-	}
-
-	const onAddClick = async (event: MouseEvent) => {
-		event.stopPropagation()
+	const onAddClick = async () => {
 		mappedValues.push({ value: unset[EditorValueType.TEXT], id: useId() })
 		await tick()
 		inputs[mappedValues.length - 1].focus()
@@ -53,8 +45,7 @@
 		unmapValues()
 	}
 
-	const onDeleteClick = (event: MouseEvent, rowIdx: number) => {
-		event.stopPropagation()
+	const onDeleteClick = (rowIdx: number) => {
 		if (mappedValues.length === 1) {
 			mappedValues[0].value = unset[EditorValueType.TEXT]
 		} else {
@@ -64,37 +55,23 @@
 	}
 </script>
 
-<div class="wrapper">
-	<ConfigContainer value={values} {...info} onclick={onContainerClick}>
-		<div class="inputs-container">
-			{#each mappedValues as { value, id }, rowIdx (id)}
-				<InputRow
-					withTransition
-					{deleteDisabled}
-					onclick={(e) => onInputRowClick(e, rowIdx)}
-					ondelete={(e) => onDeleteClick(e, rowIdx)}
-				>
-					<ConfigTextInput
-						bind:value={() => value, (v) => onUpdate(v, rowIdx)}
-						bind:this={inputs[rowIdx]}
-					/>
-				</InputRow>
-			{/each}
-			<Button icon noBorder onclick={onAddClick}>
-				<Plus />
-			</Button>
-		</div>
-	</ConfigContainer>
-</div>
+<ConfigContainer value={values} {...info}>
+	<div class="inputs-container">
+		{#each mappedValues as { value, id }, rowIdx (id)}
+			<InputRow withTransition {deleteDisabled} ondelete={() => onDeleteClick(rowIdx)}>
+				<ConfigTextInput
+					bind:value={() => value, (v) => onUpdate(v, rowIdx)}
+					bind:this={inputs[rowIdx]}
+				/>
+			</InputRow>
+		{/each}
+		<Button icon noBorder onclick={onAddClick}>
+			<Plus />
+		</Button>
+	</div>
+</ConfigContainer>
 
 <style lang="postcss">
-	.wrapper {
-		display: contents;
-		&:hover {
-			--input-highlight-underline-width: 100%;
-		}
-	}
-
 	.inputs-container {
 		--input-row-gap: 0.75rem;
 
