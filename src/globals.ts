@@ -6,7 +6,7 @@ export const colors = {
 	textMedium: 'hsl(127.13, 100%, 28.04%)',
 	textLight: 'hsl(135.29, 100%, 50%)',
 	accent1: 'white',
-	accent2: 'hsl(60, 55.24, 58.82%)',
+	accent2: 'hsl(60, 55.24%, 58.82%)',
 	background: 'hsl(327.27, 73.33%, 2.94%)',
 	popoverBackground: 'hsl(120, 100%, 11.57%)',
 	layoutBorder: 'hsl(120, 100%, 11.57%)', // same as popoverBackground
