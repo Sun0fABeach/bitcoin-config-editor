@@ -923,7 +923,141 @@
 	{
 		"title": "ZeroMQ",
 		"description": "Options for handling notifications emitted via ZeroMQ",
-		"configs": {}
+		"configs": {
+			"zmqpubhashblock": {
+				"type": "text",
+				"typeConstraints": {
+					"base58": true
+				},
+				"title": "Publish Block Hashes",
+				"description": "Enable publishing of block hashes to &lt;address&gt;",
+				"shortDescription": "Enable publishing of block hashes to <address>"
+			},
+			"zmqpubhashblockhwm": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Publish Block Hashes High Water Mark",
+				"description": "Set publish hash block outbound message high water mark",
+				"defaultValue": "1000"
+			},
+			"zmqpubhashtx": {
+				"type": "text",
+				"typeConstraints": {
+					"base58": true
+				},
+				"title": "Publish Transaction Hashes",
+				"description": "Enable publishing of transaction hashes to &lt;address&gt;",
+				"shortDescription": "Enable publishing of transaction hashes to <address>"
+			},
+			"zmqpubhashtxhwm": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Publish Transaction Hashes High Water Mark",
+				"description": "Set publish hash transaction outbound message high water mark",
+				"defaultValue": "1000"
+			},
+			"zmqpubhashwallettx": {
+				"type": "text",
+				"typeConstraints": {
+					"base58": true
+				},
+				"title": "Publish Wallet Transaction Hashes",
+				"description": "Enable publishing of wallet transaction hashes to &lt;address&gt;",
+				"shortDescription": "Enable publishing of wallet transaction hashes to <address>"
+			},
+			"zmqpubhashwallettxhwm": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Publish Wallet Transaction Hashes High Water Mark",
+				"description": "Set publish hash wallet transaction outbound message high water mark",
+				"defaultValue": "1000"
+			},
+			"zmqpubrawblock": {
+				"type": "text",
+				"typeConstraints": {
+					"base58": true
+				},
+				"title": "Publish Raw Blocks",
+				"description": "Enable publishing of raw block hex to &lt;address&gt;",
+				"shortDescription": "Enable publishing of raw block hex to <address>"
+			},
+			"zmqpubrawblockhwm": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Publish Raw Blocks High Water Mark",
+				"description": "Set publish raw block outbound message high water mark",
+				"defaultValue": "1000"
+			},
+			"zmqpubrawtx": {
+				"type": "text",
+				"typeConstraints": {
+					"base58": true
+				},
+				"title": "Publish Raw Transactions",
+				"description": "Enable publishing of raw transaction hex to &lt;address&gt;",
+				"shortDescription": "Enable publishing of raw transaction hex to <address>"
+			},
+			"zmqpubrawtxhwm": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Publish Wallet Transaction Hashes High Water Mark",
+				"description": "Set publish raw transaction outbound message high water mark",
+				"defaultValue": "1000"
+			},
+			"zmqpubrawwallettx": {
+				"type": "text",
+				"typeConstraints": {
+					"base58": true
+				},
+				"title": "Publish Raw Wallet Transaction",
+				"description": "Enable publishing of raw wallet transaction hex to &lt;address&gt;",
+				"shortDescription": "Enable publishing of raw wallet transaction hex to <address>"
+			},
+			"zmqpubrawwallettxhwm": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Publish Raw Wallet Transactions High Water Mark",
+				"description": "Set publish raw wallet transaction outbound message high water mark",
+				"defaultValue": "1000"
+			},
+			"zmqpubsequence": {
+				"type": "text",
+				"typeConstraints": {
+					"base58": true
+				},
+				"title": "Publish Hash Block and Transaction Sequence",
+				"description": "Enable publish hash block and tx sequence in &lt;address&gt;",
+				"shortDescription": "Enable publish hash block and tx sequence in <address>"
+			},
+			"zmqpubsequencehwm": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Publish Hash Sequence Message High Water Mark",
+				"description": "Set publish hash sequence message high water mark",
+				"defaultValue": "1000"
+			}
+		}
 	},
 	{
 		"title": "Statistics",

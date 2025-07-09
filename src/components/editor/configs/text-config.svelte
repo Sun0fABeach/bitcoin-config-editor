@@ -7,15 +7,24 @@
 	import { unset } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueText } from '@/types/editor'
+	import type { TypeConstraints } from '@/types/config-definition'
 
 	type TextConfigProps = ConfigContainerBaseProps & {
 		value: EditorValueText
-		hex?: boolean
-		minLength?: number
-		maxLength?: number
+		hex?: TypeConstraints['hex']
+		base58?: TypeConstraints['base58']
+		minLength?: TypeConstraints['minLength']
+		maxLength?: TypeConstraints['maxLength']
 	}
 
-	let { value = $bindable(), hex, minLength, maxLength, ...info }: TextConfigProps = $props()
+	let {
+		value = $bindable(),
+		hex,
+		base58,
+		minLength,
+		maxLength,
+		...info
+	}: TextConfigProps = $props()
 
 	const onDeleteClick = () => {
 		value = unset[EditorValueType.TEXT]
@@ -24,7 +33,7 @@
 
 <ConfigContainer {value} {...info}>
 	<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
-		{@const pattern = hex ? '[0-9a-fA-F]+' : undefined}
+		{@const pattern = hex ? '[0-9a-fA-F]+' : base58 ? '[1-9a-km-zA-HJ-NP-Z]+' : undefined}
 		<ConfigTextInput {pattern} minlength={minLength} maxlength={maxLength} bind:value />
 	</InputRow>
 </ConfigContainer>

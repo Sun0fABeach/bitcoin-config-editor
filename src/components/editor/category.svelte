@@ -57,62 +57,66 @@
 			{#if open}
 				<ul {...props} transition:slide onintroend={onOpenFinished}>
 					{#each Object.entries(configs) as [key, definition] (key)}
+						{@const { type, typeConstraints, title, description, defaultValue, options } =
+							definition}
+
 						<li class="config-list-item" id={key}>
 							{#if definition.type === EditorValueType.TEXT}
 								<TextConfig
 									{key}
-									title={definition.title}
-									description={definition.description}
-									defaultValue={definition.defaultValue}
-									hex={definition.typeConstraints?.hex}
-									minLength={definition.typeConstraints?.minLength}
-									maxLength={definition.typeConstraints?.maxLength}
+									{title}
+									{description}
+									{defaultValue}
+									hex={typeConstraints?.hex}
+									base58={typeConstraints?.base58}
+									minLength={typeConstraints?.minLength}
+									maxLength={typeConstraints?.maxLength}
 									bind:value={values[key] as EditorValueText}
 								/>
-							{:else if definition.type === EditorValueType.NUMBER}
+							{:else if type === EditorValueType.NUMBER}
 								<NumberConfig
 									{key}
-									title={definition.title}
-									description={definition.description}
-									defaultValue={definition.defaultValue}
-									min={definition.typeConstraints?.min}
-									max={definition.typeConstraints?.max}
-									invalidRange={definition.typeConstraints?.invalidRange}
-									wholeNumber={definition.typeConstraints?.wholeNumber}
+									{title}
+									{description}
+									{defaultValue}
+									min={typeConstraints?.min}
+									max={typeConstraints?.max}
+									invalidRange={typeConstraints?.invalidRange}
+									wholeNumber={typeConstraints?.wholeNumber}
 									bind:value={values[key] as EditorValueNumber}
 								/>
-							{:else if definition.type === EditorValueType.CHECKBOX}
+							{:else if type === EditorValueType.CHECKBOX}
 								<CheckboxConfig
 									{key}
-									title={definition.title}
-									description={definition.description}
-									defaultValue={definition.defaultValue}
+									{title}
+									{description}
+									{defaultValue}
 									bind:checked={values[key] as EditorValueCheckbox}
 								/>
-							{:else if definition.type === EditorValueType.SELECT}
+							{:else if type === EditorValueType.SELECT}
 								<SelectConfig
 									{key}
-									title={definition.title}
-									description={definition.description}
-									defaultValue={definition.defaultValue}
-									items={definition.options!}
+									{title}
+									{description}
+									{defaultValue}
+									items={options!}
 									bind:value={values[key] as EditorValueSelect}
 								/>
-							{:else if definition.type === EditorValueType.MULTI_SELECT}
+							{:else if type === EditorValueType.MULTI_SELECT}
 								<MultiSelectConfig
 									{key}
-									title={definition.title}
-									description={definition.description}
-									defaultValue={definition.defaultValue}
-									items={definition.options!}
+									{title}
+									{description}
+									{defaultValue}
+									items={options!}
 									bind:values={values[key] as EditorValueMultiSelect}
 								/>
-							{:else if definition.type === EditorValueType.MULTI_TEXT}
+							{:else if type === EditorValueType.MULTI_TEXT}
 								<MultiTextConfig
 									{key}
-									title={definition.title}
-									description={definition.description}
-									defaultValue={definition.defaultValue}
+									{title}
+									{description}
+									{defaultValue}
 									bind:values={values[key] as EditorValueMultiText}
 								/>
 							{/if}

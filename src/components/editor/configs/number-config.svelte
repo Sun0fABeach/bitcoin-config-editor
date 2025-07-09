@@ -7,13 +7,14 @@
 	import { unset } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueNumber } from '@/types/editor'
+	import type { TypeConstraints } from '@/types/config-definition'
 
 	type TextConfigProps = ConfigContainerBaseProps & {
 		value: EditorValueNumber
-		min?: number
-		max?: number
-		invalidRange?: [number, number]
-		wholeNumber?: boolean
+		min?: TypeConstraints['min']
+		max?: TypeConstraints['max']
+		invalidRange?: TypeConstraints['invalidRange']
+		wholeNumber?: TypeConstraints['wholeNumber']
 	}
 
 	let {

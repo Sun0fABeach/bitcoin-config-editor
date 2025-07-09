@@ -1,16 +1,19 @@
 import type { EditorValueAny } from '@/types/editor'
 
+export interface TypeConstraints {
+	min?: number
+	max?: number
+	invalidRange?: [number, number]
+	wholeNumber?: boolean
+	hex?: boolean
+	base58?: boolean
+	minLength?: number
+	maxLength?: number
+}
+
 export interface ConfigDefinition {
 	type: EditorValueAny
-	typeConstraints?: {
-		min?: number
-		max?: number
-		invalidRange?: [number, number]
-		wholeNumber?: boolean
-		minLength?: number
-		maxLength?: number
-		hex?: boolean
-	}
+	typeConstraints?: TypeConstraints
 	title: string
 	description: string
 	shortDescription?: string
