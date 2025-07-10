@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { slide } from 'svelte/transition'
+	import { fly } from 'svelte/transition'
 	import { Select } from 'bits-ui'
-	import { CaretUpDown, Check } from 'phosphor-svelte'
+	import { CaretUpDown, CaretDoubleDown, CaretDoubleUp, Check } from 'phosphor-svelte'
 	import Button from '@/components/button.svelte'
 	import { unset } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
@@ -54,19 +54,27 @@
 				{#snippet child({ wrapperProps, props, open })}
 					{#if open}
 						<div {...wrapperProps}>
-							<div {...props} class="content" transition:slide>
-								{#each items as { value, label } (value)}
-									<Select.Item {value} {label}>
-										{#snippet child({ props, selected })}
-											<div {...props} class="item">
-												<span>{label}</span>
-												{#if selected}
-													<Check />
-												{/if}
-											</div>
-										{/snippet}
-									</Select.Item>
-								{/each}
+							<div {...props} class="content" transition:fly>
+								<Select.ScrollUpButton>
+									<CaretDoubleUp />
+								</Select.ScrollUpButton>
+								<Select.Viewport>
+									{#each items as { value, label } (value)}
+										<Select.Item {value} {label}>
+											{#snippet child({ props, selected })}
+												<div {...props} class="item">
+													<span>{label}</span>
+													{#if selected}
+														<Check />
+													{/if}
+												</div>
+											{/snippet}
+										</Select.Item>
+									{/each}
+								</Select.Viewport>
+								<Select.ScrollDownButton>
+									<CaretDoubleDown />
+								</Select.ScrollDownButton>
 							</div>
 						</div>
 					{/if}
@@ -185,10 +193,18 @@
 		display: flex;
 		flex-flow: column;
 		width: var(--bits-select-anchor-width);
+		max-height: 38vh;
 		padding: 0.375rem 0.25rem;
 		background-color: var(--color-popover-background);
 		border: 1px solid var(--color-element-border);
 		border-radius: 0.25rem;
+
+		:global [data-select-scroll-up-button],
+		:global [data-select-scroll-down-button] {
+			display: flex;
+			justify-content: center;
+			padding: 0.25rem 0;
+		}
 
 		.item {
 			display: flex;
