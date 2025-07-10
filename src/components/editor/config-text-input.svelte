@@ -47,6 +47,8 @@
 		flex-flow: column;
 
 		> input {
+			/* force width to browser standard to prevent max attribute from shrinking the input */
+			width: 205px;
 			color: var(--color-accent1);
 
 			&:hover,
