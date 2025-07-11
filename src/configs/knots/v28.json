@@ -339,7 +339,78 @@
 	{
 		"title": "Chain Selection",
 		"description": "Which network / blockchain to use",
-		"configs": {}
+		"configs": {
+			"chain": {
+				"type": "select",
+				"title": "Chain",
+				"description": "Choose which network / blockchain to use",
+				"options": [
+					{ "value": "main", "label": "Main" },
+					{ "value": "test", "label": "Testnet" },
+					{ "value": "testnet4", "label": "Testnet 4" },
+					{ "value": "signet", "label": "Signet" },
+					{ "value": "regtest", "label": "Regtest" }
+				],
+				"defaultValue": "main"
+			},
+			"regtest": {
+				"type": "checkbox",
+				"title": "Use Regtest",
+				"description": "Enter regression test mode, which uses a special chain in which blocks can be solved instantly. This is intended for regression testing tools and app development. Equivalent to <a href=\"#chain\">chain</a>=regtest",
+				"shortDescription": "Enter regression test mode",
+				"defaultValue": "0"
+			},
+			"signet": {
+				"type": "checkbox",
+				"title": "Use Signet",
+				"description": "Use the signet chain. Equivalent to <a href=\"#chain\">chain</a>=signet. Note that the network is defined by the <a href=\"#signetchallenge\">signetchallenge</a> parameter",
+				"shortDescription": "Use the signet chain",
+				"defaultValue": "0"
+			},
+			"signetblocktime": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Signet Blocktime",
+				"description": "Difficulty adjustment will target a block time of the given amount in seconds (only for custom signet networks, must have <a href=\"#signetchallenge\">signetchallenge</a> set",
+				"shortDescription": "Difficulty adjustment will target block time of given amount in secs",
+				"defaultValue": "600"
+			},
+			"signetchallenge": {
+				"type": "text",
+				"title": "Signet Challenge",
+				"description": "Blocks must satisfy the given script to be considered valid (only for signet networks; defaults to the global default signet test network challenge)",
+				"shortDescription": "Blocks must satisfy the given script to be considered valid"
+			},
+			"signetseednode": {
+				"type": "multiText",
+				"title": "Signet Seed Node",
+				"description": "Specify a seed node for the signet network, in the hostname[:port] format, e.g. sig.net:1234 (may be used multiple times to specify multiple seed nodes; defaults to the global default signet test network seed node(s))",
+				"shortDescription": "Specify seed node for the signet network"
+			},
+			"testnet": {
+				"type": "checkbox",
+				"title": "Use Testnet",
+				"description": "Use the testnet3 chain. Equivalent to <a href=\"#chain\">chain</a>=test. Support for testnet3 is deprecated and will be removed in an upcoming release. Consider moving to testnet4 now by using <a href=\"#testnet4\">testnet4</a>",
+				"shortDescription": "Use the testnet3 chain",
+				"defaultValue": "0"
+			},
+			"testnet4": {
+				"type": "checkbox",
+				"title": "Use Testnet 4",
+				"description": "Use the testnet4 chain. Equivalent to <a href=\"#chain\">chain</a>=testnet4",
+				"shortDescription": "Use the testnet4 chain",
+				"defaultValue": "0"
+			},
+			"vbparams": {
+				"type": "text",
+				"title": "Version Bits Deployment Params",
+				"description": "Use given start/end times for specified version bits deployment. Format: &lt;deployment:start:end[:min_activation_height]&gt;. Can be set multiple times. (regtest-only)",
+				"shortDescription": "Use given start/end times for specified version bits deployment"
+			}
+		}
 	},
 	{
 		"title": "Networking",
@@ -670,7 +741,7 @@
 			},
 			"whitelist": {
 				"type": "multiText",
-				"title": "Whitelist Bound IP Address",
+				"title": "Whitelist Peer",
 				"description": "Add permission flags &lt;[permissions@]IP address or network&gt; to the peers using the given IP address (e.g. 1.2.3.4) or CIDR-notated network (e.g. 1.2.3.0/24). Uses the same permissions as <a href=\"#whitebind\">whitebind</a>. Additional flags \"in\" and \"out\" control whether permissions apply to incoming connections and/or outgoing (default: incoming only). Can be specified multiple times",
 				"shortDescription": "Add permission flags to the peers using the given IP address"
 			}
@@ -1220,6 +1291,196 @@
 					{ "value": "walletdb", "label": "Wallet database" },
 					{ "value": "zmq", "label": "ZeroMQ" }
 				]
+			},
+			"deprecatedrpc": {
+				"type": "multiText",
+				"title": "Enable Deprecated RPC Commands",
+				"description": "Allows deprecated RPC method(s) to be used. The release notes of each new major release come with detailed instructions on what RPC features were deprecated and how to re-enable them temporarily. This option can be set multiple times",
+				"shortDescription": "Allows deprecated RPC method(s) to be used"
+			},
+			"fastprune": {
+				"type": "checkbox",
+				"title": "Fast Prune",
+				"description": "Use smaller block files and lower minimum prune height for testing purposes",
+				"defaultValue": "0"
+			},
+			"limitancestorcount": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Limit Transaction Ancestor Count",
+				"description": "Do not accept transactions if number of in-mempool ancestors is n or more",
+				"shortDescription": "Reject txs if number of in-mempool ancestors is n or more",
+				"defaultValue": "25"
+			},
+			"limitancestorsize": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Limit Transaction Ancestor Size",
+				"description": "Do not accept transactions whose size with all in-mempool ancestors exceeds n kilobytes",
+				"shortDescription": "Reject txs whose size with all in-mempool ancestors exceeds n kB",
+				"defaultValue": "101"
+			},
+			"limitdescendantcount": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Limit Transaction Descendant Count",
+				"description": "Do not accept transactions if any ancestor would have n or more in-mempool descendants",
+				"shortDescription": "Reject txs if any ancestor would have n or more in-mempool descendants",
+				"defaultValue": "25"
+			},
+			"limitdescendantsize": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Limit Transaction Descendant Size",
+				"description": "Do not accept transactions if any ancestor would have more than n kilobytes of in-mempool descendants",
+				"shortDescription": "Reject txs if any ancestor would have more than n kB of in-mempool descendants",
+				"defaultValue": "101"
+			},
+			"logips": {
+				"type": "checkbox",
+				"title": "Log IP Addresses",
+				"description": "Include IP addresses in debug output",
+				"defaultValue": "0"
+			},
+			"loglevel": {
+				"type": "multiText",
+				"title": "Log Level",
+				"description": "Set the global or per-category severity level for logging categories enabled with the <a href=\"#debug\">debug</a> configuration option or the logging RPC.<br><br> Possible values are:<br>info, debug, trace.<br><br>The following levels are always logged:<br>error, warning, info.<br><br>If &lt;category&gt;:&lt;level&gt; is supplied, the setting will override the global one and may be specified multiple times to set multiple category-specific levels.<br><br>&lt;category&gt; can be:<br>addrman, bench, blockstorage, cmpctblock, coindb, estimatefee, http, i2p, ipc, leveldb, libevent, mempool, mempoolrej, net, proxy, prune, qt, rand, reindex, rpc, scan, selectcoins, tor, txpackages, txreconciliation, validation, walletdb, zmq",
+				"shortDescription": "Set the global or per-category severity level for logging categories",
+				"defaultValue": "debug"
+			},
+			"loglevelalways": {
+				"type": "checkbox",
+				"title": "Log Level Always",
+				"description": "Always prepend a category and level",
+				"defaultValue": "0"
+			},
+			"logsourcelocations": {
+				"type": "checkbox",
+				"title": "Log Source Locations",
+				"description": "Prepend debug output with name of the originating source location (source file, line number and function name)",
+				"shortDescription": "Prepend debug output with name of the originating source location",
+				"defaultValue": "0"
+			},
+			"logthreadnames": {
+				"type": "checkbox",
+				"title": "Log Thread Names",
+				"description": "Prepend debug output with name of the originating thread",
+				"defaultValue": "0"
+			},
+			"logtimemicros": {
+				"type": "checkbox",
+				"title": "Log Precise Timestamps",
+				"description": "Add microsecond precision to debug timestamps",
+				"defaultValue": "0"
+			},
+			"logtimestamps": {
+				"type": "checkbox",
+				"title": "Log Timestamps",
+				"description": "Prepend debug output with timestamp",
+				"defaultValue": "1"
+			},
+			"maxsigcachesize": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Max Signature Cache Size",
+				"description": "Limit sum of signature cache and script execution cache sizes to n MiB",
+				"defaultValue": "32"
+			},
+			"maxtipage": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Max Age of Chain Tip",
+				"description": "Maximum tip age in seconds to consider node in initial block download",
+				"defaultValue": "86400"
+			},
+			"maxtxfee": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Max Transaction Fee",
+				"description": "Maximum total fees (in BTC) to use in a single wallet transaction or raw transaction; setting this too low may abort large transactions",
+				"shortDescription": "Max total fees (in BTC) to use in a single wallet tx or raw tx",
+				"defaultValue": "0.10"
+			},
+			"mocktime": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Mock Timestamps",
+				"description": "Replace actual time with UNIX epoch time (0 = disable)",
+				"defaultValue": "0"
+			},
+			"printpriority": {
+				"type": "checkbox",
+				"title": "Print Priority",
+				"description": "Log transaction priority and fee rate in BTC/kvB when mining blocks",
+				"defaultValue": "0"
+			},
+			"printtoconsole": {
+				"type": "checkbox",
+				"title": "Print To Console",
+				"description": "Send trace/debug info to console (default: 1 when no <a href=\"#daemon\">daemon</a>. To disable logging to file, set <a href=\"#nodebuglogfile\">nodebuglogfile</a>)",
+				"shortDescription": "Send trace/debug info to console"
+			},
+			"shrinkdebugfile": {
+				"type": "checkbox",
+				"title": "Shrink Debug Log File",
+				"description": "Shrink debug.log file on client startup (default: 1 when no <a href=\"#debug\">debug</a>)",
+				"shortDescription": "Shrink debug.log file on client startup"
+			},
+			"stopafterblockimport": {
+				"type": "checkbox",
+				"title": "Stop After Block Import",
+				"description": "Stop running after importing blocks from disk",
+				"defaultValue": "0"
+			},
+			"stopatheight": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Stop At Height",
+				"description": "Stop running after reaching the given height in the main chain (0 = disable)",
+				"defaultValue": "0"
+			},
+			"test": {
+				"type": "text",
+				"title": "Test-Only Option",
+				"description": "Pass a test-only option. Options include: addrman (use deterministic addrman)",
+				"shortDescription": "Pass a test-only option"
+			},
+			"testactivationheight": {
+				"type": "text",
+				"title": "Test Activation Height",
+				"description": "Set the activation height &lt;name&gt;@&lt;height&gt;<br><br>&lt;name&gt; can be:<br>segwit, bip34, dersig, cltv, csv<br><br>(regtest-only)",
+				"shortDescription": "Set the activation height <name>@<height>"
+			},
+			"uacomment": {
+				"type": "text",
+				"title": "User Agent Comment",
+				"description": "Append comment to the user agent string"
 			}
 		}
 	}
