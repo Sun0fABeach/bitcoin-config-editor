@@ -81,6 +81,7 @@
 									{defaultValue}
 									min={typeConstraints?.min}
 									max={typeConstraints?.max}
+									step={typeConstraints?.step}
 									invalidRange={typeConstraints?.invalidRange}
 									wholeNumber={typeConstraints?.wholeNumber}
 									bind:value={values[key] as EditorValueNumber}

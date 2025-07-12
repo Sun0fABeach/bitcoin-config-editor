@@ -3,6 +3,7 @@ import type { EditorValueAny } from '@/types/editor'
 export interface TypeConstraints {
 	min?: number
 	max?: number
+	step?: number
 	invalidRange?: [number, number]
 	wholeNumber?: boolean
 	hex?: boolean

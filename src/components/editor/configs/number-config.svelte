@@ -13,14 +13,16 @@
 		value: EditorValueNumber
 		min?: TypeConstraints['min']
 		max?: TypeConstraints['max']
+		step?: TypeConstraints['step']
 		invalidRange?: TypeConstraints['invalidRange']
 		wholeNumber?: TypeConstraints['wholeNumber']
 	}
 
 	let {
 		value = $bindable(),
-		min = -Infinity,
-		max = Infinity,
+		min,
+		max,
+		step,
 		invalidRange,
 		wholeNumber = false,
 		...info
@@ -33,6 +35,6 @@
 
 <ConfigContainer {value} {...info}>
 	<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
-		<ConfigTextInput {min} {max} {invalidRange} {wholeNumber} bind:value />
+		<ConfigTextInput {min} {max} {step} {invalidRange} {wholeNumber} bind:value />
 	</InputRow>
 </ConfigContainer>

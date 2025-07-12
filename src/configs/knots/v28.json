@@ -751,6 +751,54 @@
 		"title": "Mempool",
 		"description": "What transactions your node will relay to peers",
 		"configs": {
+			"acceptnonstddatacarrier": {
+				"type": "checkbox",
+				"title": "Accept Non-Standard Datacarrier Transactions",
+				"description": "Relay and mine non-OP_RETURN datacarrier injection",
+				"defaultValue": "0"
+			},
+			"acceptnonstdtxn": {
+				"type": "checkbox",
+				"title": "Accept Non-Standard Transactions",
+				"description": "Relay and mine \"non-standard\" transactions",
+				"defaultValue": "0"
+			},
+			"bytespersigop": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Bytes Per Signature Operation",
+				"description": "Equivalent bytes per sigop in transactions for relay and mining",
+				"defaultValue": "20"
+			},
+			"bytespersigopstrict": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Bytes Per Signature Operation Strict",
+				"description": "Minimum bytes per sigop in transactions we relay and mine",
+				"defaultValue": "20"
+			},
+			"datacarrier": {
+				"type": "checkbox",
+				"title": "Data Carrier",
+				"description": "Relay and mine data carrier transactions",
+				"defaultValue": "1"
+			},
+			"datacarriercost": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0.25,
+					"step": 0.25
+				},
+				"title": "Data Carrier Cost",
+				"description": "Treat extra data in transactions as at least n vbytes per actual byte",
+				"defaultValue": "1"
+			},
 			"minrelaytxfee": {
 				"type": "number",
 				"typeConstraints": {
