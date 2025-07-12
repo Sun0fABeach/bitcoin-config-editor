@@ -20,7 +20,7 @@
 	const scrollIntoView = (id: string) => {
 		const scrollTarget = document.getElementById(id)
 		if (scrollTarget) {
-			scrollTarget.scrollIntoView({ behavior: 'smooth' })
+			scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' })
 		}
 	}
 

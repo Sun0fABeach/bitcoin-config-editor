@@ -34,7 +34,8 @@ v28.forEach((category) => {
 
 export default function () {
 	return {
-		categories: v28 as CategoryDefinition[],
+		// cast to unknown first to get rid of cryptic TS error
+		categories: v28 as unknown as CategoryDefinition[],
 		configIndex,
 		get values() {
 			return values
