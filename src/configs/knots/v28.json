@@ -425,7 +425,7 @@
 			"asmap": {
 				"type": "text",
 				"title": "ASN Mapping",
-				"description": "Specify asn mapping used for bucketing of the peers. Relative paths will be prefixed by the net-specific datadir location",
+				"description": "Specify asn mapping used for bucketing of the peers. Relative paths will be prefixed by the net-specific <a href=\"#datadir\">datadir</a> location",
 				"shortDescription": "Specify asn mapping used for bucketing of the peers",
 				"defaultValue": "ip_asn.map"
 			},
@@ -799,6 +799,89 @@
 				"description": "Treat extra data in transactions as at least n vbytes per actual byte",
 				"defaultValue": "1"
 			},
+			"datacarrierfullcount": {
+				"type": "checkbox",
+				"title": "Data Carrier Full Count",
+				"description": "Apply datacarriersize limit to all known datacarrier methods",
+				"defaultValue": "1"
+			},
+			"datacarriersize": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Data Carrier Size",
+				"description": "Maximum size of data in data carrier transactions we relay and mine, in bytes",
+				"defaultValue": "42"
+			},
+			"dustdynamic": {
+				"type": "text",
+				"title": "Dynamic Dust Relay Fee",
+				"description": "Automatically raise <a href=\"#dustrelayfee\">dustrelayfee</a> based on either the expected fee to be mined within &lt;blocks&gt; blocks, or to be within the best &lt;kvB&gt; kvB of this node's mempool. Specify in format: off|[&lt;multiplier&gt;*]target:&lt;blocks&gt;|[&lt;multiplier&gt;*]mempool:&lt;kvB&gt;. If unspecified, multiplier is 3",
+				"shortDescription": "Automatically raise dustrelayfee",
+				"defaultValue": "off"
+			},
+			"dustrelayfee": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Dust Relay Fee",
+				"description": "Fee rate (in BTC/kvB) used to define dust, the value of an output such that it will cost more than its value in fees at this fee rate to spend it",
+				"shortDescription": "Fee rate (in BTC/kvB) used to define dust",
+				"defaultValue": "0.00003"
+			},
+			"incrementalrelayfee": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Incremental Relay Fee",
+				"description": "Fee rate (in BTC/kB) used to define cost of relay, used for mempool limiting and replacement policy",
+				"shortDescription": "Fee rate (in BTC/kB) used to define cost of relay",
+				"defaultValue": "0.00001"
+			},
+			"maxscriptsize": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Maximum Script Size",
+				"description": "Maximum size of scripts we relay and mine, in bytes",
+				"defaultValue": "1650"
+			},
+			"mempoolfullrbf": {
+				"type": "checkbox",
+				"title": "Mempool Full RBF",
+				"description": "Accept transaction replace-by-fee without requiring replaceability signaling",
+				"defaultValue": "1"
+			},
+			"mempoolreplacement": {
+				"type": "select",
+				"title": "Mempool Replacement",
+				"description": "Mempool RBF policy. Set \"fee,optin\" to honour RBF opt-out  signal, or \"fee,-optin\" to always RBF aka full RBF",
+				"shortDescription": "Mempool RBF policy",
+				"options": [
+					{ "value": "0", "label": "Disable" },
+					{ "value": "fee,optin", "label": "Honor opt-out" },
+					{ "value": "fee,-optin", "label": "Full RBF" }
+				],
+				"defaultValue": "fee,-optin"
+			},
+			"mempooltruc": {
+				"type": "select",
+				"title": "Mempool Topologically Restricted Until Confirmation (TRUC) Policy",
+				"description": "Behaviour for transactions requesting TRUC limits: \"reject\" the transactions entirely, \"accept\" them just like any other, or \"enforce\" to impose their requested restrictions",
+				"shortDescription": "Behaviour for transactions requesting TRUC limits",
+				"options": [
+					{ "value": "reject", "label": "Reject" },
+					{ "value": "accept", "label": "Accept" },
+					{ "value": "enforce", "label": "Enforce" }
+				],
+				"defaultValue": "accept"
+			},
 			"minrelaytxfee": {
 				"type": "number",
 				"typeConstraints": {
@@ -808,18 +891,240 @@
 				"description": "Fees (in BTC/kvB) smaller than this are considered zero fee for relaying, mining and transaction creation",
 				"shortDescription": "Fees (in BTC/kvB) smaller than this are considered zero fee",
 				"defaultValue": "0.00001"
+			},
+			"permitbaremultisig": {
+				"type": "checkbox",
+				"title": "Permit Bare Multisig",
+				"description": "Relay transactions creating non-P2SH multisig outputs",
+				"defaultValue": "0"
+			},
+			"permitbarepubkey": {
+				"type": "checkbox",
+				"title": "Permit Bare Pubkey",
+				"description": "Relay legacy pubkey outputs",
+				"defaultValue": "0"
+			},
+			"rejectparasites": {
+				"type": "checkbox",
+				"title": "Reject Parasites",
+				"description": "Refuse to relay or mine parasitic overlay protocols",
+				"defaultValue": "1"
+			},
+			"rejecttokens": {
+				"type": "checkbox",
+				"title": "Reject Tokens",
+				"description": "Refuse to relay or mine transactions involving non-bitcoin tokens",
+				"defaultValue": "0"
+			},
+			"spkreuse": {
+				"type": "select",
+				"title": "Script And Public Key Reuse",
+				"description": "Set to \"allow\" to relay/mine transactions reusing addresses or other pubkey scripts, or \"conflict\" to treat them as exclusive prior to being mined",
+				"shortDescription": "Whether to relay/mine txs reusing addresses or other pubkey scripts",
+				"options": [
+					{ "value": "allow", "label": "Allow" },
+					{ "value": "conflict", "label": "Disallow" }
+				],
+				"defaultValue": "allow"
+			},
+			"whitelistforcerelay": {
+				"type": "checkbox",
+				"title": "Whitelist Force Relay",
+				"description": "Add 'forcerelay' permission to whitelisted peers with default permissions. This will relay transactions even if the transactions were already in the mempool",
+				"shortDescription": "Add 'forcerelay' permission to whitelisted peers with default permissions",
+				"defaultValue": "0"
+			},
+			"whitelistrelay": {
+				"type": "checkbox",
+				"title": "Whitelist Relay",
+				"description": "Add 'relay' permission to whitelisted peers with default permissions. This will accept relayed transactions even when not relaying transactions",
+				"shortDescription": "Add 'relay' permission to whitelisted peers with default permissions",
+				"defaultValue": "1"
 			}
 		}
 	},
 	{
 		"title": "Mining",
 		"description": "Attributes of blocks that can be mined by your node",
-		"configs": {}
+		"configs": {
+			"blockmaxsize": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Max Block Size",
+				"description": "Set maximum block size in bytes",
+				"defaultValue": "300000"
+			},
+			"blockmaxweight": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Max Block Weight",
+				"description": "Set maximum BIP141 block weight",
+				"defaultValue": "1200000"
+			},
+			"blockmintxfee": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0
+				},
+				"title": "Block Min Transaction Fee",
+				"description": "Set lowest fee rate (in BTC/kB) for transactions to be included in block creation",
+				"shortDescription": "Set lowest fee rate (in BTC/kB) for tx inclusion in block creation",
+				"defaultValue": "0.00001"
+			},
+			"blockprioritysize": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Block Priority Size",
+				"description": "Set maximum size of high-priority/low-fee transactions in bytes",
+				"defaultValue": "100000"
+			},
+			"blockversion": {
+				"type": "text",
+				"title": "Block Version",
+				"description": "Override block version to test forking scenarios"
+			}
+		}
 	},
 	{
 		"title": "RPC",
 		"description": "Security and performance options for accessing your node's RPC interface",
-		"configs": {}
+		"configs": {
+			"rest": {
+				"type": "checkbox",
+				"title": "Enable REST API",
+				"description": "Accept public REST requests",
+				"defaultValue": "0"
+			},
+			"rpcallowip": {
+				"type": "multiText",
+				"title": "RPC Allow IP Address",
+				"description": "Allow JSON-RPC connections from specified source. Valid are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) a network/CIDR (e.g. 1.2.3.4/24), all ipv4 (0.0.0.0/0), or all ipv6 (::/0).. This option can be specified multiple times",
+				"shortDescription": "Allow JSON-RPC connections from specified source"
+			},
+			"rpcauth": {
+				"type": "multiText",
+				"title": "RPC Authentication",
+				"description": "Username and HMAC-SHA-256 hashed password for JSON-RPC connections, to be provided in the format: &lt;userpw&gt;[:wallet]. The field &lt;userpw&gt; comes in the format: &lt;USERNAME&gt;:&lt;SALT&gt;$&lt;HASH&gt;. A canonical python script is included in share/rpcauth. The client then connects normally using the rpcuser=&lt;USERNAME&gt;/rpcpassword=&lt;PASSWORD&gt; pair of arguments. A single wallet name can also be specified to restrict access to only that wallet, or '-' to deny all wallet access. This option can be specified multiple times",
+				"shortDescription": "Username and HMAC-SHA-256 hashed password for JSON-RPC connections"
+			},
+			"rpcauthfile": {
+				"type": "multiText",
+				"title": "RPC Authentication File",
+				"description": "A file with a single line with the same format as <a href=\"#rpcauth\">rpcauth</a>. This option can be specified multiple times",
+				"shortDescription": "A file with a single line with the same format as rpcauth"
+			},
+			"rpcbind": {
+				"type": "multiText",
+				"title": "Bind RPC Address",
+				"description": "Bind to given address to listen for JSON-RPC connections. Do not expose the RPC server to untrusted networks such as the public internet! This option is ignored unless <a href=\"#rpcallowip\">rpcallowip</a> is also passed. Port is optional and overrides <a href=\"#rpcport\">rpcport</a>. Use [host]:port notation for IPv6. This option can be specified multiple times",
+				"shortDescription": "Bind to given address to listen for JSON-RPC connections",
+				"defaultValue": "127.0.0.1, ::1"
+			},
+			"rpccookiefile": {
+				"type": "text",
+				"title": "RPC Cookie File",
+				"description": "Location of the RPC auth cookie. Relative paths will be prefixed by a net-specific <a href=\"#datadir\">datadir</a> location",
+				"shortDescription": "Location of the RPC auth cookie",
+				"defaultValue": "<a href=\"#datadir\">datadir</a>"
+			},
+			"rpccookieperms": {
+				"type": "text",
+				"title": "RPC Cookie Permissions",
+				"description": "Set the permissions on the RPC auth cookie file so that it is readable by [owner|group|all]",
+				"shortDescription": "Set the permissions on the RPC auth cookie file",
+				"defaultValue": "owner (via umask 0077)"
+			},
+			"rpcdoccheck": {
+				"type": "checkbox",
+				"title": "RPC Documentation Check",
+				"description": "Throw a non-fatal error at runtime if the documentation for an RPC is incorrect",
+				"shortDescription": "Throw non-fatal error at runtime if docs for an RPC are incorrect",
+				"defaultValue": "0"
+			},
+			"rpcpassword": {
+				"type": "text",
+				"title": "RPC Password",
+				"description": "Password for JSON-RPC connections"
+			},
+			"rpcport": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 1,
+					"max": 65535
+				},
+				"title": "RPC Port",
+				"description": "Listen for JSON-RPC connections on this port",
+				"defaultValue": {
+					"mainnet": "8332",
+					"testnet3": "18332",
+					"testnet4": "48332",
+					"signet": "38332",
+					"regtest": "18443"
+				}
+			},
+			"rpcservertimeout": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 1,
+					"wholeNumber": true
+				},
+				"title": "RPC Server Timeout",
+				"description": "Number of seconds after which an uncompleted RPC call will time out",
+				"defaultValue": "30"
+			},
+			"rpcthreads": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 1,
+					"wholeNumber": true
+				},
+				"title": "RPC Threads",
+				"description": "Number of threads to service RPC calls",
+				"defaultValue": "16"
+			},
+			"rpcuser": {
+				"type": "text",
+				"title": "RPC User",
+				"description": "Username for JSON-RPC connections"
+			},
+			"rpcwhitelist": {
+				"type": "multiText",
+				"title": "RPC Whitelist",
+				"description": "Set a whitelist to filter incoming RPC calls for a specific user. To be specified in the format: &lt;USERNAME&gt;:&lt;rpc 1&gt;,&lt;rpc 2&gt;,...,&lt;rpc n&gt;. This option can be specified multiple times. If multiple whitelists are set for a given user, they are set-intersected. See <a href=\"#rpcwhitelistdefault\">rpcwhitelistdefault</a> documentation for information on default whitelist behavior",
+				"shortDescription": "Set a whitelist to filter incoming RPC calls for a specific user"
+			},
+			"rpcwhitelistdefault": {
+				"type": "text",
+				"title": "RPC Whitelist Default",
+				"description": "Sets default behavior for rpc whitelisting. Unless set to 0, if any <a href=\"#rpcwhitelist\">rpcwhitelist</a> is set, the rpc server acts as if all rpc users are subject to empty-unless-otherwise-specified whitelists. If set to 1 and no <a href=\"#rpcwhitelist\">rpcwhitelist</a> is set, rpc server acts as if all rpc users are subject to empty whitelists",
+				"shortDescription": "Sets default behavior for rpc whitelisting"
+			},
+			"rpcworkqueue": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 1,
+					"wholeNumber": true
+				},
+				"title": "RPC Work Queue Size",
+				"description": "The depth of the work queue to service RPC calls",
+				"defaultValue": "64"
+			},
+			"server": {
+				"type": "checkbox",
+				"title": "Enable RPC Server",
+				"description": "Accept command line and JSON-RPC commands",
+				"defaultValue": "0"
+			}
+		}
 	},
 	{
 		"title": "Wallet",
@@ -1182,7 +1487,24 @@
 	{
 		"title": "Statistics",
 		"description": "Options for collecting statistics",
-		"configs": {}
+		"configs": {
+			"statsenable": {
+				"type": "checkbox",
+				"title": "Enable statistics",
+				"description": "Enable statistics",
+				"defaultValue": "0"
+			},
+			"statsmaxmemorytarget": {
+				"type": "number",
+				"typeConstraints": {
+					"min": 0,
+					"wholeNumber": true
+				},
+				"title": "Statistics Maximum Memory Target",
+				"description": "Set the memory limit target for statistics in bytes",
+				"defaultValue": "10485760"
+			}
+		}
 	},
 	{
 		"title": "Debugging & Testing",
