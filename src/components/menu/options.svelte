@@ -4,41 +4,12 @@
 	import { DropdownMenu, Label, useId } from 'bits-ui'
 	import Button from '@/components/button.svelte'
 	import Checkbox from '@/components/checkbox.svelte'
+	import useOptionsStore from '@/stores/options.svelte'
 	import { colors } from '@/globals'
 
 	const dropDownPaddingMQ = new MediaQuery('min-width: 400px')
 
-	let searchDescriptions = $state(true)
-	let highlightKnotsExclusives = $state(true)
-	let explicitDefaults = $state(false)
-	let inlineDescriptors = $state(false)
-
-	const options = {
-		get searchDescriptions() {
-			return searchDescriptions
-		},
-		set searchDescriptions(value) {
-			searchDescriptions = value
-		},
-		get highlightKnotsExclusives() {
-			return highlightKnotsExclusives
-		},
-		set highlightKnotsExclusives(value) {
-			highlightKnotsExclusives = value
-		},
-		get inlineDescriptors() {
-			return inlineDescriptors
-		},
-		set inlineDescriptors(value) {
-			inlineDescriptors = value
-		},
-		get explicitDefaults() {
-			return explicitDefaults
-		},
-		set explicitDefaults(value) {
-			explicitDefaults = value
-		},
-	}
+	const optionsStore = useOptionsStore()
 </script>
 
 <DropdownMenu.Root>
@@ -65,8 +36,8 @@
 						</div>
 
 						<div {...props} class="content" transition:slide>
-							{#snippet item(key: keyof typeof options, label: string)}
-								<DropdownMenu.CheckboxItem bind:checked={options[key]} closeOnSelect={false}>
+							{#snippet item(key: keyof typeof optionsStore, label: string)}
+								<DropdownMenu.CheckboxItem bind:checked={optionsStore[key]} closeOnSelect={false}>
 									{#snippet children({ checked })}
 										{@const id = useId()}
 
@@ -96,6 +67,7 @@
 										<div {...props} class="group-heading">Editor</div>
 									{/snippet}
 								</DropdownMenu.GroupHeading>
+								{@render item('showDescriptions', 'Show config descriptions')}
 								{@render item('searchDescriptions', 'Include descriptions in search')}
 								{@render item('highlightKnotsExclusives', 'Highlight Knots exclusives')}
 							</DropdownMenu.Group>

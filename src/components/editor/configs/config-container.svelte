@@ -6,6 +6,7 @@
 		openDuration as copyPopoverDuration,
 	} from '@/components/confirm-popover.svelte'
 	import useTimeoutFlag from '@/hooks/useTimeoutFlag.svelte'
+	import useOptionsStore from '@/stores/options.svelte'
 	import { colors } from '@/globals'
 	import type { EditorValueAny } from '@/types/editor'
 
@@ -33,6 +34,8 @@
 		children,
 		...attrs
 	}: ConfigContainerProps = $props()
+
+	const optionsStore = useOptionsStore()
 
 	const multipleDefaults = defaultValue && typeof defaultValue === 'object'
 	const displayedValue = $derived.by(() => {
@@ -74,10 +77,12 @@
 	</div>
 	<div class="content">
 		<div class="info">
-			<div class="description">
-				<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-				{@html description}
-			</div>
+			{#if optionsStore.showDescriptions}
+				<div class="description">
+					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+					{@html description}
+				</div>
+			{/if}
 			<div class="settings">
 				{#if options}
 					<div class="options">
