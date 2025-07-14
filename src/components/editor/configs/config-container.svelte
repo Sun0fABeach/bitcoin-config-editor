@@ -5,17 +5,20 @@
 	import ConfirmPopover, {
 		openDuration as copyPopoverDuration,
 	} from '@/components/confirm-popover.svelte'
+	import KnotsLogo from '@/components/knots-logo.svelte'
 	import useTimeoutFlag from '@/hooks/useTimeoutFlag.svelte'
 	import useOptionsStore from '@/stores/options.svelte'
 	import { colors } from '@/globals'
+	import type { ConfigOption, ConfigDefinition } from '@/types/config-definition'
 	import type { EditorValueAny } from '@/types/editor'
 
 	export interface ConfigContainerBaseProps {
-		title: string
+		knotsExclusive?: ConfigDefinition['knotsExclusive']
 		key: string
-		description: string
-		options?: string[]
-		defaultValue?: string | Record<string, string>
+		title: ConfigDefinition['title']
+		description: ConfigDefinition['description']
+		options?: ConfigOption['value'][]
+		defaultValue?: ConfigDefinition['defaultValue']
 	}
 
 	type ConfigContainerProps = ConfigContainerBaseProps &
@@ -25,8 +28,9 @@
 		}
 
 	const {
-		title,
+		knotsExclusive,
 		key,
+		title,
 		description,
 		options,
 		defaultValue,
@@ -36,6 +40,8 @@
 	}: ConfigContainerProps = $props()
 
 	const optionsStore = useOptionsStore()
+
+	const showKnotsExclusivity = $derived(knotsExclusive && optionsStore.highlightKnotsExclusives)
 
 	const multipleDefaults = defaultValue && typeof defaultValue === 'object'
 	const displayedValue = $derived.by(() => {
@@ -67,6 +73,9 @@
 			<span>{title}</span>
 			<span>{key}</span>
 		</div>
+		{#if showKnotsExclusivity}
+			<KnotsLogo alt="Knots exclusive" title="Knots exclusive" />
+		{/if}
 		<ConfirmPopover text="Link copied" onClick={copyConfigUrl}>
 			{#snippet trigger({ props })}
 				<button {...props} class={{ highlight: linkHighlight.flag }}>
@@ -129,28 +138,17 @@
 		}
 
 		@media (pointer: fine) {
-			> .heading button {
-				opacity: 0;
-				&.highlight {
-					opacity: 1;
-				}
-			}
-			&:hover > .heading button:not(.highlight) {
+			&:hover > .heading > button:not(.highlight) {
 				opacity: 0.5;
-				&:hover {
-					opacity: 1;
-				}
 			}
 		}
 	}
 
 	.heading {
 		display: flex;
-		justify-content: space-between;
 		column-gap: 0.75rem;
 
 		@media (pointer: fine) {
-			justify-content: start;
 			column-gap: 0.625rem;
 		}
 
@@ -167,13 +165,27 @@
 			}
 		}
 
+		:global > img {
+			height: 1.25rem;
+		}
+
 		button {
 			display: inline flex;
-			align-items: center;
+			align-items: start;
+			margin-left: auto;
+			padding-top: 0.125rem;
 			opacity: 0.75;
 			transition: opacity 150ms;
 			&[data-state='open'] {
 				opacity: 1;
+			}
+
+			@media (pointer: fine) {
+				margin-left: 0;
+				opacity: 0;
+				&.highlight {
+					opacity: 1;
+				}
 			}
 		}
 	}

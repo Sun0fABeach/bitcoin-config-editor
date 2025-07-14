@@ -8,8 +8,10 @@
 	import CheckboxConfig from '@/components/editor/configs/checkbox-config.svelte'
 	import SelectConfig from '@/components/editor/configs/select-config.svelte'
 	import MultiSelectConfig from '@/components/editor/configs/multi-select-config.svelte'
+	import KnotsLogo from '@/components/knots-logo.svelte'
+	import useOptionsStore from '@/stores/options.svelte'
 	import { EditorValueType } from '@/enums'
-	import type { ConfigDefinition } from '@/types/config-definition'
+	import type { CategoryDefinition } from '@/types/config-definition'
 	import type {
 		EditorValueAny,
 		EditorValueText,
@@ -21,20 +23,25 @@
 	} from '@/types/editor'
 
 	export interface CategoryProps {
-		title: string
-		description: string
-		configs: Record<string, ConfigDefinition>
+		knotsExclusive?: CategoryDefinition['knotsExclusive']
+		title: CategoryDefinition['title']
+		description: CategoryDefinition['description']
+		configs: CategoryDefinition['configs']
 		values: Record<string, EditorValueAny>
 		onOpenFinished: () => void
 	}
 
 	const {
+		knotsExclusive,
 		title,
 		description,
 		configs,
 		values = $bindable(),
 		onOpenFinished,
 	}: CategoryProps = $props()
+
+	const optionsStore = useOptionsStore()
+	const showKnotsExclusivity = $derived(knotsExclusive && optionsStore.highlightKnotsExclusives)
 </script>
 
 <Accordion.Item value={title}>
@@ -45,6 +52,9 @@
 					<div class="heading">
 						<CaretDown class="caret" weight="duotone" />
 						<h2>{title}</h2>
+						{#if showKnotsExclusivity}
+							<KnotsLogo alt="Knots exclusive" title="Knots exclusive" />
+						{/if}
 					</div>
 					<div class="description">{description}</div>
 				</button>
@@ -57,16 +67,13 @@
 			{#if open}
 				<ul {...props} transition:slide onintroend={onOpenFinished}>
 					{#each Object.entries(configs) as [key, definition] (key)}
-						{@const { type, typeConstraints, title, description, defaultValue, options } =
-							definition}
+						{@const { type, typeConstraints, options, ...info } = definition}
 
 						<li class="config-list-item" id={key}>
 							{#if definition.type === EditorValueType.TEXT}
 								<TextConfig
 									{key}
-									{title}
-									{description}
-									{defaultValue}
+									{...info}
 									hex={typeConstraints?.hex}
 									base58={typeConstraints?.base58}
 									minLength={typeConstraints?.minLength}
@@ -76,9 +83,7 @@
 							{:else if type === EditorValueType.NUMBER}
 								<NumberConfig
 									{key}
-									{title}
-									{description}
-									{defaultValue}
+									{...info}
 									min={typeConstraints?.min}
 									max={typeConstraints?.max}
 									step={typeConstraints?.step}
@@ -87,37 +92,25 @@
 									bind:value={values[key] as EditorValueNumber}
 								/>
 							{:else if type === EditorValueType.CHECKBOX}
-								<CheckboxConfig
-									{key}
-									{title}
-									{description}
-									{defaultValue}
-									bind:checked={values[key] as EditorValueCheckbox}
-								/>
+								<CheckboxConfig {key} {...info} bind:checked={values[key] as EditorValueCheckbox} />
 							{:else if type === EditorValueType.SELECT}
 								<SelectConfig
 									{key}
-									{title}
-									{description}
-									{defaultValue}
+									{...info}
 									items={options!}
 									bind:value={values[key] as EditorValueSelect}
 								/>
 							{:else if type === EditorValueType.MULTI_SELECT}
 								<MultiSelectConfig
 									{key}
-									{title}
-									{description}
-									{defaultValue}
+									{...info}
 									items={options!}
 									bind:values={values[key] as EditorValueMultiSelect}
 								/>
 							{:else if type === EditorValueType.MULTI_TEXT}
 								<MultiTextConfig
 									{key}
-									{title}
-									{description}
-									{defaultValue}
+									{...info}
 									bind:values={values[key] as EditorValueMultiText}
 								/>
 							{/if}
@@ -143,11 +136,15 @@
 		> .heading {
 			display: flex;
 			align-items: center;
-			column-gap: 1rem;
 
 			> h2 {
+				margin-left: 1rem;
 				font-size: 1.125em;
 				transition: transform 0.15s;
+			}
+			:global > img {
+				height: 1.375rem;
+				margin-left: 0.75rem;
 			}
 		}
 

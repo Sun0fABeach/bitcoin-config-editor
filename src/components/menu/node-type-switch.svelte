@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { Switch, Label } from 'bits-ui'
-	import KnotsLogo from '@/assets/knots-logo.png'
+	import KnotsLogo from '@/components/knots-logo.svelte'
 
 	const id = 'node-type-switch'
 
@@ -15,7 +15,7 @@
 				<Switch.Thumb>
 					{#snippet child({ props })}
 						<span {...props} class="knob">
-							<img src={KnotsLogo} alt="Knots logo" />
+							<KnotsLogo greyedOut={!checked} />
 						</span>
 					{/snippet}
 				</Switch.Thumb>
@@ -56,19 +56,12 @@
 		background-color: black;
 		border-radius: 50%;
 		transition: transform 0.3s;
-		> img {
-			background-color: var(----color-background);
-			transition: filter 0.6s;
-		}
 
 		&[data-state='checked'] {
 			transform: translate(1rem);
 		}
 		&[data-state='unchecked'] {
 			transform: translate(-1rem);
-			> img {
-				filter: grayscale(100%);
-			}
 		}
 	}
 

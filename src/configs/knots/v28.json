@@ -88,6 +88,7 @@
 				"defaultValue": "0"
 			},
 			"confrw": {
+				"knotsExclusive": true,
 				"type": "text",
 				"title": "Read/Write Config File",
 				"description": "Specify path to read/write configuration file. Relative paths will be prefixed by the network-specific <a href=\"#datadir\">datadir</a> location",
@@ -95,6 +96,7 @@
 				"defaultValue": "bitcoin_rw.conf"
 			},
 			"corepolicy": {
+				"knotsExclusive": true,
 				"type": "checkbox",
 				"title": "Core Policy",
 				"description": "Use Bitcoin Core policy defaults",
@@ -139,6 +141,7 @@
 				"defaultValue": "450"
 			},
 			"dbfilesize": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": 1,
@@ -162,6 +165,7 @@
 				"shortDescription": "Import blocks from external blk000??.dat file on startup"
 			},
 			"lowmem": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": 0
@@ -313,6 +317,7 @@
 				"shortDescription": "Execute command immediately before beginning shutdown"
 			},
 			"softwareexpiry": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": 0,
@@ -368,6 +373,7 @@
 				"defaultValue": "0"
 			},
 			"signetblocktime": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": 0,
@@ -492,6 +498,7 @@
 				"description": "Specify your own public IP address"
 			},
 			"feefilter": {
+				"knotsExclusive": true,
 				"type": "checkbox",
 				"title": "Fee Filter",
 				"description": "Tell other nodes to filter invs to us by our mempool min fee",
@@ -709,6 +716,7 @@
 				"defaultValue": "0"
 			},
 			"uaappend": {
+				"knotsExclusive": true,
 				"type": "text",
 				"title": "User Agent Append",
 				"description": "Append literal to the user agent string (should only be used for software embedding)",
@@ -752,6 +760,7 @@
 		"description": "What transactions your node will relay to peers",
 		"configs": {
 			"acceptnonstddatacarrier": {
+				"knotsExclusive": true,
 				"type": "checkbox",
 				"title": "Accept Non-Standard Datacarrier Transactions",
 				"description": "Relay and mine non-OP_RETURN datacarrier injection",
@@ -774,6 +783,7 @@
 				"defaultValue": "20"
 			},
 			"bytespersigopstrict": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": 0,
@@ -790,6 +800,7 @@
 				"defaultValue": "1"
 			},
 			"datacarriercost": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": 0.25,
@@ -800,6 +811,7 @@
 				"defaultValue": "1"
 			},
 			"datacarrierfullcount": {
+				"knotsExclusive": true,
 				"type": "checkbox",
 				"title": "Data Carrier Full Count",
 				"description": "Apply datacarriersize limit to all known datacarrier methods",
@@ -816,6 +828,7 @@
 				"defaultValue": "42"
 			},
 			"dustdynamic": {
+				"knotsExclusive": true,
 				"type": "text",
 				"title": "Dynamic Dust Relay Fee",
 				"description": "Automatically raise <a href=\"#dustrelayfee\">dustrelayfee</a> based on either the expected fee to be mined within &lt;blocks&gt; blocks, or to be within the best &lt;kvB&gt; kvB of this node's mempool. Specify in format: off|[&lt;multiplier&gt;*]target:&lt;blocks&gt;|[&lt;multiplier&gt;*]mempool:&lt;kvB&gt;. If unspecified, multiplier is 3",
@@ -843,6 +856,7 @@
 				"defaultValue": "0.00001"
 			},
 			"maxscriptsize": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": 0,
@@ -859,6 +873,7 @@
 				"defaultValue": "1"
 			},
 			"mempoolreplacement": {
+				"knotsExclusive": true,
 				"type": "select",
 				"title": "Mempool Replacement",
 				"description": "Mempool RBF policy. Set \"fee,optin\" to honour RBF opt-out  signal, or \"fee,-optin\" to always RBF aka full RBF",
@@ -871,6 +886,7 @@
 				"defaultValue": "fee,-optin"
 			},
 			"mempooltruc": {
+				"knotsExclusive": true,
 				"type": "select",
 				"title": "Mempool Topologically Restricted Until Confirmation (TRUC) Policy",
 				"description": "Behaviour for transactions requesting TRUC limits: \"reject\" the transactions entirely, \"accept\" them just like any other, or \"enforce\" to impose their requested restrictions",
@@ -899,24 +915,28 @@
 				"defaultValue": "0"
 			},
 			"permitbarepubkey": {
+				"knotsExclusive": true,
 				"type": "checkbox",
 				"title": "Permit Bare Pubkey",
 				"description": "Relay legacy pubkey outputs",
 				"defaultValue": "0"
 			},
 			"rejectparasites": {
+				"knotsExclusive": true,
 				"type": "checkbox",
 				"title": "Reject Parasites",
 				"description": "Refuse to relay or mine parasitic overlay protocols",
 				"defaultValue": "1"
 			},
 			"rejecttokens": {
+				"knotsExclusive": true,
 				"type": "checkbox",
 				"title": "Reject Tokens",
 				"description": "Refuse to relay or mine transactions involving non-bitcoin tokens",
 				"defaultValue": "0"
 			},
 			"spkreuse": {
+				"knotsExclusive": true,
 				"type": "select",
 				"title": "Script And Public Key Reuse",
 				"description": "Set to \"allow\" to relay/mine transactions reusing addresses or other pubkey scripts, or \"conflict\" to treat them as exclusive prior to being mined",
@@ -948,6 +968,7 @@
 		"description": "Attributes of blocks that can be mined by your node",
 		"configs": {
 			"blockmaxsize": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": 0,
@@ -978,6 +999,7 @@
 				"defaultValue": "0.00001"
 			},
 			"blockprioritysize": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": 0,
@@ -1017,6 +1039,7 @@
 				"shortDescription": "Username and HMAC-SHA-256 hashed password for JSON-RPC connections"
 			},
 			"rpcauthfile": {
+				"knotsExclusive": true,
 				"type": "multiText",
 				"title": "RPC Authentication File",
 				"description": "A file with a single line with the same format as <a href=\"#rpcauth\">rpcauth</a>. This option can be specified multiple times",
@@ -1037,6 +1060,7 @@
 				"defaultValue": "<a href=\"#datadir\">datadir</a>"
 			},
 			"rpccookieperms": {
+				"knotsExclusive": true,
 				"type": "text",
 				"title": "RPC Cookie Permissions",
 				"description": "Set the permissions on the RPC auth cookie file so that it is readable by [owner|group|all]",
@@ -1320,6 +1344,7 @@
 				"defaultValue": "<a href=\"#datadir\">&lt;datadir&gt;</a>[/wallets]"
 			},
 			"walletimplicitsegwit": {
+				"knotsExclusive": true,
 				"type": "checkbox",
 				"title": "Wallet Implicit Segwit",
 				"description": "Support segwit when restoring wallet backups and importing keys",
@@ -1388,6 +1413,7 @@
 				"defaultValue": "1000"
 			},
 			"zmqpubhashwallettx": {
+				"knotsExclusive": true,
 				"type": "text",
 				"typeConstraints": {
 					"base58": true
@@ -1397,6 +1423,7 @@
 				"shortDescription": "Enable publishing of wallet transaction hashes to <address>"
 			},
 			"zmqpubhashwallettxhwm": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": 0,
@@ -1445,6 +1472,7 @@
 				"defaultValue": "1000"
 			},
 			"zmqpubrawwallettx": {
+				"knotsExclusive": true,
 				"type": "text",
 				"typeConstraints": {
 					"base58": true
@@ -1454,6 +1482,7 @@
 				"shortDescription": "Enable publishing of raw wallet transaction hex to <address>"
 			},
 			"zmqpubrawwallettxhwm": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": 0,
@@ -1485,16 +1514,19 @@
 		}
 	},
 	{
+		"knotsExclusive": true,
 		"title": "Statistics",
 		"description": "Options for collecting statistics",
 		"configs": {
 			"statsenable": {
+				"knotsExclusive": true,
 				"type": "checkbox",
 				"title": "Enable statistics",
 				"description": "Enable statistics",
 				"defaultValue": "0"
 			},
 			"statsmaxmemorytarget": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": 0,

@@ -12,20 +12,24 @@ export interface TypeConstraints {
 	maxLength?: number
 }
 
+export interface ConfigOption {
+	value: string
+	label: string
+}
+
 export interface ConfigDefinition {
+	knotsExclusive?: boolean
 	type: EditorValueAny
 	typeConstraints?: TypeConstraints
 	title: string
 	description: string
 	shortDescription?: string
-	options?: {
-		value: string
-		label: string
-	}[]
+	options?: ConfigOption[]
 	defaultValue?: string | Record<string, string>
 }
 
 export interface CategoryDefinition {
+	knotsExclusive?: boolean
 	title: string
 	description: string
 	configs: Record<string, ConfigDefinition>
