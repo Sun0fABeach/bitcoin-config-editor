@@ -2,8 +2,8 @@
 	import ConfigContainer, {
 		type ConfigContainerBaseProps,
 	} from '@/components/editor/configs/config-container.svelte'
-	import InputRow from '@/components/editor/input-row.svelte'
-	import ConfigTextInput from '@/components/editor/config-text-input.svelte'
+	import InputRow from '@/components/editor/configs/inputs/input-row.svelte'
+	import ConfigTextInput from '@/components/editor/configs/inputs/config-text-input.svelte'
 	import { unset } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueText } from '@/types/editor'

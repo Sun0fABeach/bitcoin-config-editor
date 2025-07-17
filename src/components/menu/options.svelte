@@ -68,6 +68,7 @@
 									{/snippet}
 								</DropdownMenu.GroupHeading>
 								{@render item('showDescriptions', 'Show config descriptions')}
+								{@render item('searchTitles', 'Include titles in search')}
 								{@render item('searchDescriptions', 'Include descriptions in search')}
 								{@render item('highlightKnotsExclusives', 'Highlight Knots exclusives')}
 							</DropdownMenu.Group>

@@ -237,6 +237,7 @@
 
 			> .default-value li {
 				display: flex;
+				flex-flow: wrap;
 				> :first-child {
 					color: var(--color-accent2);
 				}

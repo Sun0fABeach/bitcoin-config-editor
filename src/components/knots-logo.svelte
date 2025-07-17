@@ -6,10 +6,10 @@
 		greyedOut?: boolean
 	}
 
-	const { greyedOut, ...rest }: KnotsLogoProps = $props()
+	const { greyedOut, ...attrs }: KnotsLogoProps = $props()
 </script>
 
-<img class={{ 'greyed-out': greyedOut }} src={KnotsLogo} alt="Knots logo" {...rest} />
+<img class={{ 'greyed-out': greyedOut }} src={KnotsLogo} alt="Knots logo" {...attrs} />
 
 <style lang="postcss">
 	img {
