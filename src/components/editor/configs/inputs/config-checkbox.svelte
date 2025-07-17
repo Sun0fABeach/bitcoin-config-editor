@@ -50,10 +50,7 @@
 			.outline::after {
 				content: '';
 				position: absolute;
-				top: 0;
-				bottom: 0;
-				left: 0;
-				right: 0;
+				inset: 0;
 				border: 1px solid transparent;
 				border-radius: 0.25rem;
 				transition:
@@ -66,10 +63,7 @@
 
 			&:hover > .outline::after,
 			:global(.checkbox:focus + .outline::after) {
-				top: 10px;
-				bottom: 10px;
-				left: 10px;
-				right: 10px;
+				inset: 10px;
 				border-color: var(--color-accent1);
 			}
 

@@ -3,6 +3,7 @@
 	import { Accordion } from 'bits-ui'
 	import ScrollArea from '@/components/scroll-area.svelte'
 	import Category, { type CategoryProps } from '@/components/editor/category.svelte'
+	import ConfigList from '@/components/editor/config-list.svelte'
 	import useConfigStore from '@/stores/config.svelte'
 
 	const configStore = useConfigStore()
@@ -40,7 +41,7 @@
 		disableScrollHandling()
 
 		const elementId = hash.slice(1)
-		const categoryTitle = configStore.configIndex[elementId].category
+		const categoryTitle = configStore.getCategoryTitle(elementId)
 
 		if (categoryIsOpen(categoryTitle)) {
 			scrollIntoView(elementId)
@@ -73,25 +74,40 @@
 	}
 
 	let onCategoryOpenFinished = $state(() => {}) // modified by onClick
+
+	const configFound = $derived(Object.keys(configStore.filteredConfigs ?? {}).length > 0)
 </script>
 
 <main>
 	<ScrollArea>
-		<Accordion.Root type="multiple" bind:value={openCategories} onclickcapture={onClick}>
-			{#snippet child({ props })}
-				<ul {...props}>
-					{#each configStore.categories as category (category.title)}
-						<li>
-							<Category
-								{...category}
-								bind:values={configStore.values}
-								onOpenFinished={onCategoryOpenFinished}
-							/>
-						</li>
-					{/each}
-				</ul>
-			{/snippet}
-		</Accordion.Root>
+		{#if configStore.filteredConfigs}
+			{#if configFound}
+				<ConfigList
+					class="filtered-configs"
+					configs={configStore.filteredConfigs}
+					bind:values={configStore.values}
+					onclickcapture={onClick}
+				/>
+			{:else}
+				<div class="no-match">No config matches your search</div>
+			{/if}
+		{:else}
+			<Accordion.Root type="multiple" bind:value={openCategories} onclickcapture={onClick}>
+				{#snippet child({ props })}
+					<ul {...props}>
+						{#each configStore.categories as category (category.title)}
+							<li>
+								<Category
+									{...category}
+									bind:values={configStore.values}
+									onOpenFinished={onCategoryOpenFinished}
+								/>
+							</li>
+						{/each}
+					</ul>
+				{/snippet}
+			</Accordion.Root>
+		{/if}
 	</ScrollArea>
 </main>
 
@@ -104,6 +120,17 @@
 		display: flex;
 		flex-flow: column;
 		overflow-y: hidden;
+
+		:global .filtered-configs {
+			padding: 1.5rem 0;
+		}
+
+		.no-match {
+			display: flex;
+			justify-content: center;
+			text-align: center;
+			padding: 1.5rem 0;
+		}
 
 		ul {
 			display: flex;

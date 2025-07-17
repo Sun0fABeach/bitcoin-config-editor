@@ -10,7 +10,7 @@
 		wholeNumber?: boolean
 	}
 
-	let { value = $bindable(), wholeNumber, ...rest }: ConfigTextInputProps = $props()
+	let { value = $bindable(), wholeNumber, ...attrs }: ConfigTextInputProps = $props()
 
 	let ref: HTMLInputElement | null = null
 	export const focus = () => ref?.focus()
@@ -35,7 +35,7 @@
 		{inputmode}
 		bind:value={getValue, setValue}
 		bind:this={ref}
-		{...rest}
+		{...attrs}
 		onclick={(e) => e.stopPropagation()}
 	/>
 	<div class="underline"></div>

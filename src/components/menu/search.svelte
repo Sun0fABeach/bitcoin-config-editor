@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { MagnifyingGlass, X } from 'phosphor-svelte'
 	import { Label, Button } from 'bits-ui'
+	import useSearchStore from '@/stores/search.svelte'
 
+	const searchStore = useSearchStore()
 	let inputRef: HTMLInputElement
-	let searchInput = $state('')
 </script>
 
 <div role="button" tabindex="-1" onclick={() => inputRef.focus()} onkeypress={() => {}}>
@@ -18,12 +19,12 @@
 		id="search"
 		type="search"
 		placeholder="Search"
-		bind:value={searchInput}
+		bind:value={searchStore.search}
 		bind:this={inputRef}
 	/>
 	<Button.Root
-		class={['clear-button', { hidden: !searchInput }]}
-		onclick={() => (searchInput = '')}
+		class={['clear-button', { hidden: !searchStore.search }]}
+		onclick={searchStore.clear}
 	>
 		<X size={20} weight="bold" />
 	</Button.Root>

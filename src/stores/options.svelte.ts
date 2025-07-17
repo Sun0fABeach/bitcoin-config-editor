@@ -1,5 +1,6 @@
 let showDescriptions = $state(true)
-let searchDescriptions = $state(true)
+let searchTitles = $state(true)
+let searchDescriptions = $state(false)
 let highlightKnotsExclusives = $state(true)
 let explicitDefaults = $state(false)
 let inlineDescriptors = $state(false)
@@ -11,6 +12,12 @@ export default function () {
 		},
 		set showDescriptions(value) {
 			showDescriptions = value
+		},
+		get searchTitles() {
+			return searchTitles
+		},
+		set searchTitles(value) {
+			searchTitles = value
 		},
 		get searchDescriptions() {
 			return searchDescriptions
