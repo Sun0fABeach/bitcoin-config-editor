@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { fly } from 'svelte/transition'
+	import { fade } from 'svelte/transition'
 	import { Select } from 'bits-ui'
 	import { CaretUpDown, CaretDoubleDown, CaretDoubleUp, Check } from 'phosphor-svelte'
 	import Button from '@/components/button.svelte'
@@ -54,7 +54,7 @@
 				{#snippet child({ wrapperProps, props, open })}
 					{#if open}
 						<div {...wrapperProps}>
-							<div {...props} class="content" transition:fly>
+							<div {...props} class="content" transition:fade={{ duration: 150 }}>
 								<Select.ScrollUpButton>
 									<CaretDoubleUp />
 								</Select.ScrollUpButton>
