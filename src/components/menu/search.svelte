@@ -5,10 +5,17 @@
 
 	const searchStore = useSearchStore()
 	let inputRef: HTMLInputElement
+
+	const clear = () => {
+		searchStore.clear()
+		if (matchMedia('(pointer:fine)').matches) {
+			inputRef.focus()
+		}
+	}
 </script>
 
-<div role="button" tabindex="-1" onclick={() => inputRef.focus()} onkeypress={() => {}}>
-	<Label.Root for="search">
+<div>
+	<Label.Root for="search" onclick={() => inputRef.focus()}>
 		{#snippet child({ props })}
 			<label {...props}>
 				<MagnifyingGlass size={20} weight="regular" />
@@ -22,24 +29,21 @@
 		bind:value={searchStore.search}
 		bind:this={inputRef}
 	/>
-	<Button.Root
-		class={['clear-button', { hidden: !searchStore.search }]}
-		onclick={searchStore.clear}
-	>
+	<Button.Root class={['clear-button', { hidden: !searchStore.search }]} onclick={clear}>
 		<X size={20} weight="bold" />
 	</Button.Root>
 </div>
 
 <style lang="postcss">
 	div {
+		--height: 2rem;
+
 		display: inline flex;
 		align-items: center;
 		width: 12rem;
-		height: 2rem;
 		padding-right: 0.125rem;
 		border: 1px solid var(--color-element-border);
 		border-radius: 0.5rem;
-		cursor: pointer;
 
 		&:hover {
 			background: var(--color-button-highlight-gradient);
@@ -50,14 +54,17 @@
 
 		> label {
 			display: inline flex;
+			align-items: center;
+			height: var(--height);
 			padding-left: 0.5rem;
-			cursor: inherit;
+			cursor: pointer;
 		}
 
 		> input {
 			width: 0; /* reset browser defined width */
 			flex: 1;
-			margin-left: 0.5rem;
+			height: var(--height);
+			padding-left: 0.625rem;
 
 			&::placeholder {
 				color: var(--color-text-medium);
