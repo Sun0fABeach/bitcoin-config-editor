@@ -10,35 +10,38 @@
 	import ConfigSelect, {
 		type SelectItem,
 	} from '@/components/editor/configs/inputs/config-select.svelte'
-	import { unset } from '@/lib/config'
+	import useConfigStore from '@/stores/config.svelte'
+	import { unsetValue } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueMultiSelect } from '@/types/editor'
 
 	type MultiSelectConfigProps = ConfigContainerBaseProps & {
 		items: SelectItem[]
-		values: EditorValueMultiSelect
 	}
 
-	let { items, values = $bindable(), ...info }: MultiSelectConfigProps = $props()
+	let { key, items, ...info }: MultiSelectConfigProps = $props()
 
+	const configStore = useConfigStore()
+
+	const intialValues = configStore.values[key] as EditorValueMultiSelect
 	const options = items.map(({ value }) => value)
 
 	const mappedValues = $state(
-		values.length > 0
-			? values.map((value) => ({ value, id: useId() }))
-			: [{ value: unset[EditorValueType.SELECT], id: useId() }],
+		intialValues.length > 0
+			? intialValues.map((value) => ({ value, id: useId() }))
+			: [{ value: unsetValue(EditorValueType.SELECT), id: useId() }],
 	)
 
 	let open = $state(mappedValues.map(() => false))
 
 	const deleteDisabled = $derived(
-		mappedValues.length === 1 && mappedValues[0].value === unset[EditorValueType.SELECT],
+		mappedValues.length === 1 && mappedValues[0].value === unsetValue(EditorValueType.SELECT),
 	)
 
 	const closeAll = () => (open = open.map(() => false))
 
 	const addSelect = async () => {
-		mappedValues.push({ value: unset[EditorValueType.SELECT], id: useId() })
+		mappedValues.push({ value: unsetValue(EditorValueType.SELECT), id: useId() })
 		open.push(false)
 	}
 
@@ -49,7 +52,7 @@
 
 	const deleteSelect = (rowIdx: number) => {
 		if (mappedValues.length === 1) {
-			mappedValues[0].value = unset[EditorValueType.SELECT]
+			mappedValues[0].value = unsetValue(EditorValueType.SELECT)
 		} else {
 			mappedValues.splice(rowIdx, 1)
 			open.splice(rowIdx, 1)
@@ -58,9 +61,12 @@
 	}
 
 	const unmapValues = () => {
-		values = mappedValues
-			.filter(({ value }) => value !== unset[EditorValueType.SELECT])
-			.map(({ value }) => value)
+		configStore.updateValue(
+			key,
+			mappedValues
+				.filter(({ value }) => value !== unsetValue(EditorValueType.SELECT))
+				.map(({ value }) => value),
+		)
 	}
 
 	/* event handlers */
@@ -81,7 +87,7 @@
 	}
 </script>
 
-<ConfigContainer value={values} {options} {...info}>
+<ConfigContainer {key} value={configStore.values[key]} {options} {...info}>
 	<div class="inputs-container">
 		{#each mappedValues as { value, id }, rowIdx (id)}
 			<InputRow withTransition {deleteDisabled} ondelete={() => onDeleteClick(rowIdx)}>

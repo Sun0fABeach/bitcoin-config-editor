@@ -2,15 +2,15 @@
 	import { DownloadSimple } from 'phosphor-svelte'
 	import Button from '@/components/button.svelte'
 	import { downloadFile } from '@/lib/file'
-	import usePreviewStore from '@/stores/preview.svelte'
+	import useConfigStore from '@/stores/config.svelte'
 
-	const previewStore = usePreviewStore()
+	const configStore = useConfigStore()
 
 	function download() {
-		downloadFile(previewStore.textContent)
+		downloadFile(configStore.text)
 	}
 </script>
 
-<Button icon title="download" onclick={download}>
+<Button icon title="download" disabled={!configStore.text} onclick={download}>
 	<DownloadSimple size={20} weight="regular" />
 </Button>

@@ -5,25 +5,16 @@
 	import KnotsLogo from '@/components/knots-logo.svelte'
 	import useOptionsStore from '@/stores/options.svelte'
 	import type { CategoryDefinition } from '@/types/config-definition'
-	import type { EditorValueAny } from '@/types/editor'
 
 	export interface CategoryProps {
 		knotsExclusive?: CategoryDefinition['knotsExclusive']
 		title: CategoryDefinition['title']
 		description: CategoryDefinition['description']
 		configs: CategoryDefinition['configs']
-		values: Record<string, EditorValueAny>
 		onOpenFinished: () => void
 	}
 
-	let {
-		knotsExclusive,
-		title,
-		description,
-		configs,
-		values = $bindable(),
-		onOpenFinished,
-	}: CategoryProps = $props()
+	let { knotsExclusive, title, description, configs, onOpenFinished }: CategoryProps = $props()
 
 	const optionsStore = useOptionsStore()
 	const showKnotsExclusivity = $derived(knotsExclusive && optionsStore.highlightKnotsExclusives)
@@ -50,7 +41,7 @@
 	<Accordion.Content forceMount={true}>
 		{#snippet child({ props, open })}
 			{#if open}
-				<ConfigList {...props} bind:values {...{ configs, onOpenFinished }} withTransition />
+				<ConfigList {...props} {...{ configs, onOpenFinished }} withTransition />
 			{/if}
 		{/snippet}
 	</Accordion.Content>

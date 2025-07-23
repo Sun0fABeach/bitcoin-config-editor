@@ -3,7 +3,7 @@
 	import { Select } from 'bits-ui'
 	import { CaretUpDown, CaretDoubleDown, CaretDoubleUp, Check } from 'phosphor-svelte'
 	import Button from '@/components/button.svelte'
-	import { unset } from '@/lib/config'
+	import { unsetValue } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueSelect } from '@/types/editor'
 
@@ -21,9 +21,9 @@
 	let { open = $bindable(false), value = $bindable(), items }: ConfigSelectProps = $props()
 
 	const shownItems = $derived.by(() => {
-		if (value === unset[EditorValueType.SELECT]) {
+		if (value === unsetValue(EditorValueType.SELECT)) {
 			const placeholderItem: SelectItem = {
-				value: unset[EditorValueType.SELECT],
+				value: unsetValue(EditorValueType.SELECT),
 				label: '- select -',
 			}
 			return [placeholderItem].concat(items)

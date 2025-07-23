@@ -8,20 +8,10 @@
 	import MultiSelectConfig from '@/components/editor/configs/multi-select-config.svelte'
 	import { EditorValueType } from '@/enums'
 	import type { CategoryDefinition } from '@/types/config-definition'
-	import type {
-		EditorValueAny,
-		EditorValueText,
-		EditorValueNumber,
-		EditorValueCheckbox,
-		EditorValueSelect,
-		EditorValueMultiSelect,
-		EditorValueMultiText,
-	} from '@/types/editor'
 
 	interface ConfigListProps {
 		withTransition?: boolean
 		configs: CategoryDefinition['configs']
-		values: Record<string, EditorValueAny>
 		onOpenFinished?: () => void
 		[index: string]: unknown
 	}
@@ -52,7 +42,6 @@
 					base58={typeConstraints?.base58}
 					minLength={typeConstraints?.minLength}
 					maxLength={typeConstraints?.maxLength}
-					bind:value={values[key] as EditorValueText}
 				/>
 			{:else if type === EditorValueType.NUMBER}
 				<NumberConfig
@@ -63,26 +52,15 @@
 					step={typeConstraints?.step}
 					invalidRange={typeConstraints?.invalidRange}
 					wholeNumber={typeConstraints?.wholeNumber}
-					bind:value={values[key] as EditorValueNumber}
 				/>
 			{:else if type === EditorValueType.CHECKBOX}
-				<CheckboxConfig {key} {...info} bind:checked={values[key] as EditorValueCheckbox} />
+				<CheckboxConfig {key} {...info} />
 			{:else if type === EditorValueType.SELECT}
-				<SelectConfig
-					{key}
-					{...info}
-					items={options!}
-					bind:value={values[key] as EditorValueSelect}
-				/>
+				<SelectConfig {key} {...info} items={options!} />
 			{:else if type === EditorValueType.MULTI_SELECT}
-				<MultiSelectConfig
-					{key}
-					{...info}
-					items={options!}
-					bind:values={values[key] as EditorValueMultiSelect}
-				/>
+				<MultiSelectConfig {key} {...info} items={options!} />
 			{:else if type === EditorValueType.MULTI_TEXT}
-				<MultiTextConfig {key} {...info} bind:values={values[key] as EditorValueMultiText} />
+				<MultiTextConfig {key} {...info} />
 			{/if}
 		</li>
 	{/each}

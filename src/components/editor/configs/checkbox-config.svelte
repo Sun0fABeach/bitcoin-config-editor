@@ -4,23 +4,29 @@
 	} from '@/components/editor/configs/config-container.svelte'
 	import InputRow from '@/components/editor/configs/inputs/input-row.svelte'
 	import ConfigCheckbox from '@/components/editor/configs/inputs/config-checkbox.svelte'
-	import { unset } from '@/lib/config'
+	import useConfigStore from '@/stores/config.svelte'
+	import { unsetValue } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueCheckbox } from '@/types/editor'
 
-	type CheckConfigProps = ConfigContainerBaseProps & {
-		checked: EditorValueCheckbox
-	}
+	type CheckConfigProps = ConfigContainerBaseProps
 
-	let { checked = $bindable(), ...info }: CheckConfigProps = $props()
+	let { key, ...info }: CheckConfigProps = $props()
+
+	const configStore = useConfigStore()
+
+	const value = $derived(configStore.values[key]) as EditorValueCheckbox
 
 	const onDeleteClick = () => {
-		checked = unset[EditorValueType.CHECKBOX]
+		configStore.updateValue(key, unsetValue(EditorValueType.CHECKBOX))
 	}
 </script>
 
-<ConfigContainer value={checked} {...info}>
-	<InputRow deleteDisabled={checked === unset[EditorValueType.CHECKBOX]} ondelete={onDeleteClick}>
-		<ConfigCheckbox bind:checked />
+<ConfigContainer {key} {value} {...info}>
+	<InputRow
+		deleteDisabled={value === unsetValue(EditorValueType.CHECKBOX)}
+		ondelete={onDeleteClick}
+	>
+		<ConfigCheckbox bind:checked={() => value, (v) => configStore.updateValue(key, v)} />
 	</InputRow>
 </ConfigContainer>

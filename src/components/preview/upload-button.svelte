@@ -2,12 +2,9 @@
 	import { UploadSimple } from 'phosphor-svelte'
 	import Button from '@/components/button.svelte'
 	import { uploadFile } from '@/lib/file'
-	import usePreviewStore from '@/stores/preview.svelte'
-
-	const previewStore = usePreviewStore()
 
 	function upload() {
-		uploadFile((uploadedContent: string) => (previewStore.textContent = uploadedContent))
+		uploadFile((uploadedContent: string) => console.log(uploadedContent))
 	}
 </script>
 

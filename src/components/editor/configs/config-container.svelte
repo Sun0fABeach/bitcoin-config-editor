@@ -171,7 +171,7 @@
 
 		button {
 			display: inline flex;
-			align-items: start;
+			align-self: start;
 			margin-left: auto;
 			padding-top: 0.125rem;
 			opacity: 0.75;

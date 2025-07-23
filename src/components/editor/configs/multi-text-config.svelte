@@ -8,34 +8,40 @@
 	} from '@/components/editor/configs/config-container.svelte'
 	import InputRow from '@/components/editor/configs/inputs/input-row.svelte'
 	import ConfigTextInput from '@/components/editor/configs/inputs/config-text-input.svelte'
-	import { unset } from '@/lib/config'
+	import useConfigStore from '@/stores/config.svelte'
+	import { unsetValue } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueMultiText } from '@/types/editor'
 
-	type MultiTextConfigProps = ConfigContainerBaseProps & {
-		values: EditorValueMultiText
-	}
+	type MultiTextConfigProps = ConfigContainerBaseProps
 
-	let { values = $bindable(), ...info }: MultiTextConfigProps = $props()
+	let { key, ...info }: MultiTextConfigProps = $props()
+
+	const configStore = useConfigStore()
+
+	const intialValues = configStore.values[key] as EditorValueMultiText
 
 	const mappedValues = $state(
-		values.length > 0
-			? values.map((value) => ({ value, id: useId() }))
-			: [{ value: unset[EditorValueType.TEXT], id: useId() }],
+		intialValues.length > 0
+			? intialValues.map((value) => ({ value, id: useId() }))
+			: [{ value: unsetValue(EditorValueType.TEXT), id: useId() }],
 	)
 
 	const deleteDisabled = $derived(
-		mappedValues.length === 1 && mappedValues[0].value === unset[EditorValueType.TEXT],
+		mappedValues.length === 1 && mappedValues[0].value === unsetValue(EditorValueType.TEXT),
 	)
 
 	const unmapValues = () => {
-		values = mappedValues.filter(({ value }) => value).map(({ value }) => value)
+		configStore.updateValue(
+			key,
+			mappedValues.filter(({ value }) => value).map(({ value }) => value),
+		)
 	}
 
 	const inputs: ConfigTextInput[] = $state([])
 
 	const onAddClick = async () => {
-		mappedValues.push({ value: unset[EditorValueType.TEXT], id: useId() })
+		mappedValues.push({ value: unsetValue(EditorValueType.TEXT), id: useId() })
 		await tick()
 		inputs[mappedValues.length - 1].focus()
 	}
@@ -47,7 +53,7 @@
 
 	const onDeleteClick = (rowIdx: number) => {
 		if (mappedValues.length === 1) {
-			mappedValues[0].value = unset[EditorValueType.TEXT]
+			mappedValues[0].value = unsetValue(EditorValueType.TEXT)
 		} else {
 			mappedValues.splice(rowIdx, 1)
 		}
@@ -55,7 +61,7 @@
 	}
 </script>
 
-<ConfigContainer value={values} {...info}>
+<ConfigContainer {key} value={configStore.values[key]} {...info}>
 	<div class="inputs-container">
 		{#each mappedValues as { value, id }, rowIdx (id)}
 			<InputRow withTransition {deleteDisabled} ondelete={() => onDeleteClick(rowIdx)}>

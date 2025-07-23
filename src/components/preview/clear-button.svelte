@@ -4,10 +4,10 @@
 	import { page } from '$app/state'
 	import { Broom } from 'phosphor-svelte'
 	import { AlertDialog } from 'bits-ui'
-	import usePreviewStore from '@/stores/preview.svelte'
+	import useConfigStore from '@/stores/config.svelte'
 	import Button from '@/components/button.svelte'
 
-	const previewStore = usePreviewStore()
+	const configStore = useConfigStore()
 
 	const getDialogOpen = () => !!page.state.dialogOpen
 	const setDialogOpen = (newOpen: boolean) => {
@@ -19,13 +19,13 @@
 	}
 
 	const confirmClear = () => {
-		previewStore.textContent = ''
+		configStore.unsetValues()
 		setDialogOpen(false)
 	}
 </script>
 
 <AlertDialog.Root bind:open={getDialogOpen, setDialogOpen}>
-	<AlertDialog.Trigger>
+	<AlertDialog.Trigger disabled={!configStore.hasUserValues}>
 		{#snippet child({ props })}
 			<Button icon title="clear" {...props}>
 				<Broom size={20} weight="regular" />

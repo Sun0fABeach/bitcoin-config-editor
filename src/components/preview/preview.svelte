@@ -4,10 +4,14 @@
 	import { building } from '$app/environment'
 	import { getOnDesktopContext } from '@/context/onDesktop'
 	import usePreviewStore from '@/stores/preview.svelte'
+	import useConfigStore from '@/stores/config.svelte'
 	import Panel from '@/components/preview/panel.svelte'
 	import ScrollArea from '@/components/scroll-area.svelte'
 
+	const placeholder = '# all configs on default settings'
+
 	const previewStore = usePreviewStore()
+	const configStore = useConfigStore()
 
 	const onDesktop = getOnDesktopContext()
 
@@ -26,15 +30,13 @@
 	 * not visible on mobile before hydration is finished */
 	let visibiltyGuard = $state(true)
 	onMount(() => (visibiltyGuard = false))
-
-	const configText = $derived(previewStore.textContent)
 </script>
 
 {#if previewStore.showPreview || onDesktop.current || building}
 	<aside class={{ 'visibility-guard': visibiltyGuard }} transition:scaleOnMobile>
 		<Panel />
 		<ScrollArea>
-			<code>{configText}</code>
+			<code>{configStore.text || placeholder}</code>
 		</ScrollArea>
 	</aside>
 {/if}

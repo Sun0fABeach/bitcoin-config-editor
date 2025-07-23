@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Checkbox from '@/components/checkbox.svelte'
 	import { colors } from '@/globals'
-	import { unset } from '@/lib/config'
+	import { unsetValue } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueCheckbox } from '@/types/editor'
 
@@ -20,7 +20,7 @@
 		<Checkbox
 			class="checkbox"
 			bind:checked={() => !!checked, (c) => (checked = c)}
-			indeterminate={checked === unset[EditorValueType.CHECKBOX]}
+			indeterminate={checked === unsetValue(EditorValueType.CHECKBOX)}
 			checkmarkColor={colors.accent1}
 			bind:this={ref}
 		/>

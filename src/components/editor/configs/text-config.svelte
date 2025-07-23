@@ -4,36 +4,38 @@
 	} from '@/components/editor/configs/config-container.svelte'
 	import InputRow from '@/components/editor/configs/inputs/input-row.svelte'
 	import ConfigTextInput from '@/components/editor/configs/inputs/config-text-input.svelte'
-	import { unset } from '@/lib/config'
+	import useConfigStore from '@/stores/config.svelte'
+	import { unsetValue } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
-	import type { EditorValueText } from '@/types/editor'
 	import type { TypeConstraints } from '@/types/config-definition'
+	import type { EditorValueText } from '@/types/editor'
 
 	type TextConfigProps = ConfigContainerBaseProps & {
-		value: EditorValueText
 		hex?: TypeConstraints['hex']
 		base58?: TypeConstraints['base58']
 		minLength?: TypeConstraints['minLength']
 		maxLength?: TypeConstraints['maxLength']
 	}
 
-	let {
-		value = $bindable(),
-		hex,
-		base58,
-		minLength,
-		maxLength,
-		...info
-	}: TextConfigProps = $props()
+	let { key, hex, base58, minLength, maxLength, ...info }: TextConfigProps = $props()
+
+	const configStore = useConfigStore()
+
+	const value = $derived(configStore.values[key]) as EditorValueText
 
 	const onDeleteClick = () => {
-		value = unset[EditorValueType.TEXT]
+		configStore.updateValue(key, unsetValue(EditorValueType.TEXT))
 	}
 </script>
 
-<ConfigContainer {value} {...info}>
+<ConfigContainer {key} {value} {...info}>
 	<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
 		{@const pattern = hex ? '[0-9a-fA-F]+' : base58 ? '[1-9a-km-zA-HJ-NP-Z]+' : undefined}
-		<ConfigTextInput {pattern} minlength={minLength} maxlength={maxLength} bind:value />
+		<ConfigTextInput
+			{pattern}
+			minlength={minLength}
+			maxlength={maxLength}
+			bind:value={() => value, (v) => configStore.updateValue(key, v)}
+		/>
 	</InputRow>
 </ConfigContainer>

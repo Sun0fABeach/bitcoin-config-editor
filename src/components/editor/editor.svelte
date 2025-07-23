@@ -7,6 +7,7 @@
 	import useConfigStore from '@/stores/config.svelte'
 
 	const configStore = useConfigStore()
+	// $inspect(configStore.values)
 
 	let openCategories = $state<CategoryProps['title'][]>([])
 
@@ -85,7 +86,6 @@
 				<ConfigList
 					class="filtered-configs"
 					configs={configStore.filteredConfigs}
-					bind:values={configStore.values}
 					onclickcapture={onClick}
 				/>
 			{:else}
@@ -97,11 +97,7 @@
 					<ul {...props}>
 						{#each configStore.categories as category (category.title)}
 							<li>
-								<Category
-									{...category}
-									bind:values={configStore.values}
-									onOpenFinished={onCategoryOpenFinished}
-								/>
+								<Category {...category} onOpenFinished={onCategoryOpenFinished} />
 							</li>
 						{/each}
 					</ul>

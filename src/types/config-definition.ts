@@ -1,4 +1,4 @@
-import type { EditorValueAny } from '@/types/editor'
+import { EditorValueType } from '@/enums'
 
 export interface TypeConstraints {
 	min?: number
@@ -19,7 +19,7 @@ export interface ConfigOption {
 
 export interface ConfigDefinition {
 	knotsExclusive?: boolean
-	type: EditorValueAny
+	type: EditorValueType
 	typeConstraints?: TypeConstraints
 	title: string
 	description: string

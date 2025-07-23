@@ -4,13 +4,13 @@
 	} from '@/components/editor/configs/config-container.svelte'
 	import InputRow from '@/components/editor/configs/inputs/input-row.svelte'
 	import ConfigTextInput from '@/components/editor/configs/inputs/config-text-input.svelte'
-	import { unset } from '@/lib/config'
+	import useConfigStore from '@/stores/config.svelte'
+	import { unsetValue } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
-	import type { EditorValueNumber } from '@/types/editor'
 	import type { TypeConstraints } from '@/types/config-definition'
+	import type { EditorValueNumber } from '@/types/editor'
 
 	type TextConfigProps = ConfigContainerBaseProps & {
-		value: EditorValueNumber
 		min?: TypeConstraints['min']
 		max?: TypeConstraints['max']
 		step?: TypeConstraints['step']
@@ -19,7 +19,7 @@
 	}
 
 	let {
-		value = $bindable(),
+		key,
 		min,
 		max,
 		step,
@@ -28,13 +28,24 @@
 		...info
 	}: TextConfigProps = $props()
 
+	const configStore = useConfigStore()
+
+	const value = $derived(configStore.values[key]) as EditorValueNumber
+
 	const onDeleteClick = () => {
-		value = unset[EditorValueType.NUMBER]
+		configStore.updateValue(key, unsetValue(EditorValueType.NUMBER))
 	}
 </script>
 
-<ConfigContainer {value} {...info}>
+<ConfigContainer {key} {value} {...info}>
 	<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
-		<ConfigTextInput {min} {max} {step} {invalidRange} {wholeNumber} bind:value />
+		<ConfigTextInput
+			{min}
+			{max}
+			{step}
+			{invalidRange}
+			{wholeNumber}
+			bind:value={() => value, (v) => configStore.updateValue(key, v)}
+		/>
 	</InputRow>
 </ConfigContainer>

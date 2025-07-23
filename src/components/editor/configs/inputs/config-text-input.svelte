@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements'
-	import { unset } from '@/lib/config'
+	import { unsetValue } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueText, EditorValueNumber } from '@/types/editor'
 
@@ -15,7 +15,7 @@
 	let ref: HTMLInputElement | null = null
 	export const focus = () => ref?.focus()
 
-	const isNumberInput = typeof value === 'number' || value === unset[EditorValueType.NUMBER]
+	const isNumberInput = typeof value === 'number' || value === unsetValue(EditorValueType.NUMBER)
 	const type = isNumberInput ? 'number' : 'text'
 	const inputmode = isNumberInput ? (wholeNumber ? 'numeric' : 'decimal') : 'text'
 

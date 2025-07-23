@@ -6,26 +6,30 @@
 	import ConfigSelect, {
 		type SelectItem,
 	} from '@/components/editor/configs/inputs/config-select.svelte'
-	import { unset } from '@/lib/config'
+	import useConfigStore from '@/stores/config.svelte'
+	import { unsetValue } from '@/lib/config'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueSelect } from '@/types/editor'
 
 	type SelectConfigProps = ConfigContainerBaseProps & {
 		items: SelectItem[]
-		value: EditorValueSelect
 	}
 
-	let { items, value = $bindable(), ...info }: SelectConfigProps = $props()
+	let { key, items, ...info }: SelectConfigProps = $props()
+
+	const configStore = useConfigStore()
+
+	const value = $derived(configStore.values[key]) as EditorValueSelect
 
 	const options = items.map(({ value }) => value)
 
 	const onDeleteClick = () => {
-		value = unset[EditorValueType.SELECT]
+		configStore.updateValue(key, unsetValue(EditorValueType.SELECT))
 	}
 </script>
 
-<ConfigContainer {value} {options} {...info}>
+<ConfigContainer {key} {value} {options} {...info}>
 	<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
-		<ConfigSelect bind:value {items} />
+		<ConfigSelect bind:value={() => value, (v) => configStore.updateValue(key, v)} {items} />
 	</InputRow>
 </ConfigContainer>

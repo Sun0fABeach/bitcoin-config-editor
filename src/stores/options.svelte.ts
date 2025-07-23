@@ -5,6 +5,12 @@ let highlightKnotsExclusives = $state(true)
 let explicitDefaults = $state(false)
 let inlineDescriptors = $state(false)
 
+let configRefreshCallback = () => {}
+
+export function setConfigRefreshCallback(callback: () => void) {
+	configRefreshCallback = callback
+}
+
 export default function () {
 	return {
 		get showDescriptions() {
@@ -36,12 +42,14 @@ export default function () {
 		},
 		set inlineDescriptors(value) {
 			inlineDescriptors = value
+			configRefreshCallback()
 		},
 		get explicitDefaults() {
 			return explicitDefaults
 		},
 		set explicitDefaults(value) {
 			explicitDefaults = value
+			configRefreshCallback()
 		},
 	}
 }
