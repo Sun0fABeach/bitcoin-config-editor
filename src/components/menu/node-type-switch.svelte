@@ -1,19 +1,20 @@
 <script lang="ts">
 	import { Switch, Label } from 'bits-ui'
+	import useOptionsStore from '@/stores/options.svelte'
 	import KnotsLogo from '@/components/knots-logo.svelte'
 
 	const id = 'node-type-switch'
 
-	let checked = $state(true)
-	const label = $derived(checked ? 'Knots' : 'Core')
+	const optionsStore = useOptionsStore()
+	const label = $derived(optionsStore.useKnots ? 'Knots' : 'Core')
 </script>
 
 <div class="container" title="Select whether you run a Core or Knots node">
-	<Switch.Root bind:checked {id}>
+	<Switch.Root bind:checked={optionsStore.useKnots} {id}>
 		{#snippet child({ props })}
 			<button {...props}>
 				<Switch.Thumb>
-					{#snippet child({ props })}
+					{#snippet child({ props, checked })}
 						<span {...props} class="knob">
 							<KnotsLogo greyedOut={!checked} />
 						</span>
