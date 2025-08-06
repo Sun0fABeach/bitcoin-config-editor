@@ -278,6 +278,7 @@
 				"defaultValue": "0"
 			},
 			"pruneduringinit": {
+				"knotsExclusive": true,
 				"type": "number",
 				"typeConstraints": {
 					"min": -1,
@@ -731,12 +732,14 @@
 				"shortDescription": "Append literal to the user agent string"
 			},
 			"upnp": {
+				"knotsExclusive": true,
 				"type": "checkbox",
 				"title": "Transaction Reconciliation",
 				"description": "Use UPnP to map the listening port",
 				"defaultValue": "0"
 			},
 			"v2onlyclearnet": {
+				"knotsExclusive": true,
 				"type": "checkbox",
 				"title": "v2 Only Clearnet",
 				"description": "Disallow outbound v1 connections on IPV4/IPV6. Enable this option only if you really need it. Use <a href=\"#listen\">listen</a>=0 to disable inbound connections since they can be unencrypted",
@@ -875,6 +878,7 @@
 				"defaultValue": "1650"
 			},
 			"mempoolfullrbf": {
+				"knotsExclusive": true,
 				"type": "checkbox",
 				"title": "Mempool Full RBF",
 				"description": "Accept transaction replace-by-fee without requiring replaceability signaling",
@@ -1878,10 +1882,12 @@
 				"defaultValue": "0"
 			},
 			"test": {
-				"type": "text",
+				"type": "select",
 				"title": "Test-Only Option",
-				"description": "Pass a test-only option. Options include: addrman (use deterministic addrman)",
-				"shortDescription": "Pass a test-only option"
+				"description": "Pass a test-only option",
+				"options": [
+					{ "value": "addrman", "label": "Deterministic addrman" }
+				]
 			},
 			"testactivationheight": {
 				"type": "text",

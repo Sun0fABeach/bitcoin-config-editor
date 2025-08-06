@@ -1,4 +1,4 @@
-import v28 from '@/configs/knots/v28.json'
+import v28 from '@/configs/knots/v28.1.json'
 import { unsetValue, isUnsetValue } from '@/lib/config'
 import useOptionsStore, { setConfigRefreshCallback } from '@/stores/options.svelte'
 import useSearchStore from '@/stores/search.svelte'
