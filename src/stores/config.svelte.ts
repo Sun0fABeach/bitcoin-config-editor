@@ -1,7 +1,10 @@
-import v28 from '@/configs/knots/v28.1.json'
-import { unsetValue, isUnsetValue } from '@/lib/config'
-import useOptionsStore, { setConfigRefreshCallback } from '@/stores/options.svelte'
+import { unsetValue, isUnsetValue } from '@/lib/editor'
+import useOptionsStore, {
+	setSwitchConfigVersionCallback,
+	setConfigRefreshCallback,
+} from '@/stores/options.svelte'
 import useSearchStore from '@/stores/search.svelte'
+import { configs } from '@/lib/configs'
 import { EditorValueType } from '@/enums'
 import type { EditorValueAny, EditorValueMultiSelect, EditorValueMultiText } from '@/types/editor'
 import type { CategoryDefinition, ConfigDefinition } from '@/types/config-definition'
@@ -9,40 +12,61 @@ import type { CategoryDefinition, ConfigDefinition } from '@/types/config-defini
 const searchStore = useSearchStore()
 const optionsStore = useOptionsStore()
 
-setConfigRefreshCallback(refreshText)
+setSwitchConfigVersionCallback(switchConfig)
+setConfigRefreshCallback(refreshTextValues)
 
-const values = $state<Record<string, EditorValueAny>>({})
+let categories = $state<CategoryDefinition[]>([])
 
-const configIndex: Record<
+let configIndex: Record<
 	string,
 	{ categoryTitle: CategoryDefinition['title']; config: ConfigDefinition }
 > = {}
 
-const categories = v28
+let values = $state<Record<string, EditorValueAny>>({})
 
-type ForEachConfigCallback = (
-	key: string,
-	configDefinition: ConfigDefinition,
-	categoryTitle: CategoryDefinition['title'],
-) => void
-
-function forEachConfig(callback: ForEachConfigCallback) {
-	categories.forEach((category) => {
-		Object.entries(category.configs).forEach(
-			([key, configDefinition]: [string, ConfigDefinition]) => {
-				callback(key, configDefinition, category.title)
-			},
-		)
-	})
+function getCategories(useKnots: boolean, version: string) {
+	return useKnots ? configs.knots[version] : configs.core[version]
 }
 
-forEachConfig((key, configDefinition, categoryTitle) => {
-	values[key] = unsetValue(configDefinition.type)
-	configIndex[key] = {
-		categoryTitle,
-		config: configDefinition,
-	}
-})
+export function initializeConfig() {
+	categories = getCategories(optionsStore.useKnots, optionsStore.currentVersion)
+
+	forEachConfig((key, configDefinition, categoryTitle) => {
+		values[key] = unsetValue(configDefinition.type)
+		configIndex[key] = {
+			categoryTitle,
+			config: configDefinition,
+		}
+	})
+
+	initTextGeneration()
+}
+
+function switchConfig(useKnots: boolean, version: string) {
+	categories = getCategories(useKnots, version)
+
+	const oldValues = { ...values }
+	values = {}
+	configIndex = {}
+
+	forEachConfig((key, configDefinition, categoryTitle) => {
+		const { type, options } = configDefinition
+
+		const oldValue = oldValues[key]
+		let keepOldValue = oldValue !== undefined && !isUnsetValue(type, oldValue)
+		if (keepOldValue && options && !options?.find(({ value }) => oldValue === value)) {
+			keepOldValue = false
+		}
+
+		values[key] = keepOldValue ? oldValue : unsetValue(type)
+		configIndex[key] = {
+			categoryTitle,
+			config: configDefinition,
+		}
+	})
+
+	initTextGeneration()
+}
 
 function getCategoryTitle(key: string) {
 	return configIndex[key].categoryTitle
@@ -61,7 +85,7 @@ function unsetValues() {
 	forEachConfig((key, configDefinition) => {
 		values[key] = unsetValue(configDefinition.type)
 	})
-	refreshText()
+	refreshTextValues()
 }
 
 const hasSetValues = $derived(
@@ -71,9 +95,41 @@ const hasSetValues = $derived(
 	}),
 )
 
+type ForEachConfigCallback = (
+	key: string,
+	configDefinition: ConfigDefinition,
+	categoryTitle: CategoryDefinition['title'],
+) => void
+
+function forEachConfig(callback: ForEachConfigCallback) {
+	categories.forEach((category) => {
+		Object.entries(category.configs).forEach(
+			([key, configDefinition]: [string, ConfigDefinition]) => {
+				callback(key, configDefinition, category.title)
+			},
+		)
+	})
+}
+
+function initTextGeneration() {
+	initFinalTextAssembly()
+	initValuesAsText() // needs to be called second
+}
+
 /* editor values to text values translation */
 
-const valuesAsText: Record<CategoryDefinition['title'], Record<string, string>> = {}
+let valuesAsText: Record<CategoryDefinition['title'], Record<string, string>> = {}
+
+function initValuesAsText() {
+	valuesAsText = {}
+	refreshTextValues()
+}
+
+function refreshTextValues() {
+	Object.entries(values).forEach(([key, value]) => {
+		changeTextValue(key, value)
+	})
+}
 
 function changeTextValue(key: string, value: EditorValueAny) {
 	const categoryTitle = getCategoryTitle(key)
@@ -151,24 +207,27 @@ function setTextValue(
 
 /* final text string assembly */
 
-const categoryTitles = categories.map(({ title }) => title)
+let categoryTitles = $state<ReturnType<typeof initCategoryTitles>>([])
+let categoryTexts = $state<ReturnType<typeof initCategoryTexts>>({})
 
-const finalCategoryTexts = $state(
-	categoryTitles.reduce(
+function initFinalTextAssembly() {
+	categoryTitles = initCategoryTitles()
+	categoryTexts = initCategoryTexts()
+}
+
+function initCategoryTitles() {
+	return categories.map(({ title }) => title)
+}
+
+function initCategoryTexts() {
+	return categoryTitles.reduce(
 		(result, title) => {
 			result[title] = ''
 			return result
 		},
 		{} as Record<CategoryDefinition['title'], string>,
-	),
-)
-
-const finalText = $derived(
-	categoryTitles
-		.map((categoryTitle) => finalCategoryTexts[categoryTitle])
-		.filter((text) => text)
-		.join('\n\n'),
-)
+	)
+}
 
 function updateCategoryText(categoryTitle: CategoryDefinition['title']) {
 	const category = valuesAsText[categoryTitle] ?? {}
@@ -186,18 +245,15 @@ function updateCategoryText(categoryTitle: CategoryDefinition['title']) {
 		})
 		.join(configSeparator)
 
-	finalCategoryTexts[categoryTitle] =
-		configsText && `[${categoryTitle}]${configSeparator}${configsText}`
+	categoryTexts[categoryTitle] = configsText && `[${categoryTitle}]${configSeparator}${configsText}`
 }
 
-function refreshText() {
-	Object.entries(values).forEach(([key, value]) => {
-		changeTextValue(key, value)
-	})
-	categoryTitles.forEach(updateCategoryText)
-}
-
-refreshText()
+const finalText = $derived(
+	categoryTitles
+		.map((categoryTitle) => categoryTexts[categoryTitle])
+		.filter((text) => text)
+		.join('\n\n'),
+)
 
 /* search function */
 
@@ -228,10 +284,11 @@ const filteredConfigs = $derived.by(() => {
 
 export default function () {
 	return {
-		// cast to unknown first to get rid of cryptic TS error
-		categories: categories as unknown as CategoryDefinition[],
 		getCategoryTitle,
 		getConfig,
+		get categories() {
+			return categories
+		},
 		get filteredConfigs() {
 			return filteredConfigs
 		},

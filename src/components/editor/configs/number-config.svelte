@@ -5,7 +5,7 @@
 	import InputRow from '@/components/editor/configs/inputs/input-row.svelte'
 	import ConfigTextInput from '@/components/editor/configs/inputs/config-text-input.svelte'
 	import useConfigStore from '@/stores/config.svelte'
-	import { unsetValue } from '@/lib/config'
+	import { unsetValue } from '@/lib/editor'
 	import { EditorValueType } from '@/enums'
 	import type { TypeConstraints } from '@/types/config-definition'
 	import type { EditorValueNumber } from '@/types/editor'

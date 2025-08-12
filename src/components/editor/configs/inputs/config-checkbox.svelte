@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Checkbox from '@/components/checkbox.svelte'
 	import { colors } from '@/globals'
-	import { unsetValue } from '@/lib/config'
+	import { unsetValue } from '@/lib/editor'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueCheckbox } from '@/types/editor'
 

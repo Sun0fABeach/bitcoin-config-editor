@@ -11,7 +11,7 @@
 		type SelectItem,
 	} from '@/components/editor/configs/inputs/config-select.svelte'
 	import useConfigStore from '@/stores/config.svelte'
-	import { unsetValue } from '@/lib/config'
+	import { unsetValue } from '@/lib/editor'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueMultiSelect } from '@/types/editor'
 

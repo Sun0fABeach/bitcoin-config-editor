@@ -5,7 +5,7 @@
 	import InputRow from '@/components/editor/configs/inputs/input-row.svelte'
 	import ConfigCheckbox from '@/components/editor/configs/inputs/config-checkbox.svelte'
 	import useConfigStore from '@/stores/config.svelte'
-	import { unsetValue } from '@/lib/config'
+	import { unsetValue } from '@/lib/editor'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueCheckbox } from '@/types/editor'
 

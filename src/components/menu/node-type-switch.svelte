@@ -6,7 +6,9 @@
 	const id = 'node-type-switch'
 
 	const optionsStore = useOptionsStore()
+
 	const label = $derived(optionsStore.useKnots ? 'Knots' : 'Core')
+	const version = $derived(optionsStore.currentVersion)
 </script>
 
 <div class="container" title="Select whether you run a Core or Knots node">
@@ -26,14 +28,21 @@
 
 	<Label.Root for={id}>
 		{#snippet child({ props })}
-			<label {...props}>{label}</label>
+			<label {...props}>
+				<span>Knots</span>
+				<span>{label}</span>
+			</label>
 		{/snippet}
 	</Label.Root>
+
+	<div class="version">v{version}</div>
 </div>
 
 <style lang="postcss">
 	.container {
 		display: flex;
+		align-items: center;
+		column-gap: 0.375rem;
 
 		&:hover button {
 			background: var(--color-button-highlight-gradient);
@@ -48,30 +57,43 @@
 		border: 2px solid var(--color-element-border);
 		border-radius: 1rem;
 		background-color: var(--color-background);
-	}
 
-	.knob {
-		display: inline flex;
-		width: 1.75rem;
-		height: 1.75rem;
-		background-color: black;
-		border-radius: 50%;
-		transition: transform 0.3s;
+		.knob {
+			display: inline flex;
+			width: 1.75rem;
+			height: 1.75rem;
+			background-color: black;
+			border-radius: 50%;
+			transition: transform 0.3s;
 
-		&[data-state='checked'] {
-			transform: translate(1rem);
-		}
-		&[data-state='unchecked'] {
-			transform: translate(-1rem);
+			&[data-state='checked'] {
+				transform: translate(1rem);
+			}
+			&[data-state='unchecked'] {
+				transform: translate(-1rem);
+			}
 		}
 	}
 
 	label {
+		position: relative;
 		display: inline flex;
-		align-items: center;
-		width: 3.5rem; /* keep text width stable when switching between "Core" and "Knots" */
-		padding: 0 0.375rem;
 		font-weight: 500;
 		cursor: pointer;
+
+		> :first-child {
+			/* here to keep text width stable when switching between "Core" and "Knots" */
+			visibility: hidden;
+		}
+		> :last-child {
+			position: absolute;
+			inset: 0;
+		}
+	}
+
+	.version {
+		display: inline flex;
+		align-items: center;
+		color: var(--color-accent1);
 	}
 </style>

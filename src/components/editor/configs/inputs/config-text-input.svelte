@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements'
-	import { unsetValue } from '@/lib/config'
+	import { unsetValue } from '@/lib/editor'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueText, EditorValueNumber } from '@/types/editor'
 

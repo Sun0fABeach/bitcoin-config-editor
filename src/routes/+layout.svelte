@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Button from '@/components/button.svelte'
 	import { loadOptionsFromStorage } from '@/stores/options.svelte'
+	import { initializeConfig } from '@/stores/config.svelte'
 	import { setOnDesktopContext } from '@/context/onDesktop'
 
 	import favicon from '@/assets/favicon.png'
@@ -11,6 +12,7 @@
 	const { children } = $props()
 
 	loadOptionsFromStorage()
+	initializeConfig() // needs to run after loadOptionsFromStorage
 	setOnDesktopContext()
 </script>
 

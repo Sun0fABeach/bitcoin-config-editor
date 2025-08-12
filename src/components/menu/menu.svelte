@@ -29,7 +29,7 @@
 
 		> :global(:not(:first-child)) {
 			flex: 1 auto;
-			@media (min-width: 650px) {
+			@media (min-width: 700px) {
 				flex: none;
 			}
 		}
