@@ -10,12 +10,25 @@
 	const optionsStore = useOptionsStore()
 	const configStore = useConfigStore()
 
-	const label = $derived(optionsStore.useKnots ? 'Knots' : 'Core')
-	const version = $derived(optionsStore.currentVersion)
+	const getLabel = (isKnots?: boolean) => (isKnots ? 'Knots' : 'Core')
 
-	const confirmDialogOpen = $derived(!!configStore.proceedWithConfigSwitch)
-	const abortSwitch = () => configStore.proceedWithConfigSwitch?.(false)
-	const confirmSwitch = () => configStore.proceedWithConfigSwitch?.(true)
+	const label = $derived(getLabel(optionsStore.useKnots))
+	const version = $derived(optionsStore.currentVersion)
+	const currentVersionFull = $derived(`${label} v${version}`)
+
+	const switchIssues = $derived(configStore.configSwitchIssues)
+	const confirmDialogOpen = $derived(!!switchIssues)
+
+	const missingOptions = $derived(switchIssues?.missingOptions ?? [])
+	const unsupportedValues = $derived(switchIssues?.unsupportedValues ?? [])
+	const hasMissingOptions = $derived(missingOptions.length > 0)
+	const hasUnsupportedValues = $derived(unsupportedValues.length > 0)
+	const newVersionFull = $derived(
+		`${getLabel(switchIssues?.newVersionIsKnots)} v${switchIssues?.newVersion}`,
+	)
+
+	const abortSwitch = () => switchIssues?.proceed(false)
+	const confirmSwitch = () => switchIssues?.proceed(true)
 </script>
 
 <div class="container" title="Select whether you run a Core or Knots node">
@@ -46,13 +59,39 @@
 
 	<Dialog
 		open={confirmDialogOpen}
-		title="Do you really want to switch your config?"
-		description="This might remove some values that are unsupported by the target version."
+		title={`Do you really want to switch from ${currentVersionFull} to ${newVersionFull}?`}
 		cancelText="Cancel"
 		confirmText="Proceed"
 		onCancel={abortSwitch}
 		onConfirm={confirmSwitch}
-	/>
+	>
+		{#snippet description()}
+			{#if hasMissingOptions}
+				<div>
+					The following incompatibilities have been detected. If you choose to proceed, the affected
+					config values will be removed.
+				</div>
+				<div>
+					<div>Missing options in {newVersionFull}:</div>
+					<ul>
+						{#each missingOptions as missing (missing)}
+							<li>{missing}</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+			{#if hasUnsupportedValues}
+				<div>
+					<div>Unsupported values in {newVersionFull}:</div>
+					<ul>
+						{#each unsupportedValues as unsupported (unsupported)}
+							<li>{unsupported}</li>
+						{/each}
+					</ul>
+				</div>
+			{/if}
+		{/snippet}
+	</Dialog>
 </div>
 
 <style lang="postcss">
@@ -112,5 +151,14 @@
 		display: inline flex;
 		align-items: center;
 		color: var(--color-accent1);
+	}
+
+	ul {
+		margin-top: 0.125rem;
+		li {
+			list-style: circle inside;
+			white-space: nowrap;
+			color: hsl(from var(--color-accent1) h s l / 0.75);
+		}
 	}
 </style>

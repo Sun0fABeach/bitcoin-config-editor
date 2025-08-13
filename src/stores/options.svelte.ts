@@ -43,6 +43,7 @@ export function loadOptionsFromStorage() {
 	})
 }
 
+// callbacks to be handed in by the config store (pattern needed to avoid circular import)
 let switchConfigVersionCallback: (useKnots: boolean, version: string) => Promise<boolean> = () =>
 	Promise.resolve(false)
 let configRefreshCallback: () => void = () => {}

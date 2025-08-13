@@ -13,7 +13,7 @@
 		open?: boolean
 		disabled?: boolean
 		title: string
-		description: string
+		description: Snippet
 		cancelText: string
 		confirmText: string
 		onCancel?: () => void
@@ -96,9 +96,9 @@
 						<AlertDialog.Title>{title}</AlertDialog.Title>
 						<AlertDialog.Description>
 							{#snippet child()}
-								<span class="dialog-description">
-									&gt; {description}
-								</span>
+								<div class="dialog-description">
+									{@render description()}
+								</div>
 							{/snippet}
 						</AlertDialog.Description>
 
@@ -143,8 +143,12 @@
 		line-height: 1.25;
 
 		> .dialog-description {
+			display: flex;
+			flex-flow: column;
+			row-gap: 0.875rem;
 			margin-top: 0.5rem;
 			font-size: 0.875em;
+			color: hsl(from var(--color-accent2) h s l / 0.875);
 		}
 
 		> .dialog-buttons {

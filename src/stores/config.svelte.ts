@@ -7,16 +7,13 @@ import useSearchStore from '@/stores/search.svelte'
 import { configs } from '@/lib/configs'
 import { EditorValueType } from '@/enums'
 import type { EditorValueAny, EditorValueMultiSelect, EditorValueMultiText } from '@/types/editor'
-import type { CategoryDefinition, ConfigDefinition, ConfigOption } from '@/types/config-definition'
+import type { CategoryDefinition, ConfigDefinition } from '@/types/config-definition'
 
 const searchStore = useSearchStore()
 const optionsStore = useOptionsStore()
 
 setSwitchConfigVersionCallback(switchConfig)
 setConfigRefreshCallback(refreshTextValues)
-
-// callback to set if switching config version results in incompatibilities
-let proceedWithConfigSwitch = $state<{ (value: boolean): void } | null>(null)
 
 let categories = $state<CategoryDefinition[]>([])
 
@@ -45,16 +42,34 @@ export function initializeConfig() {
 	initTextGeneration()
 }
 
+let configSwitchIssues = $state<{
+	newVersionIsKnots: boolean
+	newVersion: string
+	missingOptions: string[]
+	unsupportedValues: string[]
+	proceed: (value: boolean) => void
+} | null>(null)
+
 async function switchConfig(useKnots: boolean, version: string) {
 	const newCategories = getCategories(useKnots, version)
 	const newConfigIndex: typeof configIndex = {}
 	const newValues: typeof values = {}
+	const missingOptions: string[] = []
+	const unsupportedValues: string[] = []
+
+	/* 1. construct new config data and take set values from old config if possible */
 
 	forEachConfig(newCategories, (key, configDefinition, categoryTitle) => {
 		const { type, options } = configDefinition
 		const oldValue = values[key]
 
-		if (keepValue(oldValue, type, options)) {
+		let keepOldValue = oldValue !== undefined && !isUnsetValue(type, oldValue)
+		if (keepOldValue && options && !options.find(({ value }) => oldValue === value)) {
+			unsupportedValues.push(valuesAsText[categoryTitle][key])
+			keepOldValue = false
+		}
+
+		if (keepOldValue) {
 			newValues[key] = oldValue
 		} else {
 			newValues[key] = unsetValue(type)
@@ -66,8 +81,31 @@ async function switchConfig(useKnots: boolean, version: string) {
 		}
 	})
 
-	const { promise: proceed, resolve } = Promise.withResolvers<boolean>()
-	proceedWithConfigSwitch = resolve // wait for user to confirm via dialog
+	/* 2. check if old config contains options that new config doesn't have */
+
+	forEachConfig(categories, (key, configDefinition) => {
+		const { type } = configDefinition
+		const oldValue = values[key]
+		if (!isUnsetValue(type, oldValue) && !newConfigIndex[key]) {
+			missingOptions.push(key)
+		}
+	})
+
+	/* 3. ask user if he wants to proceed in case of conflicts */
+
+	let proceed = Promise.resolve(true)
+
+	if (missingOptions.length > 0 || unsupportedValues.length > 0) {
+		const { promise, resolve } = Promise.withResolvers<boolean>()
+		proceed = promise
+		configSwitchIssues = {
+			newVersionIsKnots: useKnots,
+			newVersion: version,
+			missingOptions,
+			unsupportedValues,
+			proceed: resolve, // wait for user to confirm via dialog
+		}
+	}
 
 	try {
 		if (await proceed) {
@@ -80,15 +118,8 @@ async function switchConfig(useKnots: boolean, version: string) {
 			return false
 		}
 	} finally {
-		proceedWithConfigSwitch = null
+		configSwitchIssues = null
 	}
-}
-
-function keepValue(valueToCheck: EditorValueAny, type: EditorValueType, options?: ConfigOption[]) {
-	if (valueToCheck === undefined || isUnsetValue(type, valueToCheck)) {
-		return false
-	}
-	return !options || options.find(({ value }) => valueToCheck === value)
 }
 
 function getCategoryTitle(key: string) {
@@ -326,8 +357,8 @@ export default function () {
 		},
 		updateValue,
 		unsetValues,
-		get proceedWithConfigSwitch() {
-			return proceedWithConfigSwitch
+		get configSwitchIssues() {
+			return configSwitchIssues
 		},
 	}
 }
