@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '@/components/button.svelte'
-	import { loadOptionsFromStorage } from '@/stores/options.svelte'
+	import { loadSettingsFromStorage } from '@/stores/settings.svelte'
 	import { initializeConfig } from '@/stores/config.svelte'
 	import { setOnDesktopContext } from '@/context/onDesktop'
 
@@ -11,8 +11,8 @@
 
 	const { children } = $props()
 
-	loadOptionsFromStorage()
-	initializeConfig() // needs to run after loadOptionsFromStorage
+	loadSettingsFromStorage()
+	initializeConfig() // needs to run after loadSettingsFromStorage
 	setOnDesktopContext()
 </script>
 

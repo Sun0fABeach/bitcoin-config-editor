@@ -1,8 +1,8 @@
 import { unsetValue, isUnsetValue } from '@/lib/editor'
-import useOptionsStore, {
+import useSettingsStore, {
 	setSwitchConfigVersionCallback,
 	setConfigRefreshCallback,
-} from '@/stores/options.svelte'
+} from '@/stores/settings.svelte'
 import useSearchStore from '@/stores/search.svelte'
 import { configs } from '@/lib/configs'
 import { EditorValueType } from '@/enums'
@@ -10,7 +10,7 @@ import type { EditorValueAny, EditorValueMultiSelect, EditorValueMultiText } fro
 import type { CategoryDefinition, ConfigDefinition } from '@/types/config-definition'
 
 const searchStore = useSearchStore()
-const optionsStore = useOptionsStore()
+const settingsStore = useSettingsStore()
 
 setSwitchConfigVersionCallback(switchConfig)
 setConfigRefreshCallback(refreshTextValues)
@@ -29,7 +29,7 @@ function getCategories(useKnots: boolean, version: string) {
 }
 
 export function initializeConfig() {
-	categories = getCategories(optionsStore.useKnots, optionsStore.currentVersion)
+	categories = getCategories(settingsStore.useKnots, settingsStore.currentVersion)
 
 	forEachConfig(categories, (key, configDefinition, categoryTitle) => {
 		values[key] = unsetValue(configDefinition.type)
@@ -190,7 +190,7 @@ function changeTextValue(key: string, value: EditorValueAny) {
 	const { type, defaultValue } = getConfig(key)
 
 	if (isUnsetValue(type, value)) {
-		if (optionsStore.explicitDefaults && defaultValue) {
+		if (settingsStore.explicitDefaults && defaultValue) {
 			setDefaultTextValue(categoryTitle, key, defaultValue)
 		} else {
 			removeTextValue(categoryTitle, key)
@@ -285,12 +285,12 @@ function initCategoryTexts() {
 
 function updateCategoryText(categoryTitle: CategoryDefinition['title']) {
 	const category = valuesAsText[categoryTitle] ?? {}
-	const configSeparator = optionsStore.inlineDescriptors ? '\n\n' : '\n'
+	const configSeparator = settingsStore.inlineDescriptors ? '\n\n' : '\n'
 
 	const configsText = Object.entries(category)
 		.toSorted(([key1], [key2]) => key1.localeCompare(key2))
 		.map(([key, value]) => {
-			if (optionsStore.inlineDescriptors) {
+			if (settingsStore.inlineDescriptors) {
 				const config = configIndex[key].config
 				const description = config.shortDescription || config.description
 				return `# ${description}\n${value}`
@@ -322,8 +322,8 @@ const filteredConfigs = $derived.by(() => {
 		const config = getConfig(key)
 		return (
 			key.includes(search) ||
-			(optionsStore.searchTitles && config.title.toLowerCase().includes(search)) ||
-			(optionsStore.searchDescriptions && config.description.toLowerCase().includes(search))
+			(settingsStore.searchTitles && config.title.toLowerCase().includes(search)) ||
+			(settingsStore.searchDescriptions && config.description.toLowerCase().includes(search))
 		)
 	})
 

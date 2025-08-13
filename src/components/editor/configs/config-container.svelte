@@ -7,7 +7,7 @@
 	} from '@/components/confirm-popover.svelte'
 	import KnotsLogo from '@/components/knots-logo.svelte'
 	import useTimeoutFlag from '@/hooks/useTimeoutFlag.svelte'
-	import useOptionsStore from '@/stores/options.svelte'
+	import useSettingsStore from '@/stores/settings.svelte'
 	import { colors } from '@/globals'
 	import type { ConfigOption, ConfigDefinition } from '@/types/config-definition'
 	import type { EditorValueAny } from '@/types/editor'
@@ -39,9 +39,9 @@
 		...attrs
 	}: ConfigContainerProps = $props()
 
-	const optionsStore = useOptionsStore()
+	const settingsStore = useSettingsStore()
 
-	const showKnotsExclusivity = $derived(knotsExclusive && optionsStore.highlightKnotsExclusives)
+	const showKnotsExclusivity = $derived(knotsExclusive && settingsStore.highlightKnotsExclusives)
 
 	const multipleDefaults = defaultValue && typeof defaultValue === 'object'
 	const displayedValue = $derived.by(() => {
@@ -86,7 +86,7 @@
 	</div>
 	<div class="content">
 		<div class="info">
-			{#if optionsStore.showDescriptions}
+			{#if settingsStore.showDescriptions}
 				<div class="description">
 					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 					{@html description}

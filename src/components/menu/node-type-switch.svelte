@@ -1,19 +1,19 @@
 <script lang="ts">
 	import { Switch, Label } from 'bits-ui'
-	import useOptionsStore from '@/stores/options.svelte'
+	import useSettingsStore from '@/stores/settings.svelte'
 	import useConfigStore from '@/stores/config.svelte'
 	import KnotsLogo from '@/components/knots-logo.svelte'
 	import Dialog from '@/components/dialog.svelte'
 
 	const id = 'node-type-switch'
 
-	const optionsStore = useOptionsStore()
+	const settingsStore = useSettingsStore()
 	const configStore = useConfigStore()
 
 	const getLabel = (isKnots?: boolean) => (isKnots ? 'Knots' : 'Core')
 
-	const label = $derived(getLabel(optionsStore.useKnots))
-	const version = $derived(optionsStore.currentVersion)
+	const label = $derived(getLabel(settingsStore.useKnots))
+	const version = $derived(settingsStore.currentVersion)
 	const currentVersionFull = $derived(`${label} v${version}`)
 
 	const switchIssues = $derived(configStore.configSwitchIssues)
@@ -32,7 +32,7 @@
 </script>
 
 <div class="container" title="Select whether you run a Core or Knots node">
-	<Switch.Root bind:checked={optionsStore.useKnots} {id}>
+	<Switch.Root bind:checked={settingsStore.useKnots} {id}>
 		{#snippet child({ props })}
 			<button {...props}>
 				<Switch.Thumb>

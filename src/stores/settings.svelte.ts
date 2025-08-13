@@ -1,6 +1,6 @@
 import { coreVersions, knotsVersions, latestCoreVersion, latestKnotsVersion } from '@/lib/configs'
 
-const options = $state({
+const settings = $state({
 	useKnots: true,
 	coreVersion: latestCoreVersion,
 	knotsVersion: latestKnotsVersion,
@@ -12,34 +12,34 @@ const options = $state({
 	inlineDescriptors: false,
 })
 
-type Option = keyof typeof options
+type Setting = keyof typeof settings
 type StorageBool = 'true' | 'false'
 
 const storageAvailable = typeof localStorage !== 'undefined'
-const storageKey = (option: Option) => `option-${option}`
+const storageKey = (setting: Setting) => `setting-${setting}`
 const isStorageBool = (value: string): value is StorageBool => ['true', 'false'].includes(value)
 const toStorageValue = (value: string | boolean) =>
 	typeof value === 'boolean' ? value.toString() : value
 const fromStorageValue = (value: string) => (isStorageBool(value) ? value === 'true' : value)
 
-function getFromStorage(option: Option) {
+function getFromStorage(setting: Setting) {
 	if (!storageAvailable) {
-		return options[option]
+		return settings[setting]
 	}
-	const value = localStorage.getItem(storageKey(option))
-	return value ? fromStorageValue(value) : options[option]
+	const value = localStorage.getItem(storageKey(setting))
+	return value ? fromStorageValue(value) : settings[setting]
 }
 
-function setInStorage(option: Option, value: string | boolean) {
+function setInStorage(setting: Setting, value: string | boolean) {
 	if (storageAvailable) {
-		localStorage.setItem(storageKey(option), toStorageValue(value))
+		localStorage.setItem(storageKey(setting), toStorageValue(value))
 	}
 }
 
-export function loadOptionsFromStorage() {
-	Object.keys(options).forEach((key) => {
-		const option = key as Option
-		;(options as Record<Option, string | boolean>)[option] = getFromStorage(option)
+export function loadSettingsFromStorage() {
+	Object.keys(settings).forEach((key) => {
+		const setting = key as Setting
+		;(settings as Record<Setting, string | boolean>)[setting] = getFromStorage(setting)
 	})
 }
 
@@ -61,7 +61,7 @@ export default function () {
 		knotsVersions,
 
 		get useKnots() {
-			return options.useKnots
+			return settings.useKnots
 		},
 		set useKnots(value: boolean) {
 			const versionType = value ? 'knotsVersion' : 'coreVersion'
@@ -69,9 +69,9 @@ export default function () {
 
 			const switchIfConfirmed = async () => {
 				if (await switchConfigVersionCallback(value, version)) {
-					options.useKnots = value
+					settings.useKnots = value
 					setInStorage('useKnots', value)
-					options[versionType] = version
+					settings[versionType] = version
 				}
 			}
 
@@ -79,67 +79,67 @@ export default function () {
 		},
 
 		set coreVersion(value: string) {
-			options.coreVersion = value
+			settings.coreVersion = value
 			setInStorage('coreVersion', value)
-			switchConfigVersionCallback(options.useKnots, value)
+			switchConfigVersionCallback(settings.useKnots, value)
 		},
 
 		set knotsVersion(value: string) {
-			options.knotsVersion = value
+			settings.knotsVersion = value
 			setInStorage('knotsVersion', value)
-			switchConfigVersionCallback(options.useKnots, value)
+			switchConfigVersionCallback(settings.useKnots, value)
 		},
 
 		get currentVersion() {
-			return options[options.useKnots ? 'knotsVersion' : 'coreVersion']
+			return settings[settings.useKnots ? 'knotsVersion' : 'coreVersion']
 		},
 
 		get showDescriptions() {
-			return options.showDescriptions
+			return settings.showDescriptions
 		},
 		set showDescriptions(value: boolean) {
-			options.showDescriptions = value
+			settings.showDescriptions = value
 			setInStorage('showDescriptions', value)
 		},
 
 		get searchTitles() {
-			return options.searchTitles
+			return settings.searchTitles
 		},
 		set searchTitles(value) {
-			options.searchTitles = value
+			settings.searchTitles = value
 			setInStorage('searchTitles', value)
 		},
 
 		get searchDescriptions() {
-			return options.searchDescriptions
+			return settings.searchDescriptions
 		},
 		set searchDescriptions(value) {
-			options.searchDescriptions = value
+			settings.searchDescriptions = value
 			setInStorage('searchDescriptions', value)
 		},
 
 		get highlightKnotsExclusives() {
-			return options.highlightKnotsExclusives
+			return settings.highlightKnotsExclusives
 		},
 		set highlightKnotsExclusives(value) {
-			options.highlightKnotsExclusives = value
+			settings.highlightKnotsExclusives = value
 			setInStorage('highlightKnotsExclusives', value)
 		},
 
 		get inlineDescriptors() {
-			return options.inlineDescriptors
+			return settings.inlineDescriptors
 		},
 		set inlineDescriptors(value) {
-			options.inlineDescriptors = value
+			settings.inlineDescriptors = value
 			setInStorage('inlineDescriptors', value)
 			configRefreshCallback()
 		},
 
 		get explicitDefaults() {
-			return options.explicitDefaults
+			return settings.explicitDefaults
 		},
 		set explicitDefaults(value) {
-			options.explicitDefaults = value
+			settings.explicitDefaults = value
 			setInStorage('explicitDefaults', value)
 			configRefreshCallback()
 		},

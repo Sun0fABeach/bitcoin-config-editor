@@ -3,7 +3,7 @@
 	import NodeTypeSwitch from '@/components/menu/node-type-switch.svelte'
 	import Search from '@/components/menu/search.svelte'
 	import Button from '@/components/button.svelte'
-	import Options from '@/components/menu/options.svelte'
+	import Options from '@/components/menu/settings.svelte'
 
 	const { openPreview } = usePreviewStore()
 </script>

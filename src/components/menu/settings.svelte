@@ -4,11 +4,11 @@
 	import { DropdownMenu, Label, useId } from 'bits-ui'
 	import Button from '@/components/button.svelte'
 	import Checkbox from '@/components/checkbox.svelte'
-	import useOptionsStore from '@/stores/options.svelte'
+	import useSettingsStore from '@/stores/settings.svelte'
 	import { colors } from '@/globals'
 
-	type OptionKey = keyof Pick<
-		typeof optionsStore,
+	type SettingKey = keyof Pick<
+		typeof settingsStore,
 		| 'showDescriptions'
 		| 'searchTitles'
 		| 'searchDescriptions'
@@ -19,13 +19,13 @@
 
 	const dropDownPaddingMQ = new MediaQuery('min-width: 400px')
 
-	const optionsStore = useOptionsStore()
+	const settingsStore = useSettingsStore()
 </script>
 
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger>
 		{#snippet child({ props })}
-			<Button {...props}>Options</Button>
+			<Button {...props}>Settings</Button>
 		{/snippet}
 	</DropdownMenu.Trigger>
 
@@ -46,8 +46,8 @@
 						</div>
 
 						<div {...props} class="content" transition:slide>
-							{#snippet item(key: OptionKey, label: string)}
-								<DropdownMenu.CheckboxItem bind:checked={optionsStore[key]} closeOnSelect={false}>
+							{#snippet item(key: SettingKey, label: string)}
+								<DropdownMenu.CheckboxItem bind:checked={settingsStore[key]} closeOnSelect={false}>
 									{#snippet children({ checked })}
 										{@const id = useId()}
 

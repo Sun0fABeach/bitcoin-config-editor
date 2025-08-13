@@ -8,7 +8,7 @@
 	import Panel from '@/components/preview/panel.svelte'
 	import ScrollArea from '@/components/scroll-area.svelte'
 
-	const placeholder = '# all configs on default settings'
+	const placeholder = '# all options on default'
 
 	const previewStore = usePreviewStore()
 	const configStore = useConfigStore()

@@ -3,7 +3,7 @@
 	import { CaretDown } from 'phosphor-svelte'
 	import ConfigList from '@/components/editor/config-list.svelte'
 	import KnotsLogo from '@/components/knots-logo.svelte'
-	import useOptionsStore from '@/stores/options.svelte'
+	import useSettingsStore from '@/stores/settings.svelte'
 	import type { CategoryDefinition } from '@/types/config-definition'
 
 	export interface CategoryProps {
@@ -16,8 +16,8 @@
 
 	let { knotsExclusive, title, description, configs, onOpenFinished }: CategoryProps = $props()
 
-	const optionsStore = useOptionsStore()
-	const showKnotsExclusivity = $derived(knotsExclusive && optionsStore.highlightKnotsExclusives)
+	const settingsStore = useSettingsStore()
+	const showKnotsExclusivity = $derived(knotsExclusive && settingsStore.highlightKnotsExclusives)
 </script>
 
 <Accordion.Item value={title}>
