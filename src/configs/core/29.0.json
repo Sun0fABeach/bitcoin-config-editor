@@ -1570,7 +1570,7 @@
 				"type": "select",
 				"title": "Test-Only Option",
 				"description": "Pass a test-only option",
-        "options": [
+				"options": [
 					{ "value": "addrman", "label": "Deterministic addrman" },
 					{ "value": "bip94", "label": "BIP94 consensus rules" }
 				]

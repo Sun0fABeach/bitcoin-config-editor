@@ -6,7 +6,7 @@ declare global {
 		// interface Locals {}
 		// interface PageData {}
 		interface PageState {
-			dialogOpen?: boolean
+			[key: string]: boolean
 		}
 		// interface Platform {}
 	}

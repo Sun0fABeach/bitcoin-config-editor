@@ -7,13 +7,16 @@ import useSearchStore from '@/stores/search.svelte'
 import { configs } from '@/lib/configs'
 import { EditorValueType } from '@/enums'
 import type { EditorValueAny, EditorValueMultiSelect, EditorValueMultiText } from '@/types/editor'
-import type { CategoryDefinition, ConfigDefinition } from '@/types/config-definition'
+import type { CategoryDefinition, ConfigDefinition, ConfigOption } from '@/types/config-definition'
 
 const searchStore = useSearchStore()
 const optionsStore = useOptionsStore()
 
 setSwitchConfigVersionCallback(switchConfig)
 setConfigRefreshCallback(refreshTextValues)
+
+// callback to set if switching config version results in incompatibilities
+let proceedWithConfigSwitch = $state<{ (value: boolean): void } | null>(null)
 
 let categories = $state<CategoryDefinition[]>([])
 
@@ -31,7 +34,7 @@ function getCategories(useKnots: boolean, version: string) {
 export function initializeConfig() {
 	categories = getCategories(optionsStore.useKnots, optionsStore.currentVersion)
 
-	forEachConfig((key, configDefinition, categoryTitle) => {
+	forEachConfig(categories, (key, configDefinition, categoryTitle) => {
 		values[key] = unsetValue(configDefinition.type)
 		configIndex[key] = {
 			categoryTitle,
@@ -42,30 +45,50 @@ export function initializeConfig() {
 	initTextGeneration()
 }
 
-function switchConfig(useKnots: boolean, version: string) {
-	categories = getCategories(useKnots, version)
+async function switchConfig(useKnots: boolean, version: string) {
+	const newCategories = getCategories(useKnots, version)
+	const newConfigIndex: typeof configIndex = {}
+	const newValues: typeof values = {}
 
-	const oldValues = { ...values }
-	values = {}
-	configIndex = {}
-
-	forEachConfig((key, configDefinition, categoryTitle) => {
+	forEachConfig(newCategories, (key, configDefinition, categoryTitle) => {
 		const { type, options } = configDefinition
+		const oldValue = values[key]
 
-		const oldValue = oldValues[key]
-		let keepOldValue = oldValue !== undefined && !isUnsetValue(type, oldValue)
-		if (keepOldValue && options && !options?.find(({ value }) => oldValue === value)) {
-			keepOldValue = false
+		if (keepValue(oldValue, type, options)) {
+			newValues[key] = oldValue
+		} else {
+			newValues[key] = unsetValue(type)
 		}
 
-		values[key] = keepOldValue ? oldValue : unsetValue(type)
-		configIndex[key] = {
+		newConfigIndex[key] = {
 			categoryTitle,
 			config: configDefinition,
 		}
 	})
 
-	initTextGeneration()
+	const { promise: proceed, resolve } = Promise.withResolvers<boolean>()
+	proceedWithConfigSwitch = resolve // wait for user to confirm via dialog
+
+	try {
+		if (await proceed) {
+			categories = newCategories
+			configIndex = newConfigIndex
+			values = newValues
+			initTextGeneration()
+			return true
+		} else {
+			return false
+		}
+	} finally {
+		proceedWithConfigSwitch = null
+	}
+}
+
+function keepValue(valueToCheck: EditorValueAny, type: EditorValueType, options?: ConfigOption[]) {
+	if (valueToCheck === undefined || isUnsetValue(type, valueToCheck)) {
+		return false
+	}
+	return !options || options.find(({ value }) => valueToCheck === value)
 }
 
 function getCategoryTitle(key: string) {
@@ -82,7 +105,7 @@ function updateValue(key: string, value: EditorValueAny) {
 }
 
 function unsetValues() {
-	forEachConfig((key, configDefinition) => {
+	forEachConfig(categories, (key, configDefinition) => {
 		values[key] = unsetValue(configDefinition.type)
 	})
 	refreshTextValues()
@@ -101,8 +124,8 @@ type ForEachConfigCallback = (
 	categoryTitle: CategoryDefinition['title'],
 ) => void
 
-function forEachConfig(callback: ForEachConfigCallback) {
-	categories.forEach((category) => {
+function forEachConfig(categoryList: CategoryDefinition[], callback: ForEachConfigCallback) {
+	categoryList.forEach((category) => {
 		Object.entries(category.configs).forEach(
 			([key, configDefinition]: [string, ConfigDefinition]) => {
 				callback(key, configDefinition, category.title)
@@ -303,5 +326,8 @@ export default function () {
 		},
 		updateValue,
 		unsetValues,
+		get proceedWithConfigSwitch() {
+			return proceedWithConfigSwitch
+		},
 	}
 }

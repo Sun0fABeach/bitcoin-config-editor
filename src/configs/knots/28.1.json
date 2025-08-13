@@ -1885,9 +1885,7 @@
 				"type": "select",
 				"title": "Test-Only Option",
 				"description": "Pass a test-only option",
-				"options": [
-					{ "value": "addrman", "label": "Deterministic addrman" }
-				]
+				"options": [{ "value": "addrman", "label": "Deterministic addrman" }]
 			},
 			"testactivationheight": {
 				"type": "text",

@@ -7,6 +7,16 @@
 	import useOptionsStore from '@/stores/options.svelte'
 	import { colors } from '@/globals'
 
+	type OptionKey = keyof Pick<
+		typeof optionsStore,
+		| 'showDescriptions'
+		| 'searchTitles'
+		| 'searchDescriptions'
+		| 'highlightKnotsExclusives'
+		| 'inlineDescriptors'
+		| 'explicitDefaults'
+	>
+
 	const dropDownPaddingMQ = new MediaQuery('min-width: 400px')
 
 	const optionsStore = useOptionsStore()
@@ -36,7 +46,7 @@
 						</div>
 
 						<div {...props} class="content" transition:slide>
-							{#snippet item(key: keyof typeof optionsStore, label: string)}
+							{#snippet item(key: OptionKey, label: string)}
 								<DropdownMenu.CheckboxItem bind:checked={optionsStore[key]} closeOnSelect={false}>
 									{#snippet children({ checked })}
 										{@const id = useId()}

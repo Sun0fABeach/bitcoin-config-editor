@@ -40,7 +40,8 @@
 	"dependencies": {
 		"bits-ui": "^1.8.0",
 		"modern-normalize": "^3.0.1",
-		"phosphor-svelte": "^3.0.1"
+		"phosphor-svelte": "^3.0.1",
+		"runed": "^0.31.1"
 	},
 	"lint-staged": {
 		"*.{js,ts,svelte,css,md}": [

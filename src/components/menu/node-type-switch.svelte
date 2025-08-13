@@ -1,14 +1,21 @@
 <script lang="ts">
 	import { Switch, Label } from 'bits-ui'
 	import useOptionsStore from '@/stores/options.svelte'
+	import useConfigStore from '@/stores/config.svelte'
 	import KnotsLogo from '@/components/knots-logo.svelte'
+	import Dialog from '@/components/dialog.svelte'
 
 	const id = 'node-type-switch'
 
 	const optionsStore = useOptionsStore()
+	const configStore = useConfigStore()
 
 	const label = $derived(optionsStore.useKnots ? 'Knots' : 'Core')
 	const version = $derived(optionsStore.currentVersion)
+
+	const confirmDialogOpen = $derived(!!configStore.proceedWithConfigSwitch)
+	const abortSwitch = () => configStore.proceedWithConfigSwitch?.(false)
+	const confirmSwitch = () => configStore.proceedWithConfigSwitch?.(true)
 </script>
 
 <div class="container" title="Select whether you run a Core or Knots node">
@@ -36,6 +43,16 @@
 	</Label.Root>
 
 	<div class="version">v{version}</div>
+
+	<Dialog
+		open={confirmDialogOpen}
+		title="Do you really want to switch your config?"
+		description="This might remove some values that are unsupported by the target version."
+		cancelText="Cancel"
+		confirmText="Proceed"
+		onCancel={abortSwitch}
+		onConfirm={confirmSwitch}
+	/>
 </div>
 
 <style lang="postcss">

@@ -43,7 +43,8 @@ export function loadOptionsFromStorage() {
 	})
 }
 
-let switchConfigVersionCallback: (useKnots: boolean, version: string) => void = () => {}
+let switchConfigVersionCallback: (useKnots: boolean, version: string) => Promise<boolean> = () =>
+	Promise.resolve(false)
 let configRefreshCallback: () => void = () => {}
 
 export function setSwitchConfigVersionCallback(callback: typeof switchConfigVersionCallback) {
@@ -62,14 +63,18 @@ export default function () {
 			return options.useKnots
 		},
 		set useKnots(value: boolean) {
-			options.useKnots = value
-			setInStorage('useKnots', value)
-
 			const versionType = value ? 'knotsVersion' : 'coreVersion'
 			const version = getFromStorage(versionType) as string
-			options[versionType] = version
 
-			switchConfigVersionCallback(value, version)
+			const switchIfConfirmed = async () => {
+				if (await switchConfigVersionCallback(value, version)) {
+					options.useKnots = value
+					setInStorage('useKnots', value)
+					options[versionType] = version
+				}
+			}
+
+			switchIfConfirmed()
 		},
 
 		set coreVersion(value: string) {

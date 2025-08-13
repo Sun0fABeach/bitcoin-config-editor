@@ -21,7 +21,7 @@
 
 	const value = $derived(configStore.values[key]) as EditorValueSelect
 
-	const options = items.map(({ value }) => value)
+	const options = $derived(items.map(({ value }) => value))
 
 	const onDeleteClick = () => {
 		configStore.updateValue(key, unsetValue(EditorValueType.SELECT))
