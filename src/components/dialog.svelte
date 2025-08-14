@@ -5,6 +5,7 @@
 	import { page } from '$app/state'
 	import { AlertDialog, useId } from 'bits-ui'
 	import { watch } from 'runed'
+	import ScrollArea from '@/components/scroll-area.svelte'
 	import Button from '@/components/button.svelte'
 
 	interface DialogProps {
@@ -32,6 +33,9 @@
 		onCancel,
 		onConfirm,
 	}: DialogProps = $props()
+
+	// prevent flash of scrollbar during opening transition by setting to 'scroll' during that time
+	let scrollAreaType = $state<'scroll' | 'auto'>('scroll')
 
 	const dialogOpenPageStateKey = `dialog-open-${useId()}`
 	const dialogOpenPageState = $derived(!!page.state[dialogOpenPageStateKey])
@@ -92,13 +96,21 @@
 		<AlertDialog.Content forceMount interactOutsideBehavior="close" onInteractOutside={cancel}>
 			{#snippet child({ props, open })}
 				{#if open}
-					<div {...props} class="dialog-content" transition:slide>
+					<div
+						{...props}
+						class="dialog-content"
+						transition:slide
+						onintrostart={() => (scrollAreaType = 'scroll')}
+						onintroend={() => (scrollAreaType = 'auto')}
+					>
 						<AlertDialog.Title>{title}</AlertDialog.Title>
 						<AlertDialog.Description>
 							{#snippet child()}
-								<div class="dialog-description">
-									{@render description()}
-								</div>
+								<ScrollArea type={scrollAreaType}>
+									<div class="dialog-description">
+										{@render description()}
+									</div>
+								</ScrollArea>
 							{/snippet}
 						</AlertDialog.Description>
 
@@ -130,10 +142,14 @@
 	}
 
 	.dialog-content {
+		--scroll-area-padding: 0 calc(0.75rem + var(--scrollbar-width)) 0 0;
+
 		position: fixed;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
+		max-width: 90%;
+		max-height: 90%;
 		display: flex;
 		flex-flow: column;
 		padding: 1rem;
@@ -142,7 +158,7 @@
 		background-color: var(--color-popover-background);
 		line-height: 1.25;
 
-		> .dialog-description {
+		.dialog-description {
 			display: flex;
 			flex-flow: column;
 			row-gap: 0.875rem;

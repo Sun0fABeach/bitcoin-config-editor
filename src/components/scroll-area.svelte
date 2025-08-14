@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { ScrollArea, type WithChildren } from 'bits-ui'
+	import { ScrollArea, type ScrollAreaRootProps } from 'bits-ui'
 
-	const { children }: WithChildren = $props()
+	const { type = 'always', children }: ScrollAreaRootProps = $props()
 </script>
 
-<ScrollArea.Root type="always">
+<ScrollArea.Root {type}>
 	{#snippet child({ props })}
 		<div {...props} class="scroll-area-root">
 			<ScrollArea.Viewport>

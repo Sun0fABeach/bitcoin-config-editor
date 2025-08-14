@@ -154,10 +154,13 @@
 	}
 
 	ul {
-		margin-top: 0.125rem;
+		margin-top: 0.25rem;
+		padding-left: 0.25rem;
 		li {
 			list-style: circle inside;
+			overflow-x: hidden;
 			white-space: nowrap;
+			text-overflow: ellipsis;
 			color: hsl(from var(--color-accent1) h s l / 0.75);
 		}
 	}
