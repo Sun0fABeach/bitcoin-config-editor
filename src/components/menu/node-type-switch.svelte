@@ -68,8 +68,8 @@
 		{#snippet description()}
 			{#if hasMissingOptions}
 				<div>
-					The following incompatibilities have been detected. If you choose to proceed, the affected
-					config values will be removed.
+					Version incompatibilities detected. If you choose to proceed, the following values will be
+					removed from your config.
 				</div>
 				<div>
 					<div>Missing options in {newVersionFull}:</div>

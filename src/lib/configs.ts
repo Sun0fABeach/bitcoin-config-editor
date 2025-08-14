@@ -1,26 +1,30 @@
 import type { CategoryDefinition } from '@/types/config-definition'
 
-const coreConfigsImports = import.meta.glob('@/configs/core/*.json', { eager: true })
-const knotsConfigsImports = import.meta.glob('@/configs/knots/*.json', { eager: true })
+type ModuleDefaultImport = () => CategoryDefinition[]
+type ConfigModule = { default: ModuleDefaultImport }
+type GlobImport = Record<string, ConfigModule>
+
+const coreConfigsImports = import.meta.glob('@/configs/core/*.ts', { eager: true }) as GlobImport
+const knotsConfigsImports = import.meta.glob('@/configs/knots/*.ts', { eager: true }) as GlobImport
 
 function extractConfigs(globImports: typeof coreConfigsImports) {
-	const extracted: Record<string, CategoryDefinition[]> = {}
+	const extracted: Record<string, ModuleDefaultImport> = {}
 
 	for (const [path, module] of Object.entries(globImports)) {
-		const version = /(\d{2}\.\d)\.json$/.exec(path)![1]
-		extracted[version] = (module as { default: CategoryDefinition[] }).default
+		const version = /(\d{2}\.\d)\.ts$/.exec(path)![1]
+		extracted[version] = module.default
 	}
 
 	return extracted
 }
 
-export const configs = {
+export const configsGenerators = {
 	core: extractConfigs(coreConfigsImports),
 	knots: extractConfigs(knotsConfigsImports),
 }
 
-export const coreVersions = Object.keys(configs.core).sort().reverse()
-export const knotsVersions = Object.keys(configs.knots).sort().reverse()
+export const coreVersions = Object.keys(configsGenerators.core).sort().reverse()
+export const knotsVersions = Object.keys(configsGenerators.knots).sort().reverse()
 
 export const latestCoreVersion = coreVersions[0]
 export const latestKnotsVersion = knotsVersions[0]

@@ -4,7 +4,7 @@ import useSettingsStore, {
 	setConfigRefreshCallback,
 } from '@/stores/settings.svelte'
 import useSearchStore from '@/stores/search.svelte'
-import { configs } from '@/lib/configs'
+import { configsGenerators } from '@/lib/configs'
 import { EditorValueType } from '@/enums'
 import type { EditorValueAny, EditorValueMultiSelect, EditorValueMultiText } from '@/types/editor'
 import type { CategoryDefinition, ConfigDefinition } from '@/types/config-definition'
@@ -25,7 +25,7 @@ let configIndex: Record<
 let values = $state<Record<string, EditorValueAny>>({})
 
 function getCategories(useKnots: boolean, version: string) {
-	return useKnots ? configs.knots[version] : configs.core[version]
+	return configsGenerators[useKnots ? 'knots' : 'core'][version]()
 }
 
 export function initializeConfig() {
