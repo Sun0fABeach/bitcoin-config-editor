@@ -2,7 +2,7 @@
 	import { Broom } from 'phosphor-svelte'
 	import useConfigStore from '@/stores/config.svelte'
 	import Button from '@/components/button.svelte'
-	import Dialog from '@/components/dialog.svelte'
+	import Dialog from '@/components/dialogs/dialog.svelte'
 
 	const configStore = useConfigStore()
 </script>

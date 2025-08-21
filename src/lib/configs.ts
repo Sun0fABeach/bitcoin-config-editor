@@ -1,3 +1,4 @@
+import { uploadFile } from '@/lib/file'
 import type { CategoryDefinition } from '@/types/config-definition'
 
 type ModuleDefaultImport = () => CategoryDefinition[]
@@ -28,3 +29,26 @@ export const knotsVersions = Object.keys(configsGenerators.knots).sort().reverse
 
 export const latestCoreVersion = coreVersions[0]
 export const latestKnotsVersion = knotsVersions[0]
+
+export type UploadedConfigValues = Record<string, string[]>
+
+export async function uploadConfig() {
+	const { content, fileName } = await uploadFile()
+
+	const values = content
+		.split(/\r\n|\n/)
+		.map((line) => /^\s*(\w+)\s*=\s*(.+)$/.exec(line))
+		.filter((match) => match)
+		.reduce((result, match) => {
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			const [_, key, value] = match!
+			if (result[key]) {
+				result[key].push(value)
+			} else {
+				result[key] = [value]
+			}
+			return result
+		}, {} as UploadedConfigValues)
+
+	return { values, fileName }
+}

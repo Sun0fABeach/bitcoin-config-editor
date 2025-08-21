@@ -7,31 +7,32 @@ export function downloadFile(content: string) {
 	link.click()
 }
 
-export function uploadFile(callback: (fileContent: string) => void) {
-	const input = document.createElement('input')
-	input.setAttribute('type', 'file')
+export function uploadFile(): Promise<{ content: string; fileName: string }> {
+	return new Promise((resolve, reject) => {
+		const input = document.createElement('input')
+		input.setAttribute('type', 'file')
 
-	input.addEventListener('change', () => {
-		const files = input.files
-		if (!files || files.length === 0) {
-			return
-		}
-		const file = files[0]
-		const reader = new FileReader()
-
-		reader.onload = (e) => {
-			if (!e.target || e.target.result === null) {
-				alert('Could not read your file.')
+		input.addEventListener('change', () => {
+			const files = input.files
+			if (!files || files.length === 0) {
 				return
 			}
-			const contents = e.target.result as string
-			const lines = contents.split(/\r\n|\n/)
-			callback(lines.join('\n'))
-		}
-		reader.onerror = (e) => alert(`Error while loading your file:\n${e.target!.error!.name}`)
+			const file = files[0]
+			const fileName = file.name
+			const reader = new FileReader()
+			reader.readAsText(file)
 
-		reader.readAsText(file)
+			reader.onload = (e) => {
+				if (!e.target || e.target.result === null) {
+					reject(`Could not read file: ${fileName}`)
+					return
+				}
+				const content = e.target.result as string
+				resolve({ content, fileName })
+			}
+			reader.onerror = () => reject(`Could not load file: ${fileName}`)
+		})
+
+		input.click()
 	})
-
-	input.click()
 }

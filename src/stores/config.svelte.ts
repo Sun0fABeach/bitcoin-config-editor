@@ -4,16 +4,35 @@ import useSettingsStore, {
 	setConfigRefreshCallback,
 } from '@/stores/settings.svelte'
 import useSearchStore from '@/stores/search.svelte'
-import { configsGenerators } from '@/lib/configs'
+import { configsGenerators, type UploadedConfigValues } from '@/lib/configs'
 import { EditorValueType } from '@/enums'
-import type { EditorValueAny, EditorValueMultiSelect, EditorValueMultiText } from '@/types/editor'
+import type {
+	EditorValueAny,
+	EditorValueText,
+	EditorValueNumber,
+	EditorValueCheckbox,
+	EditorValueMultiText,
+	EditorValueMultiSelect,
+	EditorValueSelect,
+} from '@/types/editor'
 import type { CategoryDefinition, ConfigDefinition } from '@/types/config-definition'
 
 const searchStore = useSearchStore()
 const settingsStore = useSettingsStore()
 
-setSwitchConfigVersionCallback(switchConfig)
+setSwitchConfigVersionCallback(switchConfigVersion)
 setConfigRefreshCallback(refreshTextValues)
+
+export interface ConfigValueIssues {
+	targetVersionIsKnots: boolean
+	targetVersion: string
+	missingOptions: string[]
+	unsupportedValues: string[]
+	proceed: (value: boolean) => void
+}
+
+let configSwitchIssues = $state<ConfigValueIssues | null>(null)
+let replaceValuesIssues = $state<ConfigValueIssues | null>(null)
 
 let categories = $state<CategoryDefinition[]>([])
 
@@ -23,10 +42,6 @@ let configIndex: Record<
 > = {}
 
 let values = $state<Record<string, EditorValueAny>>({})
-
-function getCategories(useKnots: boolean, version: string) {
-	return configsGenerators[useKnots ? 'knots' : 'core'][version]()
-}
 
 export function initializeConfig() {
 	categories = getCategories(settingsStore.useKnots, settingsStore.currentVersion)
@@ -42,15 +57,19 @@ export function initializeConfig() {
 	initTextGeneration()
 }
 
-let configSwitchIssues = $state<{
-	newVersionIsKnots: boolean
-	newVersion: string
-	missingOptions: string[]
-	unsupportedValues: string[]
-	proceed: (value: boolean) => void
-} | null>(null)
+function getCategories(useKnots: boolean, version: string) {
+	return configsGenerators[useKnots ? 'knots' : 'core'][version]()
+}
 
-async function switchConfig(useKnots: boolean, version: string) {
+function getCategoryTitle(key: string) {
+	return configIndex[key].categoryTitle
+}
+
+function getConfig(key: string) {
+	return configIndex[key].config
+}
+
+async function switchConfigVersion(useKnots: boolean, version: string) {
 	const newCategories = getCategories(useKnots, version)
 	const newConfigIndex: typeof configIndex = {}
 	const newValues: typeof values = {}
@@ -61,12 +80,28 @@ async function switchConfig(useKnots: boolean, version: string) {
 
 	forEachConfig(newCategories, (key, configDefinition, categoryTitle) => {
 		const { type, options } = configDefinition
-		const oldValue = values[key]
+		let oldValue = values[key]
 
 		let keepOldValue = oldValue !== undefined && !isUnsetValue(type, oldValue)
-		if (keepOldValue && options && !options.find(({ value }) => oldValue === value)) {
-			unsupportedValues.push(valuesAsText[categoryTitle][key])
-			keepOldValue = false
+
+		if (keepOldValue && options) {
+			if (type === EditorValueType.SELECT) {
+				if (!options.find((option) => oldValue === option.value)) {
+					unsupportedValues.push(valuesAsText[categoryTitle][key])
+					keepOldValue = false
+				}
+			} else {
+				oldValue = (oldValue as EditorValueMultiSelect).filter((value) => {
+					if (!options.find((option) => value === option.value)) {
+						unsupportedValues.push(valuesAsText[categoryTitle][key])
+						return false
+					}
+					return true
+				})
+				if (oldValue.length === 0) {
+					keepOldValue = false
+				}
+			}
 		}
 
 		if (keepOldValue) {
@@ -99,8 +134,8 @@ async function switchConfig(useKnots: boolean, version: string) {
 		const { promise, resolve } = Promise.withResolvers<boolean>()
 		proceed = promise
 		configSwitchIssues = {
-			newVersionIsKnots: useKnots,
-			newVersion: version,
+			targetVersionIsKnots: useKnots,
+			targetVersion: version,
 			missingOptions,
 			unsupportedValues,
 			proceed: resolve, // wait for user to confirm via dialog
@@ -122,14 +157,6 @@ async function switchConfig(useKnots: boolean, version: string) {
 	}
 }
 
-function getCategoryTitle(key: string) {
-	return configIndex[key].categoryTitle
-}
-
-function getConfig(key: string) {
-	return configIndex[key].config
-}
-
 function updateValue(key: string, value: EditorValueAny) {
 	values[key] = value
 	changeTextValue(key, value)
@@ -140,6 +167,120 @@ function unsetValues() {
 		values[key] = unsetValue(configDefinition.type)
 	})
 	refreshTextValues()
+}
+
+async function replaceValues(replacementValues: UploadedConfigValues) {
+	const newValues: typeof values = {}
+	const missingOptions: string[] = []
+	const unsupportedValues: string[] = []
+
+	/* 1. construct new completely unset value record */
+
+	forEachConfig(categories, (key, configDefinition) => {
+		const { type } = configDefinition
+		newValues[key] = unsetValue(type)
+	})
+
+	/* 2. assign replacement values and filter out unsupported options/values */
+
+	Object.entries(replacementValues).forEach(([key, valueList]) => {
+		const indexEntry = configIndex[key]
+
+		if (!indexEntry) {
+			missingOptions.push(key)
+			return
+		}
+
+		const { type, typeConstraints, options } = indexEntry.config
+
+		// user might have specified the same option multiple times
+		// use the last one in case it's not a multi-type option
+		const lastProvidedValue = valueList[valueList.length - 1]
+		let value: string
+
+		switch (type) {
+			case EditorValueType.NUMBER:
+				value = lastProvidedValue
+				if (isNaN(Number(value)) || (typeConstraints?.wholeNumber && value.includes('.'))) {
+					unsupportedValues.push(`${key}=${value}`)
+					return
+				}
+				;(newValues[key] as EditorValueNumber) = Number(value)
+				break
+
+			case EditorValueType.CHECKBOX:
+				value = lastProvidedValue
+				if (!['0', '1'].includes(value)) {
+					unsupportedValues.push(`${key}=${value}`)
+					return
+				}
+				;(newValues[key] as EditorValueCheckbox) = value === '1'
+				break
+
+			case EditorValueType.SELECT:
+				value = lastProvidedValue
+				if (options && !options.find((o) => o.value === value)) {
+					unsupportedValues.push(`${key}=${value}`)
+					return
+				}
+				;(newValues[key] as EditorValueSelect) = value
+				break
+
+			case EditorValueType.MULTI_SELECT:
+				if (options) {
+					valueList = valueList.filter((value) => {
+						if (!options.find((o) => o.value === value)) {
+							unsupportedValues.push(`${key}=${value}`)
+							return false
+						}
+						return true
+					})
+				}
+				if (valueList.length === 0) {
+					return
+				}
+				valueList = [...new Set(valueList)] // make each entry unique
+				;(newValues[key] as EditorValueMultiText | EditorValueMultiSelect) = valueList
+				break
+
+			case EditorValueType.MULTI_TEXT:
+				;(newValues[key] as EditorValueMultiText) = valueList
+				break
+
+			default:
+				value = lastProvidedValue
+				;(newValues[key] as EditorValueText) = value
+				break
+		}
+	})
+
+	/* 3. ask user if he wants to proceed in case of conflicts */
+
+	let proceed = Promise.resolve(true)
+
+	if (missingOptions.length > 0 || unsupportedValues.length > 0) {
+		const { promise, resolve } = Promise.withResolvers<boolean>()
+		proceed = promise
+		replaceValuesIssues = {
+			targetVersionIsKnots: settingsStore.useKnots,
+			targetVersion: settingsStore.currentVersion,
+			missingOptions,
+			unsupportedValues,
+			proceed: resolve, // wait for user to confirm via dialog
+		}
+	}
+
+	try {
+		if (await proceed) {
+			values = newValues
+			initTextGeneration()
+			return true
+		} else {
+			return false
+		}
+	} finally {
+		replaceValuesIssues = null
+	}
 }
 
 const hasSetValues = $derived(
@@ -357,8 +498,12 @@ export default function () {
 		},
 		updateValue,
 		unsetValues,
+		replaceValues,
 		get configSwitchIssues() {
 			return configSwitchIssues
+		},
+		get replaceValuesIssues() {
+			return replaceValuesIssues
 		},
 	}
 }

@@ -3,7 +3,7 @@
 	import useSettingsStore from '@/stores/settings.svelte'
 	import useConfigStore from '@/stores/config.svelte'
 	import KnotsLogo from '@/components/knots-logo.svelte'
-	import Dialog from '@/components/dialog.svelte'
+	import CompatibilityDialog from '@/components/dialogs/compatibility-dialog.svelte'
 
 	const id = 'node-type-switch'
 
@@ -17,18 +17,9 @@
 	const currentVersionFull = $derived(`${label} v${version}`)
 
 	const switchIssues = $derived(configStore.configSwitchIssues)
-	const confirmDialogOpen = $derived(!!switchIssues)
-
-	const missingOptions = $derived(switchIssues?.missingOptions ?? [])
-	const unsupportedValues = $derived(switchIssues?.unsupportedValues ?? [])
-	const hasMissingOptions = $derived(missingOptions.length > 0)
-	const hasUnsupportedValues = $derived(unsupportedValues.length > 0)
-	const newVersionFull = $derived(
-		`${getLabel(switchIssues?.newVersionIsKnots)} v${switchIssues?.newVersion}`,
+	const targetVersionFull = $derived(
+		`${getLabel(switchIssues?.targetVersionIsKnots)} v${switchIssues?.targetVersion}`,
 	)
-
-	const abortSwitch = () => switchIssues?.proceed(false)
-	const confirmSwitch = () => switchIssues?.proceed(true)
 </script>
 
 <div class="container" title="Select whether you run a Core or Knots node">
@@ -56,43 +47,15 @@
 	</Label.Root>
 
 	<div class="version">v{version}</div>
-
-	<Dialog
-		open={confirmDialogOpen}
-		title={`Do you really want to switch from ${currentVersionFull} to ${newVersionFull}?`}
-		cancelText="Cancel"
-		confirmText="Proceed"
-		onCancel={abortSwitch}
-		onConfirm={confirmSwitch}
-	>
-		{#snippet description()}
-			{#if hasMissingOptions}
-				<div>
-					Version incompatibilities detected. If you choose to proceed, the following values will be
-					removed from your config.
-				</div>
-				<div>
-					<div>Missing options in {newVersionFull}:</div>
-					<ul>
-						{#each missingOptions as missing (missing)}
-							<li>{missing}</li>
-						{/each}
-					</ul>
-				</div>
-			{/if}
-			{#if hasUnsupportedValues}
-				<div>
-					<div>Unsupported values in {newVersionFull}:</div>
-					<ul>
-						{#each unsupportedValues as unsupported (unsupported)}
-							<li>{unsupported}</li>
-						{/each}
-					</ul>
-				</div>
-			{/if}
-		{/snippet}
-	</Dialog>
 </div>
+
+<CompatibilityDialog
+	title={`Do you really want to switch from ${currentVersionFull} to ${targetVersionFull}?`}
+	issues={switchIssues}
+>
+	Version incompatibilities detected. If you choose to proceed, the following values will be removed
+	from your config.
+</CompatibilityDialog>
 
 <style lang="postcss">
 	.container {
@@ -151,17 +114,5 @@
 		display: inline flex;
 		align-items: center;
 		color: var(--color-accent1);
-	}
-
-	ul {
-		margin-top: 0.25rem;
-		padding-left: 0.25rem;
-		li {
-			list-style: circle inside;
-			overflow-x: hidden;
-			white-space: nowrap;
-			text-overflow: ellipsis;
-			color: hsl(from var(--color-accent1) h s l / 0.75);
-		}
 	}
 </style>

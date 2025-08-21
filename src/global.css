@@ -3,6 +3,7 @@
 	--color-text-light: hsl(135.29, 100%, 50%);
 
 	--color-accent1: white;
+	--color-accent1-light: hsl(from var(--color-accent1) h s l / 0.75);
 	--color-accent2: hsl(60, 55.24%, 58.82%);
 
 	--color-background: hsl(327.27, 73.33%, 2.94%);
