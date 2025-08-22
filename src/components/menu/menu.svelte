@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { onMount } from 'svelte'
 	import usePreviewStore from '@/stores/preview.svelte'
 	import NodeTypeSwitch from '@/components/menu/node-type-switch.svelte'
 	import Search from '@/components/menu/search.svelte'
@@ -6,10 +7,17 @@
 	import Options from '@/components/menu/settings.svelte'
 
 	const { openPreview } = usePreviewStore()
+
+	/* we need to make sure the version switch, although getting prerendered, is
+	 * not visible before hydration is finished and we know the active version */
+	let visibiltyGuard = $state(true)
+	onMount(() => setTimeout(() => (visibiltyGuard = false), 150))
 </script>
 
 <menu>
-	<NodeTypeSwitch />
+	<div class={{ 'visibility-guard': visibiltyGuard }}>
+		<NodeTypeSwitch />
+	</div>
 	<Options />
 	<Button class="generate-button" onclick={openPreview}>Generate Config</Button>
 	<Search />
@@ -42,6 +50,13 @@
 
 			> :global(.generate-button) {
 				display: none;
+			}
+		}
+
+		> div {
+			transition: opacity 0.5s;
+			&.visibility-guard {
+				opacity: 0;
 			}
 		}
 	}

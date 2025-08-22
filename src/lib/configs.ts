@@ -40,8 +40,7 @@ export async function uploadConfig() {
 		.map((line) => /^\s*(\w+)\s*=\s*(.+)$/.exec(line))
 		.filter((match) => match)
 		.reduce((result, match) => {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-			const [_, key, value] = match!
+			const [, key, value] = match!
 			if (result[key]) {
 				result[key].push(value)
 			} else {

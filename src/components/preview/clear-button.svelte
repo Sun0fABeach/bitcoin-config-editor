@@ -10,6 +10,7 @@
 <Dialog
 	disabled={!configStore.hasUserValues}
 	title="Do you really want to clear your config?"
+	triggerToolTip="clear"
 	cancelText="Cancel"
 	confirmText="Clear"
 	onConfirm={configStore.unsetValues}
