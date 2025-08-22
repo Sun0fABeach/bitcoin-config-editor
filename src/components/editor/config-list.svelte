@@ -6,6 +6,7 @@
 	import CheckboxConfig from '@/components/editor/configs/checkbox-config.svelte'
 	import SelectConfig from '@/components/editor/configs/select-config.svelte'
 	import MultiSelectConfig from '@/components/editor/configs/multi-select-config.svelte'
+	import useConfigStore from '@/stores/config.svelte'
 	import { EditorValueType } from '@/enums'
 	import type { CategoryDefinition } from '@/types/config-definition'
 
@@ -23,6 +24,8 @@
 		onOpenFinished,
 		...attrs
 	}: ConfigListProps = $props()
+
+	const configStore = useConfigStore()
 </script>
 
 <ul
@@ -58,9 +61,13 @@
 			{:else if type === EditorValueType.SELECT}
 				<SelectConfig {key} {...info} items={options!} />
 			{:else if type === EditorValueType.MULTI_SELECT}
-				<MultiSelectConfig {key} {...info} items={options!} />
+				{#key configStore.renderKey}
+					<MultiSelectConfig {key} {...info} items={options!} />
+				{/key}
 			{:else if type === EditorValueType.MULTI_TEXT}
-				<MultiTextConfig {key} {...info} />
+				{#key configStore.renderKey}
+					<MultiTextConfig {key} {...info} />
+				{/key}
 			{/if}
 		</li>
 	{/each}

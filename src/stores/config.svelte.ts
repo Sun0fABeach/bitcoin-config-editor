@@ -43,6 +43,9 @@ let configIndex: Record<
 
 let values = $state<Record<string, EditorValueAny>>({})
 
+// multi-text/select options need to be rerendered on config clean/switch/replace
+let renderKey = $state(0)
+
 export function initializeConfig() {
 	categories = getCategories(settingsStore.useKnots, settingsStore.currentVersion)
 
@@ -148,6 +151,7 @@ async function switchConfigVersion(useKnots: boolean, version: string) {
 			configIndex = newConfigIndex
 			values = newValues
 			initTextGeneration()
+			renderKey++
 			return true
 		} else {
 			return false
@@ -167,6 +171,7 @@ function unsetValues() {
 		values[key] = unsetValue(configDefinition.type)
 	})
 	refreshTextValues()
+	renderKey++
 }
 
 async function replaceValues(replacementValues: UploadedConfigValues) {
@@ -274,6 +279,7 @@ async function replaceValues(replacementValues: UploadedConfigValues) {
 		if (await proceed) {
 			values = newValues
 			initTextGeneration()
+			renderKey++
 			return true
 		} else {
 			return false
@@ -504,6 +510,9 @@ export default function () {
 		},
 		get replaceValuesIssues() {
 			return replaceValuesIssues
+		},
+		get renderKey() {
+			return renderKey
 		},
 	}
 }
