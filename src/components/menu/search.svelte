@@ -28,6 +28,7 @@
 		placeholder="Search"
 		bind:value={searchStore.search}
 		bind:this={inputRef}
+		onkeypress={(e) => e.key === 'Enter' && inputRef.blur()}
 	/>
 	<Button.Root class={['clear-button', { hidden: !searchStore.search }]} onclick={clear}>
 		<X size={20} weight="bold" />

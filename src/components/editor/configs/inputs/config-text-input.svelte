@@ -12,7 +12,7 @@
 
 	let { value = $bindable(), wholeNumber, ...attrs }: ConfigTextInputProps = $props()
 
-	let ref: HTMLInputElement | null = null
+	let ref: HTMLInputElement
 	export const focus = () => ref?.focus()
 
 	const isNumberInput = typeof value === 'number' || value === unsetValue(EditorValueType.NUMBER)
@@ -35,8 +35,8 @@
 		{inputmode}
 		bind:value={getValue, setValue}
 		bind:this={ref}
+		onkeypress={(e) => e.key === 'Enter' && ref.blur()}
 		{...attrs}
-		onclick={(e) => e.stopPropagation()}
 	/>
 	<div class="underline"></div>
 </div>
