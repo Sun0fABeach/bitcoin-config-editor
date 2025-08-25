@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Button from '@/components/button.svelte'
+	import Button from '@/components/buttons/button.svelte'
 	import { loadSettingsFromStorage } from '@/stores/settings.svelte'
 	import { initializeConfig } from '@/stores/config.svelte'
 	import { setOnDesktopContext } from '@/context/onDesktop'

@@ -1,23 +1,34 @@
 <script lang="ts">
-	import type { WithChildren } from 'bits-ui'
 	import Dialog from './dialog.svelte'
-	import { type ConfigValueIssues } from '@/stores/config.svelte'
+	import useConfigStore from '@/stores/config.svelte'
+	import useSettingsStore from '@/stores/settings.svelte'
 
-	type CompatibilityDialogProps = WithChildren & {
-		title: string
-		issues: ConfigValueIssues | null
-	}
+	const configStore = useConfigStore()
+	const settingsStore = useSettingsStore()
 
-	const { title, issues, children }: CompatibilityDialogProps = $props()
+	const getLabel = (isKnots?: boolean) => (isKnots ? 'Knots' : 'Core')
 
+	const label = $derived(getLabel(settingsStore.useKnots))
+	const version = $derived(settingsStore.currentVersion)
+	const currentVersionFull = $derived(`${label} v${version}`)
+
+	const configSwitchIssues = $derived(configStore.configSwitchIssues)
+	const replaceValuesIssues = $derived(configStore.replaceValuesIssues)
+	const issues = $derived(configSwitchIssues || replaceValuesIssues)
 	const dialogOpen = $derived(!!issues)
 	const missingOptions = $derived(issues?.missingOptions ?? [])
 	const unsupportedValues = $derived(issues?.unsupportedValues ?? [])
-	const targetVersion = $derived(
-		`${issues?.targetVersionIsKnots ? 'Knots' : 'Core'} v${issues?.targetVersion}`,
-	)
 	const hasMissingOptions = $derived(missingOptions.length > 0)
 	const hasUnsupportedValues = $derived(unsupportedValues.length > 0)
+	const targetVersionFull = $derived(
+		`${getLabel(issues?.targetVersionIsKnots)} v${issues?.targetVersion}`,
+	)
+
+	const title = $derived(
+		configSwitchIssues
+			? `Do you really want to switch from ${currentVersionFull} to ${targetVersionFull}?`
+			: 'Do you really want to apply this config?',
+	)
 
 	const onCancel = () => {
 		issues!.proceed(false)
@@ -29,10 +40,18 @@
 
 <Dialog open={dialogOpen} {title} cancelText="Cancel" confirmText="Proceed" {onCancel} {onConfirm}>
 	{#snippet description()}
+		<div>
+			{#if configSwitchIssues}
+				Version incompatibilities detected. If you choose to proceed, the following values will be
+				removed from your config.
+			{:else}
+				The config file you selected has compatibility issues. If you choose to proceed, the
+				following values will be removed from the config.
+			{/if}
+		</div>
 		{#if hasMissingOptions}
-			<div>{@render children!()}</div>
 			<div>
-				<div>Missing options in {targetVersion}:</div>
+				<div>Missing options in {targetVersionFull}:</div>
 				<ul>
 					{#each missingOptions as missing (missing)}
 						<li>{missing}</li>
@@ -42,7 +61,7 @@
 		{/if}
 		{#if hasUnsupportedValues}
 			<div>
-				<div>Unsupported values in {targetVersion}:</div>
+				<div>Unsupported values in {targetVersionFull}:</div>
 				<ul>
 					{#each unsupportedValues as unsupported (unsupported)}
 						<li>{unsupported}</li>

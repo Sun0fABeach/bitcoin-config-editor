@@ -2,7 +2,8 @@
 	import { slide, fade } from 'svelte/transition'
 	import { MediaQuery } from 'svelte/reactivity'
 	import { DropdownMenu, Label, useId } from 'bits-ui'
-	import Button from '@/components/button.svelte'
+	import { GearSix } from 'phosphor-svelte'
+	import Button from '@/components/buttons/button.svelte'
 	import Checkbox from '@/components/checkbox.svelte'
 	import useSettingsStore from '@/stores/settings.svelte'
 	import { colors } from '@/globals'
@@ -17,6 +18,12 @@
 		| 'explicitDefaults'
 	>
 
+	interface SettingsButtonProps {
+		icon?: boolean
+	}
+
+	const { icon = false }: SettingsButtonProps = $props()
+
 	const dropDownPaddingMQ = new MediaQuery('min-width: 400px')
 
 	const settingsStore = useSettingsStore()
@@ -25,14 +32,19 @@
 <DropdownMenu.Root>
 	<DropdownMenu.Trigger>
 		{#snippet child({ props })}
-			<Button {...props}>Settings</Button>
+			{#if icon}
+				<Button {...props} icon title="settings">
+					<GearSix size={22} weight="regular" />
+				</Button>
+			{:else}
+				<Button {...props}>Settings</Button>
+			{/if}
 		{/snippet}
 	</DropdownMenu.Trigger>
 
 	<DropdownMenu.Portal>
 		<DropdownMenu.Content
 			align="start"
-			alignOffset={-15}
 			sideOffset={1}
 			collisionPadding={dropDownPaddingMQ.current ? 10 : 0}
 			preventScroll={false}

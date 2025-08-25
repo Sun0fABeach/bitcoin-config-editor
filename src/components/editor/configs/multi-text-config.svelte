@@ -2,7 +2,7 @@
 	import { tick } from 'svelte'
 	import { useId } from 'bits-ui'
 	import { Plus } from 'phosphor-svelte'
-	import Button from '@/components/button.svelte'
+	import Button from '@/components/buttons/button.svelte'
 	import ConfigContainer, {
 		type ConfigContainerBaseProps,
 	} from '@/components/editor/configs/config-container.svelte'

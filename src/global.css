@@ -73,12 +73,15 @@ input {
 	&[type='number'] {
 		appearance: textfield;
 	}
-
 	/* Chrome */
 	&::-webkit-outer-spin-button,
 	&::-webkit-inner-spin-button {
 		-webkit-appearance: none;
 		margin: 0;
+	}
+
+	&::-webkit-search-cancel-button {
+		display: none;
 	}
 }
 
@@ -90,7 +93,8 @@ button {
 	cursor: pointer;
 }
 
-ul {
+ul,
+menu {
 	margin: 0;
 	padding: 0;
 	list-style: none;

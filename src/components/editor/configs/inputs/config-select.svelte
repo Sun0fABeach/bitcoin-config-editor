@@ -2,7 +2,7 @@
 	import { fade } from 'svelte/transition'
 	import { Select } from 'bits-ui'
 	import { CaretUpDown, CaretDoubleDown, CaretDoubleUp, Check } from 'phosphor-svelte'
-	import Button from '@/components/button.svelte'
+	import Button from '@/components/buttons/button.svelte'
 	import { unsetValue } from '@/lib/editor'
 	import { EditorValueType } from '@/enums'
 	import type { EditorValueSelect } from '@/types/editor'

@@ -2,7 +2,7 @@
 	import type { Snippet } from 'svelte'
 	import { slide } from 'svelte/transition'
 	import { Trash } from 'phosphor-svelte'
-	import Button from '@/components/button.svelte'
+	import Button from '@/components/buttons/button.svelte'
 
 	interface InputRowProps {
 		withTransition?: boolean

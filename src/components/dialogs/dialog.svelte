@@ -6,7 +6,7 @@
 	import { AlertDialog, useId } from 'bits-ui'
 	import { watch } from 'runed'
 	import ScrollArea from '@/components/scroll-area.svelte'
-	import Button from '@/components/button.svelte'
+	import Button from '@/components/buttons/button.svelte'
 
 	interface DialogProps {
 		trigger?: Snippet<[{ props: Record<string, unknown> }]>
@@ -17,8 +17,10 @@
 		description: Snippet
 		cancelText: string
 		confirmText: string
+		padScrollArea?: boolean
 		onCancel?: () => void
 		onConfirm: () => void
+		onIntroEnd?: () => void
 	}
 
 	let {
@@ -30,8 +32,10 @@
 		description,
 		cancelText,
 		confirmText,
+		padScrollArea = true,
 		onCancel,
 		onConfirm,
+		onIntroEnd,
 	}: DialogProps = $props()
 
 	// prevent flash of scrollbar during opening transition by setting to 'scroll' during that time
@@ -98,10 +102,13 @@
 				{#if open}
 					<div
 						{...props}
-						class="dialog-content"
+						class={['dialog-content', { 'pad-scroll-area': padScrollArea }]}
 						transition:slide
 						onintrostart={() => (scrollAreaType = 'scroll')}
-						onintroend={() => (scrollAreaType = 'auto')}
+						onintroend={() => {
+							scrollAreaType = 'auto'
+							onIntroEnd?.()
+						}}
 					>
 						<AlertDialog.Title>{title}</AlertDialog.Title>
 						<AlertDialog.Description>
@@ -142,7 +149,9 @@
 	}
 
 	.dialog-content {
-		--scroll-area-padding: 0 calc(0.75rem + var(--scrollbar-width)) 0 0;
+		&.pad-scroll-area {
+			--scroll-area-padding: 0 calc(0.75rem + var(--scrollbar-width)) 0 0;
+		}
 
 		position: fixed;
 		top: 50%;

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { DownloadSimple } from 'phosphor-svelte'
-	import Button from '@/components/button.svelte'
+	import Button from './button.svelte'
 	import { downloadFile } from '@/lib/file'
 	import useConfigStore from '@/stores/config.svelte'
 
@@ -12,5 +12,5 @@
 </script>
 
 <Button icon title="download" disabled={!configStore.text} onclick={download}>
-	<DownloadSimple size={20} weight="regular" />
+	<DownloadSimple size={22} weight="regular" />
 </Button>

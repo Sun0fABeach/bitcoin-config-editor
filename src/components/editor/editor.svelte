@@ -5,9 +5,11 @@
 	import Category, { type CategoryProps } from '@/components/editor/category.svelte'
 	import ConfigList from '@/components/editor/config-list.svelte'
 	import useConfigStore from '@/stores/config.svelte'
+	import useSearchStore from '@/stores/search.svelte'
 
 	const configStore = useConfigStore()
 	// $inspect(configStore.values)
+	const searchStore = useSearchStore()
 
 	let openCategories = $state<CategoryProps['title'][]>([])
 
@@ -89,7 +91,7 @@
 					onclickcapture={onClick}
 				/>
 			{:else}
-				<div class="no-match">No config matches your search</div>
+				<div class="no-match">No config matches your search '{searchStore.normalizedSearch}'</div>
 			{/if}
 		{:else}
 			<Accordion.Root type="multiple" bind:value={openCategories} onclickcapture={onClick}>

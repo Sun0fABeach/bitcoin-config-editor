@@ -1,25 +1,12 @@
 <script lang="ts">
 	import { Switch, Label } from 'bits-ui'
 	import useSettingsStore from '@/stores/settings.svelte'
-	import useConfigStore from '@/stores/config.svelte'
 	import KnotsLogo from '@/components/knots-logo.svelte'
-	import CompatibilityDialog from '@/components/dialogs/compatibility-dialog.svelte'
 
 	const id = 'node-type-switch'
-
 	const settingsStore = useSettingsStore()
-	const configStore = useConfigStore()
-
-	const getLabel = (isKnots?: boolean) => (isKnots ? 'Knots' : 'Core')
-
-	const label = $derived(getLabel(settingsStore.useKnots))
+	const label = $derived(settingsStore.useKnots ? 'Knots' : 'Core')
 	const version = $derived(settingsStore.currentVersion)
-	const currentVersionFull = $derived(`${label} v${version}`)
-
-	const switchIssues = $derived(configStore.configSwitchIssues)
-	const targetVersionFull = $derived(
-		`${getLabel(switchIssues?.targetVersionIsKnots)} v${switchIssues?.targetVersion}`,
-	)
 </script>
 
 <div class="container" title="Select whether you run a Core or Knots node">
@@ -48,14 +35,6 @@
 
 	<div class="version">v{version}</div>
 </div>
-
-<CompatibilityDialog
-	title={`Do you really want to switch from ${currentVersionFull} to ${targetVersionFull}?`}
-	issues={switchIssues}
->
-	Version incompatibilities detected. If you choose to proceed, the following values will be removed
-	from your config.
-</CompatibilityDialog>
 
 <style lang="postcss">
 	.container {

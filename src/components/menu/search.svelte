@@ -70,17 +70,11 @@
 			&::placeholder {
 				color: var(--color-text-medium);
 			}
-
-			&::-webkit-search-cancel-button {
-				display: none;
-			}
 		}
 
 		:global > .clear-button {
 			display: inline flex;
-			margin-left: auto;
 			padding: 0.375rem;
-			background-color: transparent;
 		}
 		:global > .clear-button.hidden {
 			display: none;
