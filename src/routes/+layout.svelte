@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Button from '@/components/buttons/button.svelte'
-	import { loadSettingsFromStorage } from '@/stores/settings.svelte'
+	import { loadSettings } from '@/stores/settings.svelte'
 	import { initializeConfig } from '@/stores/config.svelte'
 	import { setOnDesktopContext } from '@/context/onDesktop'
 
@@ -11,9 +11,17 @@
 
 	const { children } = $props()
 
-	loadSettingsFromStorage()
-	initializeConfig() // needs to run after loadSettingsFromStorage
 	setOnDesktopContext()
+
+	let initDone = $state(false)
+
+	const init = () => {
+		loadSettings()
+		initializeConfig() // needs to run after loadSettings
+		initDone = true
+	}
+
+	init()
 </script>
 
 <svelte:head>
@@ -26,7 +34,9 @@
 </svelte:head>
 
 <svelte:boundary>
-	{@render children()}
+	{#if initDone}
+		{@render children()}
+	{/if}
 
 	{#snippet failed(error, reset)}
 		<div class="error-container">

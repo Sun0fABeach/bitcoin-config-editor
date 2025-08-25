@@ -64,6 +64,10 @@ function getCategories(useKnots: boolean, version: string) {
 	return configsGenerators[useKnots ? 'knots' : 'core'][version]()
 }
 
+function hasOption(key: string) {
+	return !!configIndex[key]
+}
+
 function getCategoryTitle(key: string) {
 	return configIndex[key].categoryTitle
 }
@@ -485,6 +489,7 @@ const filteredConfigs = $derived.by(() => {
 
 export default function () {
 	return {
+		hasOption,
 		getCategoryTitle,
 		getConfig,
 		get categories() {

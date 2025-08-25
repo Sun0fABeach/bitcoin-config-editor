@@ -1,16 +1,38 @@
+import { page } from '$app/state'
+import { goto } from '$app/navigation'
+import { browser } from '$app/environment'
+import {
+	nodeTypeQueryParam,
+	versionQueryParam,
+	isKnotsQueryParamValue,
+	isCoreQueryParamValue,
+	urlWithoutParams,
+} from '@/lib/url'
 import { coreVersions, knotsVersions, latestCoreVersion, latestKnotsVersion } from '@/lib/configs'
 
+const useKnotsKey = 'useKnots'
+const nodeVersionKeyCore = 'coreVersion'
+const nodeVersionKeyKnots = 'knotsVersion'
+const showDescriptionsKey = 'showDescriptions'
+const searchTitlesKey = 'searchTitles'
+const searchDescriptionsKey = 'searchDescriptions'
+const highlightKnotsExclusivesKey = 'highlightKnotsExclusives'
+const explicitDefaultsKey = 'explicitDefaults'
+const inlineDescriptorsKey = 'inlineDescriptors'
+
 const settings = $state({
-	useKnots: true,
-	coreVersion: latestCoreVersion,
-	knotsVersion: latestKnotsVersion,
-	showDescriptions: true,
-	searchTitles: true,
-	searchDescriptions: false,
-	highlightKnotsExclusives: true,
-	explicitDefaults: false,
-	inlineDescriptors: false,
+	[useKnotsKey]: true,
+	[nodeVersionKeyCore]: latestCoreVersion,
+	[nodeVersionKeyKnots]: latestKnotsVersion,
+	[showDescriptionsKey]: true,
+	[searchTitlesKey]: true,
+	[searchDescriptionsKey]: false,
+	[highlightKnotsExclusivesKey]: true,
+	[explicitDefaultsKey]: false,
+	[inlineDescriptorsKey]: false,
 })
+
+const getNodeVersionKey = (isKnots: boolean) => (isKnots ? nodeVersionKeyKnots : nodeVersionKeyCore)
 
 type Setting = keyof typeof settings
 type StorageBool = 'true' | 'false'
@@ -36,11 +58,46 @@ function setInStorage(setting: Setting, value: string | boolean) {
 	}
 }
 
-export function loadSettingsFromStorage() {
+export function loadSettings() {
+	loadSettingsFromStorage()
+	if (browser) {
+		syncSettingsWithQueryParams()
+	}
+}
+
+function loadSettingsFromStorage() {
 	Object.keys(settings).forEach((key) => {
 		const setting = key as Setting
 		;(settings as Record<Setting, string | boolean>)[setting] = getFromStorage(setting)
 	})
+}
+
+function syncSettingsWithQueryParams() {
+	const searchParams = page.url.searchParams
+
+	const nodeType = searchParams.get(nodeTypeQueryParam) || ''
+	if ([isCoreQueryParamValue, isKnotsQueryParamValue].includes(nodeType)) {
+		const useKnots = nodeType === isKnotsQueryParamValue
+		settings[useKnotsKey] = useKnots
+		setInStorage(useKnotsKey, useKnots)
+	}
+
+	const version = searchParams.get(versionQueryParam) || ''
+	if (version) {
+		if (settings.useKnots) {
+			if (knotsVersions.includes(version)) {
+				settings[nodeVersionKeyKnots] = version
+				setInStorage(nodeVersionKeyKnots, version)
+			}
+		} else {
+			if (coreVersions.includes(version)) {
+				settings[nodeVersionKeyCore] = version
+				setInStorage(nodeVersionKeyCore, version)
+			}
+		}
+	}
+
+	goto(urlWithoutParams())
 }
 
 // callbacks to be handed in by the config store (pattern needed to avoid circular import)
@@ -61,16 +118,16 @@ export default function () {
 		knotsVersions,
 
 		get useKnots() {
-			return settings.useKnots
+			return settings[useKnotsKey]
 		},
 		set useKnots(value: boolean) {
-			const versionType = value ? 'knotsVersion' : 'coreVersion'
+			const versionType = getNodeVersionKey(value)
 			const version = getFromStorage(versionType) as string
 
 			const switchIfConfirmed = async () => {
 				if (await switchConfigVersionCallback(value, version)) {
-					settings.useKnots = value
-					setInStorage('useKnots', value)
+					settings[useKnotsKey] = value
+					setInStorage(useKnotsKey, value)
 					settings[versionType] = version
 				}
 			}
@@ -79,68 +136,68 @@ export default function () {
 		},
 
 		set coreVersion(value: string) {
-			settings.coreVersion = value
-			setInStorage('coreVersion', value)
-			switchConfigVersionCallback(settings.useKnots, value)
+			settings[nodeVersionKeyCore] = value
+			setInStorage(nodeVersionKeyCore, value)
+			switchConfigVersionCallback(settings[useKnotsKey], value)
 		},
 
 		set knotsVersion(value: string) {
-			settings.knotsVersion = value
-			setInStorage('knotsVersion', value)
-			switchConfigVersionCallback(settings.useKnots, value)
+			settings[nodeVersionKeyKnots] = value
+			setInStorage(nodeVersionKeyKnots, value)
+			switchConfigVersionCallback(settings[useKnotsKey], value)
 		},
 
 		get currentVersion() {
-			return settings[settings.useKnots ? 'knotsVersion' : 'coreVersion']
+			return settings[getNodeVersionKey(settings[useKnotsKey])]
 		},
 
 		get showDescriptions() {
-			return settings.showDescriptions
+			return settings[showDescriptionsKey]
 		},
 		set showDescriptions(value: boolean) {
-			settings.showDescriptions = value
-			setInStorage('showDescriptions', value)
+			settings[showDescriptionsKey] = value
+			setInStorage(showDescriptionsKey, value)
 		},
 
 		get searchTitles() {
-			return settings.searchTitles
+			return settings[searchTitlesKey]
 		},
 		set searchTitles(value) {
-			settings.searchTitles = value
-			setInStorage('searchTitles', value)
+			settings[searchTitlesKey] = value
+			setInStorage(searchTitlesKey, value)
 		},
 
 		get searchDescriptions() {
-			return settings.searchDescriptions
+			return settings[searchDescriptionsKey]
 		},
 		set searchDescriptions(value) {
-			settings.searchDescriptions = value
-			setInStorage('searchDescriptions', value)
+			settings[searchDescriptionsKey] = value
+			setInStorage(searchDescriptionsKey, value)
 		},
 
 		get highlightKnotsExclusives() {
-			return settings.highlightKnotsExclusives
+			return settings[highlightKnotsExclusivesKey]
 		},
 		set highlightKnotsExclusives(value) {
-			settings.highlightKnotsExclusives = value
-			setInStorage('highlightKnotsExclusives', value)
+			settings[highlightKnotsExclusivesKey] = value
+			setInStorage(highlightKnotsExclusivesKey, value)
 		},
 
 		get inlineDescriptors() {
-			return settings.inlineDescriptors
+			return settings[inlineDescriptorsKey]
 		},
 		set inlineDescriptors(value) {
-			settings.inlineDescriptors = value
-			setInStorage('inlineDescriptors', value)
+			settings[inlineDescriptorsKey] = value
+			setInStorage(inlineDescriptorsKey, value)
 			configRefreshCallback()
 		},
 
 		get explicitDefaults() {
-			return settings.explicitDefaults
+			return settings[explicitDefaultsKey]
 		},
 		set explicitDefaults(value) {
-			settings.explicitDefaults = value
-			setInStorage('explicitDefaults', value)
+			settings[explicitDefaultsKey] = value
+			setInStorage(explicitDefaultsKey, value)
 			configRefreshCallback()
 		},
 	}

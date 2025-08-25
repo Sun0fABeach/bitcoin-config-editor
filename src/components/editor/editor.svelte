@@ -31,7 +31,8 @@
 	let doubleNavigation = false
 
 	afterNavigate((navigation) => {
-		if (doubleNavigation) {
+		if (doubleNavigation || navigation.type === 'enter') {
+			// we do an extra manual goto after entry navigation (settings store), so ignore the entry
 			doubleNavigation = false
 			return
 		}
@@ -43,15 +44,19 @@
 
 		disableScrollHandling()
 
-		const elementId = hash.slice(1)
-		const categoryTitle = configStore.getCategoryTitle(elementId)
+		const optionKey = hash.slice(1)
+		if (!configStore.hasOption(optionKey)) {
+			return
+		}
+
+		const categoryTitle = configStore.getCategoryTitle(optionKey)
 
 		if (categoryIsOpen(categoryTitle)) {
-			scrollIntoView(elementId)
+			scrollIntoView(optionKey)
 		} else {
 			openCategory(categoryTitle)
 			onCategoryOpenFinished = () => {
-				scrollIntoView(elementId)
+				scrollIntoView(optionKey)
 				onCategoryOpenFinished = () => {}
 			}
 		}
