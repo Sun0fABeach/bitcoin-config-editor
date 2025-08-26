@@ -18,6 +18,7 @@
 		cancelText: string
 		confirmText: string
 		padScrollArea?: boolean
+		syncWithPageState?: boolean
 		onCancel?: () => void
 		onConfirm: () => void
 		onIntroEnd?: () => void
@@ -32,7 +33,8 @@
 		description,
 		cancelText,
 		confirmText,
-		padScrollArea = true,
+		padScrollArea = false,
+		syncWithPageState = false,
 		onCancel,
 		onConfirm,
 		onIntroEnd,
@@ -44,28 +46,30 @@
 	const dialogOpenPageStateKey = `dialog-open-${useId()}`
 	const dialogOpenPageState = $derived(!!page.state[dialogOpenPageStateKey])
 
-	watch(
-		() => open,
-		() => setPageState(open),
-	)
-	watch(
-		() => dialogOpenPageState,
-		() => {
-			if (open && !dialogOpenPageState) {
-				onCancel?.() // called when close triggered by browser-back
-			}
-			open = dialogOpenPageState
-		},
-	)
+	if (syncWithPageState) {
+		watch(
+			() => open,
+			() => setPageState(open),
+		)
+		watch(
+			() => dialogOpenPageState,
+			() => {
+				if (open && !dialogOpenPageState) {
+					onCancel?.() // called when close triggered by browser-back
+				}
+				open = dialogOpenPageState
+			},
+		)
 
-	const setPageState = (dialogOpen: boolean) => {
-		if (dialogOpen === dialogOpenPageState) {
-			return // we land here if open state got changed by browser back/forward. nothing left to do
-		}
-		if (dialogOpen) {
-			pushState('', { [dialogOpenPageStateKey]: true })
-		} else {
-			history.back()
+		const setPageState = (dialogOpen: boolean) => {
+			if (dialogOpen === dialogOpenPageState) {
+				return // we land here if open state got changed by browser back/forward. nothing left to do
+			}
+			if (dialogOpen) {
+				pushState('', { [dialogOpenPageStateKey]: true })
+			} else {
+				history.back()
+			}
 		}
 	}
 

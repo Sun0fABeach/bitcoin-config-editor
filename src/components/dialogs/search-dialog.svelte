@@ -34,10 +34,10 @@
 
 <Dialog
 	bind:open
+	syncWithPageState
 	title="Search config option"
 	cancelText="Cancel"
 	confirmText="Search"
-	padScrollArea={false}
 	{onConfirm}
 	onIntroEnd={() => inputRef.focus()}
 >

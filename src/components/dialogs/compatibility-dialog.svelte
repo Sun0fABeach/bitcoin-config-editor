@@ -38,7 +38,15 @@
 	}
 </script>
 
-<Dialog open={dialogOpen} {title} cancelText="Cancel" confirmText="Proceed" {onCancel} {onConfirm}>
+<Dialog
+	open={dialogOpen}
+	padScrollArea
+	{title}
+	cancelText="Cancel"
+	confirmText="Proceed"
+	{onCancel}
+	{onConfirm}
+>
 	{#snippet description()}
 		<div>
 			{#if configSwitchIssues}

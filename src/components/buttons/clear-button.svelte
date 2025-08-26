@@ -9,11 +9,11 @@
 
 <Dialog
 	disabled={!configStore.hasUserValues}
+	syncWithPageState
 	title="Do you really want to clear your config?"
 	triggerToolTip="clear"
 	cancelText="Cancel"
 	confirmText="Clear"
-	padScrollArea={false}
 	onConfirm={configStore.unsetValues}
 >
 	{#snippet trigger({ props })}

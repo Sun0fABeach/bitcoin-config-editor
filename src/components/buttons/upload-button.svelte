@@ -28,6 +28,7 @@
 
 <Dialog
 	bind:open={showFileUploadError}
+	padScrollArea
 	title="Something went wrong"
 	cancelText="Cancel"
 	confirmText="Try again"
