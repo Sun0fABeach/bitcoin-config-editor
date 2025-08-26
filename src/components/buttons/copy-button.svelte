@@ -1,17 +1,14 @@
 <script lang="ts">
 	import { CopySimple } from 'phosphor-svelte'
 	import Button from './button.svelte'
-	import useConfigStore from '@/stores/config.svelte'
 	import ConfirmPopover from '@/components/confirm-popover.svelte'
+	import useConfigStore from '@/stores/config.svelte'
+	import { writeToClipboard } from '@/lib/clipboard'
 
 	const configStore = useConfigStore()
-
-	const copyToClipBoard = () => {
-		navigator.clipboard.writeText(configStore.text)
-	}
 </script>
 
-<ConfirmPopover text="Config copied" onClick={copyToClipBoard}>
+<ConfirmPopover text="Config copied" onClick={() => writeToClipboard(configStore.text)}>
 	{#snippet trigger({ props })}
 		<Button {...props} disabled={!configStore.text} icon title="copy">
 			<CopySimple size={22} />

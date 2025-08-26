@@ -9,6 +9,7 @@
 	import useTimeoutFlag from '@/hooks/useTimeoutFlag.svelte'
 	import useSettingsStore from '@/stores/settings.svelte'
 	import { deeplinkOptionUrl } from '@/lib/url'
+	import { writeToClipboard } from '@/lib/clipboard'
 	import { colors } from '@/globals'
 	import type { ConfigOption, ConfigDefinition } from '@/types/config-definition'
 	import type { EditorValueAny } from '@/types/editor'
@@ -62,11 +63,16 @@
 
 	const linkHighlight = useTimeoutFlag(copyPopoverDuration + 300)
 
-	const copyConfigUrl = () => {
-		navigator.clipboard.writeText(
-			deeplinkOptionUrl(settingsStore.useKnots, settingsStore.currentVersion, key),
-		)
-		linkHighlight.callback(true)
+	const copyConfigUrl = async () => {
+		if (
+			await writeToClipboard(
+				deeplinkOptionUrl(settingsStore.useKnots, settingsStore.currentVersion, key),
+			)
+		) {
+			linkHighlight.callback(true)
+			return true
+		}
+		return false
 	}
 </script>
 

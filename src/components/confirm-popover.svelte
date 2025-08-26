@@ -10,7 +10,7 @@
 
 	type ConfirmPopoverProps = {
 		text: string
-		onClick: () => void
+		onClick: () => Promise<boolean>
 		trigger: Snippet<[{ props: Record<string, unknown> }]>
 	}
 
@@ -18,18 +18,14 @@
 
 	const popoverOpen = useTimeoutFlag(openDuration)
 
-	const getConfirmOpen = () => popoverOpen.flag
-	const setConfirmOpen = (newOpen: boolean) => {
-		popoverOpen.callback(newOpen)
-	}
-
-	const onTriggerClick = () => {
-		setConfirmOpen(true)
-		onClick()
+	const onTriggerClick = async () => {
+		if (await onClick()) {
+			popoverOpen.callback(true)
+		}
 	}
 </script>
 
-<Popover.Root bind:open={getConfirmOpen, setConfirmOpen}>
+<Popover.Root bind:open={() => popoverOpen.flag, () => {}}>
 	<Popover.Trigger onclick={onTriggerClick}>
 		{#snippet child({ props })}
 			{@render trigger({ props })}
