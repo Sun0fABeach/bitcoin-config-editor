@@ -161,7 +161,7 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);
-		max-width: 90%;
+		width: 90%;
 		max-height: 90%;
 		display: flex;
 		flex-flow: column;
@@ -170,6 +170,11 @@
 		border-radius: 0.375rem;
 		background-color: var(--color-popover-background);
 		line-height: 1.25;
+
+		@media (min-width: 550px) {
+			width: initial;
+			max-width: 90%;
+		}
 
 		.dialog-description {
 			display: flex;

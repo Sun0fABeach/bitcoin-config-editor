@@ -5,7 +5,7 @@
 
 <header>
 	<h1>
-		<CurrencyBtc size={32} weight="light" /><span>itcoin Config Editor</span>
+		<CurrencyBtc size={32} weight="light" /><span>itcoin&nbsp;</span><span>Config Editor</span>
 	</h1>
 	<a href={repoUrl} target="_blank" title="visit git repository">
 		<GithubLogo size={32} weight="duotone" />
@@ -20,19 +20,29 @@
 		padding: 0.5rem;
 		border-bottom: 2px solid var(--color-layout-border);
 
-		> :first-child {
+		> h1 {
+			flex: 1;
 			display: inline flex;
 			align-items: end;
-			margin-right: auto;
+			font-size: 1.25em;
 
-			@media (min-width: 420px) {
-				margin-left: auto;
+			> :nth-child(2) {
+				display: none;
+			}
+			> :last-child {
+				margin: 0 auto;
 			}
 
-			> :last-child {
-				margin-left: -5px;
-				margin-bottom: 2px;
-				font-size: 1.25em;
+			@media (min-width: 500px) {
+				justify-content: center;
+
+				> :nth-child(2) {
+					display: initial;
+					margin-left: -5px;
+				}
+				> :last-child {
+					margin: 0;
+				}
 			}
 		}
 	}

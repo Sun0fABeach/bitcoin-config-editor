@@ -61,7 +61,6 @@
 	div {
 		display: inline flex;
 		align-items: center;
-		width: 14rem;
 		height: 2.125rem;
 		margin-top: 0.25rem;
 		padding-left: 0.5rem;
@@ -69,7 +68,7 @@
 		border: 1px solid var(--color-element-border);
 		border-radius: 0.25rem;
 
-		@media (min-width: 350px) {
+		@media (min-width: 550px) {
 			width: 16rem;
 		}
 
