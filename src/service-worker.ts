@@ -6,8 +6,26 @@
 const sw = self as unknown as ServiceWorkerGlobalScope
 
 import { prerendered, version } from '$service-worker'
+import { getChannel, Message } from './lib/message-channel'
 
 const cacheKey = `cache-${version}`
+const channel = getChannel()
+
+sw.registration.addEventListener('updatefound', () => {
+	const installingWorker = sw.registration.installing
+
+	installingWorker?.addEventListener('statechange', async () => {
+		if (installingWorker.state === 'installed' && sw.registration.active) {
+			await sw.skipWaiting()
+			channel.postMessage(Message.NEW_SW_INSTALLED)
+			channel.onMessage((msg) => {
+				if (msg === Message.CONFIRM_UPDATE) {
+					channel.postMessage(Message.RELOAD)
+				}
+			})
+		}
+	})
+})
 
 sw.addEventListener('install', (event) => {
 	async function addFilesToCache() {
