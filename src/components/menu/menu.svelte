@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte'
+	import { building } from '$app/environment'
 	import { Notepad } from 'phosphor-svelte'
 	import usePreviewStore from '@/stores/preview.svelte'
 	import NodeTypeSwitch from '@/components/menu/node-type-switch.svelte'
@@ -19,12 +20,12 @@
 
 	/* we need to make sure the version switch, although getting prerendered, is
 	 * not visible before hydration is finished and we know the active version */
-	let visibiltyGuard = $state(true)
-	onMount(() => setTimeout(() => (visibiltyGuard = false), 150))
+	let visibilityGuard = $state(true)
+	onMount(() => setTimeout(() => (visibilityGuard = false), 150))
 </script>
 
 <menu>
-	<li class={['node-type-switch', { 'visibility-guard': visibiltyGuard }]}>
+	<li class={['node-type-switch', { 'visibility-guard': !building && visibilityGuard }]}>
 		<NodeTypeSwitch />
 	</li>
 	<li class="settings-button">

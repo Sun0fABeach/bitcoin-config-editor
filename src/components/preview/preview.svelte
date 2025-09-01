@@ -28,12 +28,12 @@
 
 	/* we need to make sure the preview, although getting prerendered, is
 	 * not visible on mobile before hydration is finished */
-	let visibiltyGuard = $state(true)
-	onMount(() => (visibiltyGuard = false))
+	let visibilityGuard = $state(true)
+	onMount(() => (visibilityGuard = false))
 </script>
 
 {#if previewStore.showPreview || onDesktop.current || building}
-	<aside class={{ 'visibility-guard': visibiltyGuard }} transition:scaleOnMobile>
+	<aside class={{ 'visibility-guard': visibilityGuard }} transition:scaleOnMobile>
 		<Panel />
 		<ScrollArea>
 			<code>{configStore.text || placeholder}</code>
