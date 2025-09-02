@@ -4,7 +4,7 @@
 	import { initializeConfig } from '@/stores/config.svelte'
 	import { setOnDesktopContext } from '@/context/onDesktop'
 
-	import favicon from '@/assets/favicon.png'
+	import favicon from '@/assets/favicon.svg'
 	import 'modern-normalize'
 	import '@/global.css'
 	import '@/layout.css'
