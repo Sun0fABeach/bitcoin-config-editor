@@ -19,6 +19,7 @@
 		key: string
 		title: ConfigDefinition['title']
 		description: ConfigDefinition['description']
+		shortDescription?: ConfigDefinition['shortDescription']
 		options?: ConfigOption['value'][]
 		defaultValue?: ConfigDefinition['defaultValue']
 	}
@@ -34,6 +35,8 @@
 		key,
 		title,
 		description,
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		shortDescription: _,
 		options,
 		defaultValue,
 		value,
