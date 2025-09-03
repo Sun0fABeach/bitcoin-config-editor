@@ -7,7 +7,7 @@
 	<h1>
 		<CurrencyBtc size={32} weight="light" /><span>itcoin&nbsp;</span><span>Config Editor</span>
 	</h1>
-	<a href={repoUrl} target="_blank" title="visit git repository">
+	<a href={repoUrl} target="_blank" title="Visit git repository">
 		<GithubLogo size={32} weight="duotone" />
 	</a>
 </header>

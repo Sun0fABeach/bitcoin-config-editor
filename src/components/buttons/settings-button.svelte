@@ -30,10 +30,10 @@
 </script>
 
 <DropdownMenu.Root>
-	<DropdownMenu.Trigger>
+	<DropdownMenu.Trigger title="Settings">
 		{#snippet child({ props })}
 			{#if icon}
-				<Button {...props} icon title="settings">
+				<Button {...props} icon>
 					<GearSix size={22} weight="regular" />
 				</Button>
 			{:else}

@@ -11,7 +11,7 @@
 	disabled={!configStore.hasUserValues}
 	syncWithPageState
 	title="Do you really want to clear your config?"
-	triggerToolTip="clear"
+	triggerToolTip="Clear config"
 	cancelText="Cancel"
 	confirmText="Clear"
 	onConfirm={configStore.unsetValues}

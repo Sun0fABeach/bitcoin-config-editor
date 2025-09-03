@@ -39,7 +39,7 @@
 	</li>
 	<li class="icon-buttons">
 		<div class="show-config-icon-button icon-button-wrapper">
-			<Button icon title="show config" onclick={openPreview}>
+			<Button icon title="Show config" onclick={openPreview}>
 				<Notepad size={22} weight="regular" />
 			</Button>
 		</div>

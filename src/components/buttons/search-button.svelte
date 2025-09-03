@@ -5,6 +5,6 @@
 	const props = $props()
 </script>
 
-<Button icon title="search" {...props}>
+<Button icon title="Search config options" {...props}>
 	<MagnifyingGlass size={22} weight="regular" />
 </Button>

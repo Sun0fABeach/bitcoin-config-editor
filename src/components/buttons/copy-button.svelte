@@ -10,7 +10,7 @@
 
 <ConfirmPopover text="Config copied" onClick={() => writeToClipboard(configStore.text)}>
 	{#snippet trigger({ props })}
-		<Button {...props} disabled={!configStore.text} icon title="copy">
+		<Button {...props} disabled={!configStore.text} icon title="Copy config">
 			<CopySimple size={22} />
 		</Button>
 	{/snippet}

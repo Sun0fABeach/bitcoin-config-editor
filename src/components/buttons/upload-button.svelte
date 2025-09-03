@@ -22,7 +22,7 @@
 	}
 </script>
 
-<Button icon title="upload" onclick={upload}>
+<Button icon title="Load config file" onclick={upload}>
 	<UploadSimple size={22} weight="regular" />
 </Button>
 

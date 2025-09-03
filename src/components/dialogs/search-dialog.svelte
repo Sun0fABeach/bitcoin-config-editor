@@ -35,7 +35,7 @@
 <Dialog
 	bind:open
 	syncWithPageState
-	title="Search config option"
+	title="Search config options"
 	cancelText="Cancel"
 	confirmText="Search"
 	{onConfirm}

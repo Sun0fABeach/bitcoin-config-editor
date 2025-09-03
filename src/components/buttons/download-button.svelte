@@ -11,6 +11,6 @@
 	}
 </script>
 
-<Button icon title="download" disabled={!configStore.text} onclick={download}>
+<Button icon title="Download config file" disabled={!configStore.text} onclick={download}>
 	<DownloadSimple size={22} weight="regular" />
 </Button>

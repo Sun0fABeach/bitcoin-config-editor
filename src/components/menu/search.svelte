@@ -14,7 +14,7 @@
 	}
 </script>
 
-<div>
+<div title="Search config option">
 	<Label.Root for="search" onclick={() => inputRef.focus()}>
 		{#snippet child({ props })}
 			<label {...props}>
