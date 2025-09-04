@@ -1,4 +1,10 @@
-# Bitcoin Config Generator
+# Bitcoin Config Editor
+
+Web based tool to create and edit bitcoin.conf files.
+
+## Live Website
+
+https://bitcoinconfig.space
 
 ## Install
 
