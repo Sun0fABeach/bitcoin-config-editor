@@ -164,7 +164,7 @@ export default function () {
 			type: EditorValueType.TEXT,
 			title: 'User Agent Append',
 			description:
-				'Append literal to the user agent string (should only be used for software embedding)',
+				'Append literal string to the user agent string (should only be used for software embedding)',
 			shortDescription: 'Append literal to the user agent string',
 		},
 
@@ -189,7 +189,7 @@ export default function () {
 		whitebind: {
 			...options.whitebind,
 			description:
-				'Bind to the given address and add permission flags &lt;[permissions@]addr&gt; to the peers connecting to it. Use [host]:port notation for IPv6. Allowed permissions:<br><br><dl><dt>bloomfilter</dt><dd>allow requesting BIP37 filtered blocks and transactions</dd><br><dt>blockfilters</dt><dd>serve compact block filters to peers per BIP157</dd><br><dt>noban</dt><dd>do not ban for misbehavior; implies download</dd><br><dt>forcerelay</dt><dd>relay transactions that are already in the mempool; implies relay</dd><br><dt>relay</dt><dd>relay even in <a href="#blocksonly">blocksonly</a> mode, and unlimited transaction announcements</dd><br><dt>mempool</dt><dd>allow requesting BIP35 mempool contents</dd><br><dt>download</dt><dd>allow getheaders during IBD, no disconnect after maxuploadtarget limit</dd><br><dt>addr</dt><dd>responses to GETADDR avoid hitting the cache and contain random records with the most up-to-date info</dd><br><dt>forceinbound</dt><dd>when connections are full, attempt to evict a random unprotected inbound peer to open a slot; implies noban</dd></dl><br>Specify multiple permissions separated by commas (default: download,noban,mempool,relay). Can be specified multiple times',
+				'Bind to the given address and add permission flags &lt;[permissions@]addr&gt; to the peers connecting to it. Use [host]:port notation for IPv6. Allowed permissions:<br><br><dl><dt>bloomfilter</dt><dd>allow requesting BIP37 filtered blocks and transactions</dd><br><dt>blockfilters</dt><dd>serve compact block filters to peers per BIP157</dd><br><dt>noban</dt><dd>do not ban for misbehavior; implies download</dd><br><dt>forcerelay</dt><dd>relay transactions that are already in the mempool; implies relay</dd><br><dt>relay</dt><dd>relay even in <a href="#blocksonly">blocksonly</a> mode, and unlimited transaction announcements</dd><br><dt>mempool</dt><dd>allow requesting BIP35 mempool contents</dd><br><dt>download</dt><dd>allow getheaders during IBD, no disconnect after maxuploadtarget limit</dd><br><dt>addr</dt><dd>responses to GETADDR avoid hitting the cache and contain random records with the most up-to-date info</dd><br><dt>forceinbound</dt><dd>when connections are full, attempt to evict a random unprotected inbound peer to open a slot; implies noban</dd></dl><br>Specify multiple permissions separated by commas. Can be specified multiple times',
 		},
 
 		whitelist: {

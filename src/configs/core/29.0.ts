@@ -68,8 +68,9 @@ export default () =>
 						min: 0,
 						wholeNumber: true,
 					},
-					title: 'Block Reconstruction Transactions',
-					description: 'Extra transactions to keep in memory for compact block reconstructions',
+					title: 'Block Reconstruction Transactions Count',
+					description:
+						'Number of extra transactions to keep in memory for compact block reconstructions',
 					defaultValue: '100',
 				},
 				blocksdir: {
@@ -616,7 +617,7 @@ export default () =>
 				peerbloomfilters: {
 					type: EditorValueType.CHECKBOX,
 					title: 'Peer Bloom Filters',
-					description: 'Support filtering of blocks and transaction with bloom filters',
+					description: 'Support filtering of blocks and transactions with bloom filters',
 					defaultValue: '0',
 				},
 				peertimeout: {
@@ -713,9 +714,10 @@ export default () =>
 					type: EditorValueType.MULTI_TEXT,
 					title: 'Whitelist Bound IP Address',
 					description:
-						'Bind to the given address and add permission flags &lt;[permissions@]addr&gt; to the peers connecting to it. Use [host]:port notation for IPv6. Allowed permissions:<br><br><dl><dt>bloomfilter</dt><dd>allow requesting BIP37 filtered blocks and transactions</dd><br><dt>noban</dt><dd>do not ban for misbehavior; implies download</dd><br><dt>forcerelay</dt><dd>relay transactions that are already in the mempool; implies relay</dd><br><dt>relay</dt><dd>relay even in <a href="#blocksonly">blocksonly</a> mode, and unlimited transaction announcements</dd><br><dt>mempool</dt><dd>allow requesting BIP35 mempool contents</dd><br><dt>download</dt><dd>allow getheaders during IBD, no disconnect after maxuploadtarget limit</dd><br><dt>addr</dt><dd>responses to GETADDR avoid hitting the cache and contain random records with the most up-to-date info</dd></dl><br>Specify multiple permissions separated by commas (default: download,noban,mempool,relay). Can be specified multiple times',
+						'Bind to the given address and add permission flags &lt;[permissions@]addr&gt; to the peers connecting to it. Use [host]:port notation for IPv6. Allowed permissions:<br><br><dl><dt>bloomfilter</dt><dd>allow requesting BIP37 filtered blocks and transactions</dd><br><dt>noban</dt><dd>do not ban for misbehavior; implies download</dd><br><dt>forcerelay</dt><dd>relay transactions that are already in the mempool; implies relay</dd><br><dt>relay</dt><dd>relay even in <a href="#blocksonly">blocksonly</a> mode, and unlimited transaction announcements</dd><br><dt>mempool</dt><dd>allow requesting BIP35 mempool contents</dd><br><dt>download</dt><dd>allow getheaders during IBD, no disconnect after maxuploadtarget limit</dd><br><dt>addr</dt><dd>responses to GETADDR avoid hitting the cache and contain random records with the most up-to-date info</dd></dl><br>Specify multiple permissions separated by commas. Can be specified multiple times',
 					shortDescription:
 						'Bind to the given address and add permission flags to the peers connecting to it',
+					defaultValue: 'download,noban,mempool,relay',
 				},
 				whitelist: {
 					type: EditorValueType.MULTI_TEXT,
@@ -881,7 +883,7 @@ export default () =>
 					type: EditorValueType.MULTI_TEXT,
 					title: 'RPC Allow IP Address',
 					description:
-						'Allow JSON-RPC connections from specified source. Valid are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) a network/CIDR (e.g. 1.2.3.4/24), all ipv4 (0.0.0.0/0), or all ipv6 (::/0).. This option can be specified multiple times',
+						'Allow JSON-RPC connections from specified source. Valid are a single IP (e.g. 1.2.3.4), a network/netmask (e.g. 1.2.3.4/255.255.255.0) a network/CIDR (e.g. 1.2.3.4/24), all ipv4 (0.0.0.0/0), or all ipv6 (::/0). This option can be specified multiple times',
 					shortDescription: 'Allow JSON-RPC connections from specified source',
 				},
 				rpcauth: {
@@ -982,7 +984,7 @@ export default () =>
 					title: 'RPC Whitelist Default',
 					description:
 						'Sets default behavior for rpc whitelisting. Unless set to 0, if any <a href="#rpcwhitelist">rpcwhitelist</a> is set, the rpc server acts as if all rpc users are subject to empty-unless-otherwise-specified whitelists. If set to 1 and no <a href="#rpcwhitelist">rpcwhitelist</a> is set, rpc server acts as if all rpc users are subject to empty whitelists',
-					shortDescription: 'Sets default behavior for rpc whitelisting',
+					shortDescription: 'Default behavior for rpc whitelisting',
 				},
 				rpcworkqueue: {
 					type: EditorValueType.NUMBER,
@@ -991,7 +993,7 @@ export default () =>
 						wholeNumber: true,
 					},
 					title: 'RPC Work Queue Size',
-					description: 'The maximum depth of the work queue to service RPC calls',
+					description: 'Maximum depth of the work queue to service RPC calls',
 					defaultValue: '64',
 				},
 				server: {
@@ -1396,7 +1398,7 @@ export default () =>
 					type: EditorValueType.SELECT,
 					title: 'Check Block Index',
 					description:
-						'How thorough the block verification of <a href="#checkblocks">checkblocks</a> is:<br><br><dl><dt>level 0</dt><dd>reads the blocks from disk</dd><br><dt>level 1</dt><dd>verifies block validity</dd><br><dt>level 2</dt><dd>verifies undo data</dd><br><dt>level 3</dt><dd>checks disconnection of tip blocks</dd><br><dt>level 4</dt><dd>tries to reconnect the blocks</dd><br></dl>Each level includes the checks of the previous levels',
+						'How thorough the block verification of <a href="#checkblocks">checkblocks</a> is:<br><br><dl><dt>level 0</dt><dd>reads the blocks from disk</dd><br><dt>level 1</dt><dd>verifies block validity</dd><br><dt>level 2</dt><dd>verifies undo data</dd><br><dt>level 3</dt><dd>checks disconnection of tip blocks</dd><br><dt>level 4</dt><dd>tries to reconnect the blocks</dd></dl><br>Each level includes the checks of the previous levels',
 					shortDescription: 'How thorough the block verification of -checkblocks is',
 					options: [
 						{ value: '0', label: 'Level 0' },
@@ -1673,8 +1675,8 @@ export default () =>
 					type: EditorValueType.CHECKBOX,
 					title: 'Shrink Debug Log File',
 					description:
-						'Shrink debug.log file on client startup (default: 1 when no <a href="#debug">debug</a>)',
-					shortDescription: 'Shrink debug.log file on client startup',
+						'Shrink debug log file on client startup (default: 1 when no <a href="#debug">debug</a>)',
+					shortDescription: 'Shrink debug log file on client startup',
 				},
 				stopafterblockimport: {
 					type: EditorValueType.CHECKBOX,
