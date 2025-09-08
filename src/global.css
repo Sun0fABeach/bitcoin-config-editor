@@ -19,6 +19,8 @@
 		var(--color-popover-background)
 	);
 
+	--box-shadow-popover: 1px 1px 10px var(--color-popover-background);
+
 	--menu-height-desktop: 50px;
 	--preview-width-desktop: 500px;
 

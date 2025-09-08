@@ -44,11 +44,12 @@
 
 	<DropdownMenu.Portal>
 		<DropdownMenu.Content
+			forceMount
 			align="start"
 			sideOffset={1}
-			collisionPadding={dropDownPaddingMQ.current ? 10 : 0}
 			preventScroll={false}
-			forceMount
+			collisionPadding={dropDownPaddingMQ.current ? 10 : 0}
+			onOpenAutoFocus={(e) => e.preventDefault()}
 		>
 			{#snippet child({ wrapperProps, props, open })}
 				{#if open}
@@ -131,8 +132,12 @@
 		background-color: var(--color-popover-background);
 		border: 1px solid var(--color-element-border);
 		border-radius: 0.375rem;
-		box-shadow: 1px 1px 10px var(--color-popover-background);
-		transform: translateY(-10px);
+		box-shadow: var(--box-shadow-popover);
+		transform: translateY(-8px);
+
+		@media (min-width: 400px) {
+			transform: translateY(-10px);
+		}
 	}
 
 	.group-heading {

@@ -12,12 +12,9 @@
 	import DownloadButton from '@/components/buttons/download-button.svelte'
 	import UploadButton from '@/components/buttons/upload-button.svelte'
 	import ClearButton from '@/components/buttons/clear-button.svelte'
-	import SearchDialog from '@/components/dialogs/search-dialog.svelte'
 	import CompatibilityDialog from '@/components/dialogs/compatibility-dialog.svelte'
 
 	const { openPreview } = usePreviewStore()
-
-	let searchDialogOpen = $state(false)
 
 	/* we need to make sure the version switch, although getting prerendered, is
 	 * not visible before hydration is finished and we know the active version */
@@ -36,7 +33,7 @@
 	<li class="show-config-button">
 		<Button onclick={openPreview}>Show Config</Button>
 	</li>
-	<li class="search-button">
+	<li class="search-input">
 		<Search />
 	</li>
 	<li class="icon-buttons">
@@ -46,7 +43,7 @@
 			</Button>
 		</div>
 		<div class="search-icon-button icon-button-wrapper">
-			<SearchButton onclick={() => (searchDialogOpen = true)} />
+			<SearchButton />
 		</div>
 		<div class="settings-icon-button icon-button-wrapper">
 			<SettingsButton icon />
@@ -57,7 +54,6 @@
 	</li>
 </menu>
 
-<SearchDialog bind:open={searchDialogOpen} />
 <CompatibilityDialog />
 
 <style lang="postcss">
@@ -106,7 +102,7 @@
 
 			&.settings-button,
 			&.show-config-button,
-			&.search-button {
+			&.search-input {
 				display: none;
 			}
 			> .settings-icon-button,
@@ -124,7 +120,7 @@
 				}
 			}
 			@media (min-width: 760px) {
-				&.search-button {
+				&.search-input {
 					display: flex;
 				}
 				> .search-icon-button {
