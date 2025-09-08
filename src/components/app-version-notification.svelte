@@ -8,7 +8,7 @@
 
 	channel.onMessage((msg) => {
 		if (msg === Message.NEW_SW_INSTALLED) {
-			setTimeout(() => (open = true), 500)
+			open = true
 		} else if (msg === Message.RELOAD) {
 			location.reload()
 		}
