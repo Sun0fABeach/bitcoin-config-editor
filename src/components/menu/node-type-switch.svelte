@@ -6,7 +6,6 @@
 	const id = 'node-type-switch'
 	const settingsStore = useSettingsStore()
 	const label = $derived(settingsStore.useKnots ? 'Knots' : 'Core')
-	const version = $derived(settingsStore.currentVersion)
 </script>
 
 <div class="container" title="Select whether you run a Core or Knots node">
@@ -32,8 +31,6 @@
 			</label>
 		{/snippet}
 	</Label.Root>
-
-	<div class="version">v{version}</div>
 </div>
 
 <style lang="postcss">
@@ -87,11 +84,5 @@
 			position: absolute;
 			inset: 0;
 		}
-	}
-
-	.version {
-		display: inline flex;
-		align-items: center;
-		color: var(--color-accent1);
 	}
 </style>

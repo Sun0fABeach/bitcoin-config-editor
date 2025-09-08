@@ -136,19 +136,33 @@ export default function () {
 		},
 
 		set coreVersion(value: string) {
-			settings[nodeVersionKeyCore] = value
-			setInStorage(nodeVersionKeyCore, value)
-			switchConfigVersionCallback(settings[useKnotsKey], value)
+			const switchIfConfirmed = async () => {
+				if (await switchConfigVersionCallback(false, value)) {
+					settings[nodeVersionKeyCore] = value
+					setInStorage(nodeVersionKeyCore, value)
+				}
+			}
+
+			switchIfConfirmed()
 		},
 
 		set knotsVersion(value: string) {
-			settings[nodeVersionKeyKnots] = value
-			setInStorage(nodeVersionKeyKnots, value)
-			switchConfigVersionCallback(settings[useKnotsKey], value)
+			const switchIfConfirmed = async () => {
+				if (await switchConfigVersionCallback(true, value)) {
+					settings[nodeVersionKeyKnots] = value
+					setInStorage(nodeVersionKeyKnots, value)
+				}
+			}
+
+			switchIfConfirmed()
 		},
 
 		get currentVersion() {
 			return settings[getNodeVersionKey(settings[useKnotsKey])]
+		},
+
+		set currentVersion(value: string) {
+			this[getNodeVersionKey(settings[useKnotsKey])] = value
 		},
 
 		get showDescriptions() {

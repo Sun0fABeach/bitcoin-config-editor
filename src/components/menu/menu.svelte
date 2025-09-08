@@ -4,6 +4,7 @@
 	import { Notepad } from 'phosphor-svelte'
 	import usePreviewStore from '@/stores/preview.svelte'
 	import NodeTypeSwitch from '@/components/menu/node-type-switch.svelte'
+	import VersionSelect from '@/components/menu/version-select.svelte'
 	import Search from '@/components/menu/search.svelte'
 	import Button from '@/components/buttons/button.svelte'
 	import SettingsButton from '@/components/buttons/settings-button.svelte'
@@ -25,8 +26,9 @@
 </script>
 
 <menu>
-	<li class={['node-type-switch', { 'visibility-guard': !building && visibilityGuard }]}>
+	<li class={['node-version-settings', { 'visibility-guard': !building && visibilityGuard }]}>
 		<NodeTypeSwitch />
+		<VersionSelect />
 	</li>
 	<li class="settings-button">
 		<SettingsButton />
@@ -76,14 +78,15 @@
 		> li {
 			display: flex;
 
-			&.node-type-switch {
+			&.node-version-settings {
+				column-gap: 0.5rem;
 				transition: opacity 0.5s;
 				&.visibility-guard {
 					opacity: 0;
 				}
 			}
 
-			&:not(.node-type-switch) {
+			&:not(.node-version-settings) {
 				flex: 1 auto;
 				@media (min-width: 900px) {
 					flex: none;

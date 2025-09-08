@@ -192,9 +192,9 @@
 		width: var(--bits-select-anchor-width);
 		max-height: 38vh;
 		padding: 0.375rem 0.25rem;
-		background-color: var(--color-popover-background);
 		border: 1px solid var(--color-element-border);
 		border-radius: 0.25rem;
+		background-color: var(--color-popover-background);
 
 		:global [data-select-scroll-up-button],
 		:global [data-select-scroll-down-button] {
