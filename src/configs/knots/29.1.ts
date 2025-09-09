@@ -241,7 +241,7 @@ export default function () {
 	}))
 
 	patchCategoryOptions(categories, 'Debugging & Testing', (options) => {
-		delete options.uacomment // has moved not networking category
+		delete options.uacomment // moved to networking category
 
 		return {
 			...options,
@@ -254,7 +254,6 @@ export default function () {
 			},
 
 			logratelimit: {
-				knotsExclusive: true,
 				type: EditorValueType.CHECKBOX,
 				title: 'Log Rate Limit',
 				description:
