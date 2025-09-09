@@ -8,7 +8,7 @@
 	import Panel from '@/components/preview/panel.svelte'
 	import ScrollArea from '@/components/scroll-area.svelte'
 
-	const placeholder = '# all options on default'
+	const placeholder = '# all config options at default values'
 
 	const previewStore = usePreviewStore()
 	const configStore = useConfigStore()
@@ -30,7 +30,15 @@
 	 * not visible on mobile before hydration is finished */
 	let visibilityGuard = $state(true)
 	onMount(() => (visibilityGuard = false))
+
+	const onKeydown = (event: KeyboardEvent) => {
+		if (event.key === 'Escape') {
+			previewStore.closePreview()
+		}
+	}
 </script>
+
+<svelte:window onkeydown={onKeydown} />
 
 {#if previewStore.showPreview || onDesktop.current || building}
 	<aside class={{ 'visibility-guard': visibilityGuard }} transition:scaleOnMobile>
