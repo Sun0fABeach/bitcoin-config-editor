@@ -97,7 +97,7 @@ export default function () {
 			type: EditorValueType.NUMBER,
 			typeConstraints: {
 				min: -1,
-				invalidRange: [2, 550],
+				invalidRange: [2, 549],
 			},
 			title: 'Prune Blocks During Init',
 			description:

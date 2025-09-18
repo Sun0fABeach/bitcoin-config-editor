@@ -10,23 +10,10 @@
 	import type { TypeConstraints } from '@/types/config-definition'
 	import type { EditorValueNumber } from '@/types/editor'
 
-	type TextConfigProps = ConfigContainerBaseProps & {
-		min?: TypeConstraints['min']
-		max?: TypeConstraints['max']
-		step?: TypeConstraints['step']
-		invalidRange?: TypeConstraints['invalidRange']
-		wholeNumber?: TypeConstraints['wholeNumber']
-	}
+	type TextConfigProps = ConfigContainerBaseProps &
+		Pick<TypeConstraints, 'min' | 'max' | 'step' | 'invalidRange' | 'wholeNumber'>
 
-	let {
-		key,
-		min,
-		max,
-		step,
-		invalidRange,
-		wholeNumber = false,
-		...info
-	}: TextConfigProps = $props()
+	const { key, min, max, step, invalidRange, wholeNumber, ...info }: TextConfigProps = $props()
 
 	const configStore = useConfigStore()
 

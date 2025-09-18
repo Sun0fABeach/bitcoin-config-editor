@@ -32,7 +32,7 @@ export default () =>
 					description:
 						'If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification (0 to verify all)',
 					shortDescription:
-						'If this block is in the chain assume that it and its ancestors are valid and potentially skip their script verification',
+						'If this block is in the chain assume that it and its ancestors are valid',
 					defaultValue: {
 						mainnet: '00000000000000000001b658dd1120e82e66d2790811f89ede9742ada3ed6d77',
 						testnet3: '00000000000003fc7967410ba2d0a8a8d50daedc318d43e8baf1a9782c236a57',
@@ -253,7 +253,7 @@ export default () =>
 					type: EditorValueType.NUMBER,
 					typeConstraints: {
 						min: 0,
-						invalidRange: [2, 550],
+						invalidRange: [2, 549],
 					},
 					title: 'Prune Blocks',
 					description:
@@ -907,7 +907,7 @@ export default () =>
 					description:
 						'Location of the RPC auth cookie. Relative paths will be prefixed by a net-specific <a href="#datadir">datadir</a> location',
 					shortDescription: 'Location of the RPC auth cookie',
-					defaultValue: '<a href="#datadir">datadir</a>',
+					defaultValue: 'Value of <a href="#datadir">datadir</a>',
 				},
 				rpccookieperms: {
 					knotsExclusive: true,

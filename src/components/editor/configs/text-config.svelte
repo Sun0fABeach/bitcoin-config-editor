@@ -10,12 +10,8 @@
 	import type { TypeConstraints } from '@/types/config-definition'
 	import type { EditorValueText } from '@/types/editor'
 
-	type TextConfigProps = ConfigContainerBaseProps & {
-		hex?: TypeConstraints['hex']
-		base58?: TypeConstraints['base58']
-		minLength?: TypeConstraints['minLength']
-		maxLength?: TypeConstraints['maxLength']
-	}
+	type TextConfigProps = ConfigContainerBaseProps &
+		Pick<TypeConstraints, 'hex' | 'base58' | 'minLength' | 'maxLength'>
 
 	let { key, hex, base58, minLength, maxLength, ...info }: TextConfigProps = $props()
 
@@ -30,11 +26,11 @@
 
 <ConfigContainer {key} {value} {...info}>
 	<InputRow deleteDisabled={!value} ondelete={onDeleteClick}>
-		{@const pattern = hex ? '[0-9a-fA-F]+' : base58 ? '[1-9a-km-zA-HJ-NP-Z]+' : undefined}
 		<ConfigTextInput
-			{pattern}
-			minlength={minLength}
-			maxlength={maxLength}
+			{hex}
+			{base58}
+			{minLength}
+			{maxLength}
 			bind:value={() => value, (v) => configStore.updateValue(key, v)}
 		/>
 	</InputRow>
