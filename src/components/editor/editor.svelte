@@ -96,7 +96,9 @@
 					onclickcapture={onClick}
 				/>
 			{:else}
-				<div class="no-match">No config matches your search '{searchStore.normalizedSearch}'</div>
+				<div class="no-match">
+					No config option matches your search '{searchStore.normalizedSearch}'
+				</div>
 			{/if}
 		{:else}
 			<Accordion.Root type="multiple" bind:value={openCategories} onclickcapture={onClick}>
