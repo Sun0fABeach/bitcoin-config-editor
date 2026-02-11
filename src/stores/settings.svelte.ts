@@ -37,7 +37,7 @@ const getNodeVersionKey = (isKnots: boolean) => (isKnots ? nodeVersionKeyKnots :
 type Setting = keyof typeof settings
 type StorageBool = 'true' | 'false'
 
-const storageAvailable = typeof localStorage !== 'undefined'
+const storageAvailable = browser && typeof localStorage !== 'undefined'
 const storageKey = (setting: Setting) => `setting-${setting}`
 const isStorageBool = (value: string): value is StorageBool => ['true', 'false'].includes(value)
 const toStorageValue = (value: string | boolean) =>
