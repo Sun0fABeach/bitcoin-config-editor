@@ -31,6 +31,7 @@
 		content="Create and edit configuration files for bitcoin full nodes. Supports both Core and Knots."
 	/>
 	<link rel="icon" href={favicon} />
+	<link rel="manifest" href="manifest.json" />
 </svelte:head>
 
 <svelte:boundary>

@@ -1,0 +1,24 @@
+{
+	"name": "Bitcoin Config Editor",
+	"display": "standalone",
+	"start_url": "./",
+	"theme_color": "hsl(127.13, 100%, 28.04%)",
+	"background_color": "hsl(327.27, 73.33%, 2.94%)",
+	"icons": [
+		{
+			"src": "app-icon-64x64.png",
+			"type": "image/png",
+			"sizes": "64x64"
+		},
+		{
+			"src": "app-icon-192x192.png",
+			"type": "image/png",
+			"sizes": "192x192"
+		},
+		{
+			"src": "app-icon-512x512.png",
+			"type": "image/png",
+			"sizes": "512x512"
+		}
+	]
+}

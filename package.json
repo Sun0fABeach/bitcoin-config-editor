@@ -44,7 +44,7 @@
 		"runed": "^0.31.1"
 	},
 	"lint-staged": {
-		"*.{js,ts,svelte,css,md}": [
+		"*.{js,ts,svelte,json,css,md}": [
 			"prettier --write",
 			"eslint"
 		]
