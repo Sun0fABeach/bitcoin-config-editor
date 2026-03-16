@@ -51,10 +51,10 @@
 		<div>
 			{#if configSwitchIssues}
 				Version incompatibilities detected. If you choose to proceed, the following values will be
-				removed from your config.
+				discarded.
 			{:else}
 				The config file you selected has compatibility issues. If you choose to proceed, the
-				following values will be removed from the config.
+				following values will be discarded.
 			{/if}
 		</div>
 		{#if hasMissingOptions}

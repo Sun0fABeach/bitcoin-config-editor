@@ -111,8 +111,8 @@
 
 	const configFound = $derived(Object.keys(configStore.filteredConfigs ?? {}).length > 0)
 
-	/* we need to make sure the version switch, although getting prerendered, is
-	 * not visible before hydration is finished and we know the active version */
+	/* we need to make sure the main section, although getting prerendered, is not visible until
+	 * hydration is finished and we know the active version and category */
 	const visibilityGuard = useVisibililtyGuard(150)
 </script>
 
