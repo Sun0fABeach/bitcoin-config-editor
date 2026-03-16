@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte'
 	import { scale } from 'svelte/transition'
 	import { building } from '$app/environment'
 	import { getOnDesktopContext } from '@/context/onDesktop'
@@ -7,6 +6,7 @@
 	import useConfigStore from '@/stores/config.svelte'
 	import Panel from '@/components/preview/panel.svelte'
 	import ScrollArea from '@/components/scroll-area.svelte'
+	import useVisibililtyGuard from '@/hooks/useVisibililtyGuard.svelte'
 
 	const placeholder = '# all config options at default values'
 
@@ -28,8 +28,7 @@
 
 	/* we need to make sure the preview, although getting prerendered, is
 	 * not visible on mobile before hydration is finished */
-	let visibilityGuard = $state(true)
-	onMount(() => (visibilityGuard = false))
+	const visibilityGuard = useVisibililtyGuard()
 
 	const onKeydown = (event: KeyboardEvent) => {
 		if (event.key === 'Escape') {
@@ -41,7 +40,7 @@
 <svelte:window onkeydown={onKeydown} />
 
 {#if previewStore.showPreview || onDesktop.current || building}
-	<aside class={{ 'visibility-guard': visibilityGuard }} transition:scaleOnMobile>
+	<aside class={{ 'visibility-guard': visibilityGuard.flag }} transition:scaleOnMobile>
 		<Panel />
 		<ScrollArea>
 			<code>{configStore.text || placeholder}</code>

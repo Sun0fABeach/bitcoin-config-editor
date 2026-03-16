@@ -8,6 +8,7 @@
 	import ConfigList from '@/components/editor/config-list.svelte'
 	import useConfigStore from '@/stores/config.svelte'
 	import useSearchStore from '@/stores/search.svelte'
+	import useVisibililtyGuard from '@/hooks/useVisibililtyGuard.svelte'
 	import type { CategoryDefinition } from '@/types/config-definition'
 
 	const configStore = useConfigStore()
@@ -109,9 +110,13 @@
 	}
 
 	const configFound = $derived(Object.keys(configStore.filteredConfigs ?? {}).length > 0)
+
+	/* we need to make sure the version switch, although getting prerendered, is
+	 * not visible before hydration is finished and we know the active version */
+	const visibilityGuard = useVisibililtyGuard(150)
 </script>
 
-<main>
+<main class={{ 'visibility-guard': !visibilityGuard.flag }}>
 	{#if !configStore.filteredConfigs}
 		<CategorySelect
 			bind:value={getSelectedCategoryTitle, setSelectedCategoryTitle}
@@ -136,6 +141,8 @@
 			{:else}
 				<ConfigList configs={selectedCategory.configs} onclickcapture={onClick} />
 			{/if}
+		{:else}
+			<ConfigList configs={defaultCategory().configs} />
 		{/if}
 	</ScrollArea>
 </main>
@@ -149,6 +156,14 @@
 		display: flex;
 		flex-flow: column;
 		overflow-y: hidden;
+
+		visibility: hidden;
+		opacity: 0;
+		transition: opacity 0.5s;
+		&.visibility-guard {
+			visibility: visible;
+			opacity: 1;
+		}
 
 		.no-match {
 			display: flex;
