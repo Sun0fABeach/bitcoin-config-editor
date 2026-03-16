@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { slide } from 'svelte/transition'
 	import TextConfig from '@/components/editor/configs/text-config.svelte'
 	import NumberConfig from '@/components/editor/configs/number-config.svelte'
 	import MultiTextConfig from '@/components/editor/configs/multi-text-config.svelte'
@@ -13,26 +12,15 @@
 	interface ConfigListProps {
 		withTransition?: boolean
 		configs: CategoryDefinition['configs']
-		onOpenFinished?: () => void
 		[index: string]: unknown
 	}
 
-	const {
-		withTransition,
-		configs,
-		values = $bindable(),
-		onOpenFinished,
-		...attrs
-	}: ConfigListProps = $props()
+	const { configs, ...attrs }: ConfigListProps = $props()
 
 	const configStore = useConfigStore()
 </script>
 
-<ul
-	{...attrs}
-	transition:slide={withTransition ? undefined : { duration: 0 }}
-	onintroend={onOpenFinished}
->
+<ul {...attrs}>
 	{#each Object.entries(configs) as [key, definition] (key)}
 		{@const { type, typeConstraints, options, ...info } = definition}
 
@@ -78,6 +66,7 @@
 		display: flex;
 		flex-flow: column;
 		row-gap: 1.5rem;
+		padding-top: 1.5rem;
 		padding-bottom: 1.5rem;
 
 		> li {

@@ -1,25 +1,54 @@
 <script lang="ts">
+	import { tick } from 'svelte'
+	import { browser } from '$app/environment'
 	import { goto, afterNavigate, disableScrollHandling } from '$app/navigation'
-	import { Accordion } from 'bits-ui'
+	import { watch } from 'runed'
 	import ScrollArea from '@/components/scroll-area.svelte'
-	import Category, { type CategoryProps } from '@/components/editor/category.svelte'
+	import CategorySelect from '@/components/editor/category-select.svelte'
 	import ConfigList from '@/components/editor/config-list.svelte'
 	import useConfigStore from '@/stores/config.svelte'
 	import useSearchStore from '@/stores/search.svelte'
+	import type { CategoryDefinition } from '@/types/config-definition'
 
 	const configStore = useConfigStore()
 	// $inspect(configStore.values)
 	const searchStore = useSearchStore()
 
-	let openCategories = $state<CategoryProps['title'][]>([])
+	const findCategory = (title: CategoryDefinition['title']) =>
+		configStore.categories.find((cat) => cat.title === title)
 
-	const categoryIsOpen = (title: CategoryProps['title']) => openCategories.includes(title)
+	const defaultCategory = () => findCategory('General')!
 
-	const openCategory = (title: CategoryProps['title']) => {
-		if (!categoryIsOpen(title)) {
-			openCategories.push(title)
-		}
+	let selectedCategoryTitle = $state<CategoryDefinition['title']>(defaultCategory().title)
+
+	// we need to account for the selected category disappearing after version switch
+	const selectedCategory = $derived(findCategory(selectedCategoryTitle) || defaultCategory())
+
+	const getSelectedCategoryTitle = () => selectedCategory.title
+	const setSelectedCategoryTitle = (title: CategoryDefinition['title']) => {
+		selectedCategoryTitle = title
 	}
+
+	watch(
+		() => configStore.categories,
+		() => {
+			if (!findCategory(selectedCategoryTitle)) {
+				setSelectedCategoryTitle(defaultCategory().title)
+			}
+		},
+	)
+
+	const categorySelectItems = $derived(
+		configStore.categories.map(({ title, description, knotsExclusive }) => ({
+			value: title,
+			label: title,
+			description,
+			knotsExclusive: !!knotsExclusive,
+		})),
+	)
+
+	const categoryIsOpen = (title: CategoryDefinition['title']) =>
+		getSelectedCategoryTitle() === title
 
 	const scrollIntoView = (id: string) => {
 		const scrollTarget = document.getElementById(id)
@@ -30,7 +59,7 @@
 
 	let doubleNavigation = false
 
-	afterNavigate((navigation) => {
+	afterNavigate(async (navigation) => {
 		if (doubleNavigation || navigation.type === 'enter') {
 			// we do an extra manual goto after entry navigation (settings store), so ignore the entry
 			doubleNavigation = false
@@ -54,11 +83,9 @@
 		if (categoryIsOpen(categoryTitle)) {
 			scrollIntoView(optionKey)
 		} else {
-			openCategory(categoryTitle)
-			onCategoryOpenFinished = () => {
-				scrollIntoView(optionKey)
-				onCategoryOpenFinished = () => {}
-			}
+			setSelectedCategoryTitle(categoryTitle)
+			await tick()
+			scrollIntoView(optionKey)
 		}
 	})
 
@@ -81,37 +108,34 @@
 		}
 	}
 
-	let onCategoryOpenFinished = $state(() => {}) // modified by onClick
-
 	const configFound = $derived(Object.keys(configStore.filteredConfigs ?? {}).length > 0)
 </script>
 
 <main>
+	{#if !configStore.filteredConfigs}
+		<CategorySelect
+			bind:value={getSelectedCategoryTitle, setSelectedCategoryTitle}
+			items={categorySelectItems}
+		/>
+	{/if}
+
 	<ScrollArea>
-		{#if configStore.filteredConfigs}
-			{#if configFound}
-				<ConfigList
-					class="filtered-configs"
-					configs={configStore.filteredConfigs}
-					onclickcapture={onClick}
-				/>
+		{#if browser}
+			{#if configStore.filteredConfigs}
+				{#if configFound}
+					<ConfigList
+						class="filtered-configs"
+						configs={configStore.filteredConfigs}
+						onclickcapture={onClick}
+					/>
+				{:else}
+					<div class="no-match">
+						No config option matches your search '{searchStore.normalizedSearch}'
+					</div>
+				{/if}
 			{:else}
-				<div class="no-match">
-					No config option matches your search '{searchStore.normalizedSearch}'
-				</div>
+				<ConfigList configs={selectedCategory.configs} onclickcapture={onClick} />
 			{/if}
-		{:else}
-			<Accordion.Root type="multiple" bind:value={openCategories} onclickcapture={onClick}>
-				{#snippet child({ props })}
-					<ul {...props}>
-						{#each configStore.categories as category (category.title)}
-							<li>
-								<Category {...category} onOpenFinished={onCategoryOpenFinished} />
-							</li>
-						{/each}
-					</ul>
-				{/snippet}
-			</Accordion.Root>
 		{/if}
 	</ScrollArea>
 </main>
@@ -126,27 +150,11 @@
 		flex-flow: column;
 		overflow-y: hidden;
 
-		:global .filtered-configs {
-			padding: 1.5rem 0;
-		}
-
 		.no-match {
 			display: flex;
 			justify-content: center;
 			text-align: center;
 			padding: 1.5rem 0;
-		}
-
-		ul {
-			display: flex;
-			flex-flow: column;
-
-			> li:not(:last-child)::after {
-				content: '';
-				display: block;
-				width: 100%;
-				border-bottom: 1px dotted var(--color-layout-border);
-			}
 		}
 	}
 </style>
