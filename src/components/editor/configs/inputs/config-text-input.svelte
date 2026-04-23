@@ -98,7 +98,7 @@
 
 		> .error-messages {
 			display: flex;
-			flex-direction: column;
+			flex-flow: column;
 			row-gap: 0.125rem;
 			margin-top: 0.375rem;
 			font-size: 0.75rem;

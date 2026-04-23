@@ -131,7 +131,7 @@
 			> :first-child {
 				flex-grow: 1;
 				display: flex;
-				flex-direction: column;
+				flex-flow: column;
 				row-gap: 0.25rem;
 
 				> .trigger-button-title {
