@@ -94,13 +94,13 @@ async function switchConfigVersion(useKnots: boolean, version: string) {
 		if (keepOldValue && options) {
 			if (type === EditorValueType.SELECT) {
 				if (!options.find((option) => oldValue === option.value)) {
-					unsupportedValues.push(valuesAsText[categoryTitle][key])
+					unsupportedValues.push(`${key}=${oldValue}`)
 					keepOldValue = false
 				}
 			} else {
 				oldValue = (oldValue as EditorValueMultiSelect).filter((value) => {
 					if (!options.find((option) => value === option.value)) {
-						unsupportedValues.push(valuesAsText[categoryTitle][key])
+						unsupportedValues.push(`${key}=${value}`)
 						return false
 					}
 					return true
