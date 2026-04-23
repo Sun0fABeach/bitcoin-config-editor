@@ -1367,8 +1367,9 @@ export default () =>
 						wholeNumber: true,
 					},
 					title: 'Check Address Manager',
-					description: 'Run addrman consistency checks every n operations. Use 0 to disable',
-					shortDescription: 'Run addrman consistency checks every n operations',
+					description:
+						'Run addrman consistency checks every &lt;n&gt; operations. Use 0 to disable',
+					shortDescription: 'Run addrman consistency checks every <n> operations',
 					defaultValue: '0',
 				},
 				checkblockindex: {
@@ -1379,9 +1380,9 @@ export default () =>
 					},
 					title: 'Check Block Index',
 					description:
-						'Do a consistency check for the block tree, chainstate, and other validation data structures every n operations. Use 0 to disable. (default: 0, regtest: 1)',
+						'Do a consistency check for the block tree, chainstate, and other validation data structures every &lt;n&gt; operations. Use 0 to disable. (default: 0, regtest: 1)',
 					shortDescription:
-						'Do consistency check for block tree, chainstate, and other validation data structures every n ops',
+						'Do consistency check for block tree, chainstate, and other validation data structures every <n> ops',
 					defaultValue: '0',
 				},
 				checkblocks: {
@@ -1417,8 +1418,8 @@ export default () =>
 					},
 					title: 'Check Mempool',
 					description:
-						'Run mempool consistency checks every n transactions. Use 0 to disable (default: 0, regtest: 1)',
-					shortDescription: 'Run mempool consistency checks every n transactions',
+						'Run mempool consistency checks every &lt;n&gt; transactions. Use 0 to disable (default: 0, regtest: 1)',
+					shortDescription: 'Run mempool consistency checks every <n> transactions',
 					defaultValue: '0',
 				},
 				checkpoints: {
@@ -1527,8 +1528,9 @@ export default () =>
 						wholeNumber: true,
 					},
 					title: 'Limit Transaction Ancestor Count',
-					description: 'Do not accept transactions if number of in-mempool ancestors is n or more',
-					shortDescription: 'Reject txs if number of in-mempool ancestors is n or more',
+					description:
+						'Do not accept transactions if number of in-mempool ancestors is &lt;n&gt; or more',
+					shortDescription: 'Reject txs if number of in-mempool ancestors is <n> or more',
 					defaultValue: '25',
 				},
 				limitancestorsize: {
@@ -1539,8 +1541,8 @@ export default () =>
 					},
 					title: 'Limit Transaction Ancestor Size',
 					description:
-						'Do not accept transactions whose size with all in-mempool ancestors exceeds n kilobytes',
-					shortDescription: 'Reject txs whose size with all in-mempool ancestors exceeds n kB',
+						'Do not accept transactions whose size with all in-mempool ancestors exceeds &lt;n&gt; kilobytes',
+					shortDescription: 'Reject txs whose size with all in-mempool ancestors exceeds <n> kB',
 					defaultValue: '101',
 				},
 				limitdescendantcount: {
@@ -1551,9 +1553,9 @@ export default () =>
 					},
 					title: 'Limit Transaction Descendant Count',
 					description:
-						'Do not accept transactions if any ancestor would have n or more in-mempool descendants',
+						'Do not accept transactions if any ancestor would have &lt;n&gt; or more in-mempool descendants',
 					shortDescription:
-						'Reject txs if any ancestor would have n or more in-mempool descendants',
+						'Reject txs if any ancestor would have <n> or more in-mempool descendants',
 					defaultValue: '25',
 				},
 				limitdescendantsize: {
@@ -1564,9 +1566,9 @@ export default () =>
 					},
 					title: 'Limit Transaction Descendant Size',
 					description:
-						'Do not accept transactions if any ancestor would have more than n kilobytes of in-mempool descendants',
+						'Do not accept transactions if any ancestor would have more than &lt;n&gt; kilobytes of in-mempool descendants',
 					shortDescription:
-						'Reject txs if any ancestor would have more than n kB of in-mempool descendants',
+						'Reject txs if any ancestor would have more than <n> kB of in-mempool descendants',
 					defaultValue: '101',
 				},
 				logips: {

@@ -140,7 +140,7 @@ export default function () {
 			limitancestorcount: {
 				...options.limitancestorcount,
 				description:
-					'(DEPRECATED) Do not accept transactions if number of in-mempool ancestors is n or more. Replaced by cluster limits (see <a href="#limitclustercount">limitclustercount</a>) and only used by wallet for coin selection',
+					'(DEPRECATED) Do not accept transactions if number of in-mempool ancestors is &lt;n&gt; or more. Replaced by cluster limits (see <a href="#limitclustercount">limitclustercount</a>) and only used by wallet for coin selection',
 			},
 
 			limitclustercount: {
@@ -152,8 +152,8 @@ export default function () {
 				},
 				title: 'Limit Cluster Count',
 				description:
-					'Do not accept transactions into mempool which are directly or indirectly connected to n or more other unconfirmed transactions',
-				shortDescription: "Don't accept txs connected to n or more other unconfirmed txs",
+					'Do not accept transactions into mempool which are directly or indirectly connected to &lt;n&gt; or more other unconfirmed transactions',
+				shortDescription: "Don't accept txs connected to <n> or more other unconfirmed txs",
 				defaultValue: '64',
 			},
 
@@ -165,16 +165,16 @@ export default function () {
 				},
 				title: 'Limit Cluster Size',
 				description:
-					'Do not accept transactions into mempool whose virtual size with all in-mempool connected transactions exceeds n kilobytes',
+					'Do not accept transactions into mempool whose virtual size with all in-mempool connected transactions exceeds &lt;n&gt; kilobytes',
 				shortDescription:
-					"Don't accept txs whose virtual size with all in-mempool connected txs exceeds n kB",
+					"Don't accept txs whose virtual size with all in-mempool connected txs exceeds <n> kB",
 				defaultValue: '101',
 			},
 
 			limitdescendantcount: {
 				...options.limitdescendantcount,
 				description:
-					'(DEPRECATED) Do not accept transactions if any ancestor would have n or more in-mempool descendants. Replaced by cluster limits (see <a href="#limitclustercount">limitclustercount</a>) and only used by wallet for coin selection',
+					'(DEPRECATED) Do not accept transactions if any ancestor would have &lt;n&gt; or more in-mempool descendants. Replaced by cluster limits (see <a href="#limitclustercount">limitclustercount</a>) and only used by wallet for coin selection',
 			},
 
 			logips: {

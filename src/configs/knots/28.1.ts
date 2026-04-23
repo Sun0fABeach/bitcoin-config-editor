@@ -235,7 +235,7 @@ export default function () {
 				step: 0.25,
 			},
 			title: 'Data Carrier Cost',
-			description: 'Treat extra data in transactions as at least n vbytes per actual byte',
+			description: 'Treat extra data in transactions as at least &lt;n&gt; vbytes per actual byte',
 			defaultValue: '1',
 		},
 
