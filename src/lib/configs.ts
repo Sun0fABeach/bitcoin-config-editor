@@ -12,7 +12,7 @@ function extractConfigs(globImports: typeof coreConfigsImports) {
 	const extracted: Record<string, ModuleDefaultImport> = {}
 
 	for (const [path, module] of Object.entries(globImports)) {
-		const version = /(\d{2}\.\d)\.ts$/.exec(path)![1]
+		const version = /(\d+(\.\d+)+)\.ts$/.exec(path)![1]
 		extracted[version] = module.default
 	}
 
